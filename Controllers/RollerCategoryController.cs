@@ -29,5 +29,11 @@ namespace KJCFRubberRoller.Controllers
         {
             return View();
         }
+
+        [Route("roller_category/create")]
+        public ActionResult Create()
+        {
+            return View();
+        }
     }
 }

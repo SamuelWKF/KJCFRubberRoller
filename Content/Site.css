@@ -1,12 +1,28 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
+.body-content:before {
+    content: ' ';
+    background: url("/Content/Images/background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    opacity: 0.7;
+    position: fixed;
+    width: 100%;
+    min-height: 100vh;
+    z-index: -1;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+}
+
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    min-height: 100vh;
+}
+
+.container {
+    padding-top: 20px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -21,4 +37,12 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.bg-kjcf {
+    background-color: #2A3F82;
+}
+
+.color-kjcf {
+    color: #2A3F82;
 }

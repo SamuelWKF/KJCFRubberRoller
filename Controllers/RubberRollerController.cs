@@ -12,7 +12,7 @@ namespace KJCFRubberRoller.Controllers
         private ApplicationDbContext _db;
 
         // Constructor
-        public RollerCategoryController()
+        public RubberRollerController()
         {
             _db = new ApplicationDbContext();
         }

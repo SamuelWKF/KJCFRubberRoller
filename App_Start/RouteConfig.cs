@@ -11,6 +11,9 @@ namespace KJCFRubberRoller
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            // Activate attribute routing
+            routes.MapMvcAttributeRoutes();
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
