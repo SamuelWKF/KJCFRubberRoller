@@ -1,0 +1,63 @@
+﻿@model  KJCFRubberRoller.Models.Schedule
+
+@{
+    ViewBag.Title = "ScheduleLay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Record Roller Usage</h2>
+@using (Html.BeginForm("Create", "Schedule"))
+{
+
+    <div><br> Record Roller Usage <br /></div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.operationLine)
+        @Html.TextBoxFor(m => m.operationLine)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.rollerID)
+        @Html.TextBoxFor(m => m.rollerID)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.startDateTime)
+        @Html.TextBoxFor(m => m.startDateTime)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.endDateTime)
+        @Html.TextBoxFor(m => m.endDateTime)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.product)
+        @Html.TextBoxFor(m => m.product)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.tinplateSize)
+        @Html.TextBoxFor(m => m.tinplateSize)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.quantity)
+        @Html.TextBoxFor(m => m.quantity)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.startMileage)
+        @Html.TextBoxFor(m => m.startMileage)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.endMileage)
+        @Html.TextBoxFor(m => m.endMileage)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.remark)
+        @Html.TextBoxFor(m => m.remark)
+    </div>
+}
