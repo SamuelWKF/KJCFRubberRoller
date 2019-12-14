@@ -1,0 +1,120 @@
+﻿@model KJCFRubberRoller.Models.Schedule
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="row mb-4">
+    <div class="col-md-8 mx-auto">
+
+        @if (TempData["saveStatus"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                @TempData["saveStatusMsg"]
+            </div>
+        }
+        <div class="py-2 bg-kjcf">
+            <h2 class="text-white text-center">Add New Schedule</h2>
+        </div>
+        <div class="bg-white container py-3">
+            <p class="required">* Require field</p>
+            @using (Html.BeginForm("Create", "RollerCategory", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.operationLine)<span class="required">*</span>
+                    @Html.TextBoxFor(Model => Model.operationLine, new { @class = "form-control", placeholder = "Enter Operation Line" })
+                    @Html.ValidationMessageFor(model => model.operationLine, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.rollerID)<span class="required">*</span>
+                    @Html.TextBoxFor(Model => Model.rollerID, new { @class = "form-control", placeholder = "Enter Roller ID" })
+                    @Html.ValidationMessageFor(model => model.rollerID, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        @Html.LabelFor(Model => Model.startDateTime)<span class="required">*</span>
+                        @Html.TextBoxFor(Model => Model.startDateTime, new { @class = "form-control", placeholder = "Enter Start Date & Time" })
+                        @Html.ValidationMessageFor(model => model.startDateTime, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(Model => Model.endDateTime)<span class="required">*</span>
+                        @Html.TextBoxFor(Model => Model.endDateTime, new { @class = "form-control", placeholder = "Enter End Date & Time" })
+                        @Html.ValidationMessageFor(model => model.endDateTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.product)<span class="required">*</span>
+                    @Html.TextBoxFor(Model => Model.product, new { @class = "form-control", placeholder = "Enter Product Name" })
+                    @Html.ValidationMessageFor(model => model.product, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.tinplateSize)<span class="required">*</span>
+                    @Html.TextBoxFor(Model => Model.tinplateSize, new { @class = "form-control", placeholder = "Enter Tinplate Size" })
+                    @Html.ValidationMessageFor(model => model.tinplateSize, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.quantity)<span class="required">*</span>
+                    @Html.TextBoxFor(Model => Model.quantity, new { @class = "form-control", placeholder = "Enter Quantity" })
+                    @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        @Html.LabelFor(Model => Model.startMileage)<span class="required">*</span>
+                        @Html.TextBoxFor(Model => Model.startMileage, new { @class = "form-control", placeholder = "Enter Start Mileage" })
+                        @Html.ValidationMessageFor(model => model.startMileage, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(Model => Model.endMileage)<span class="required">*</span>
+                        @Html.TextBoxFor(Model => Model.endMileage, new { @class = "form-control", placeholder = "Enter End Mileage" })
+                        @Html.ValidationMessageFor(model => model.endMileage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.remark)<span class="required">*</span>
+                    @Html.TextBoxFor(Model => Model.remark, new { @class = "form-control", placeholder = "Enter Remark" })
+                    @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <input type="reset" value="Clear" class="btn btn-danger btn-block" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="submit" value="Add New Schedule" class="btn btn-success btn-block" />
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        if (document.querySelector('.alert') !== null) {
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 5000);
+        }
+    })();
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

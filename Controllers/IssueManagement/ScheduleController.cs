@@ -28,5 +28,30 @@ namespace KJCFRubberRoller.Controllers
         {
             return View();
         }
+
+        [Route("schedule/create")]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("schedule/create")]
+        public ActionResult Create(Schedule schedule)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.schedules.Add(schedule);
+                _db.SaveChanges();
+                TempData["saveStatus"] = true;
+                TempData["saveStatusMsg"] = "New schedule has been successfully added!";
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+
+
     }
 }
