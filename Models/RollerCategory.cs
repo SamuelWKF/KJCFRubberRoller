@@ -17,6 +17,7 @@ namespace KJCFRubberRoller.Models
         [MaxLength(255)]
         [DisplayName("Roller Size")]
         public string size { get; set; }
+        [Required]
         [DisplayName("Roller Category Description")]
         public string description { get; set; }
         [Required]
