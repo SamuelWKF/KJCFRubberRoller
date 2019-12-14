@@ -35,5 +35,21 @@ namespace KJCFRubberRoller.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [Route("roller_category/create")]
+        public ActionResult Create(RollerCategory rollerCategory)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.rollerCategories.Add(rollerCategory);
+                _db.SaveChanges();
+                TempData["saveStatus"] = true;
+                TempData["saveStatusMsg"] = "New rubber roller category has been successfully added!";
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            return Redirect(Request.UrlReferrer.ToString());
+        }
     }
 }
