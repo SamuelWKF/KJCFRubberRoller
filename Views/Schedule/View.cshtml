@@ -1,0 +1,23 @@
+﻿@model IEnumerable<KJCFRubberRoller.Models.Schedule>
+
+@{
+    ViewBag.Title = "Schedule List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="mx-auto">
+        <div class="py-2 bg-kjcf">
+            <h2 class="text-white text-center">Rubber Roller Schedule List</h2>
+        </div>
+        <div class="bg-white container py-3">
+            @Html.Label("Search:")
+            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control", placeholder = "Search schedule here..." })
+            <br />
+            <table class="table table-responsive table-hover sortable">
+
+
+            </table>
+
+        </div>
+    </div>

@@ -5,14 +5,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace KJCFRubberRoller.Controllers
+namespace KJCFRubberRoller.Controllers.IssueManagement
 {
-    public class ScheduleController : Controller
+    public class BeforeChecklistController : Controller
     {
         private ApplicationDbContext _db;
 
-        // Constructor
-        public ScheduleController()
+        public BeforeChecklistController()
         {
             _db = new ApplicationDbContext();
         }
@@ -23,34 +22,33 @@ namespace KJCFRubberRoller.Controllers
             base.Dispose(disposing);
             _db.Dispose();
         }
-
-        [Route("schedule/list")]
-        // GET: Schedule
+        // GET: BeforeChecklist
         public ActionResult Index()
         {
             return View();
         }
 
-        [Route("schedule/create")]
+        [Route("beforechecklist/create")]
         public ActionResult Create()
         {
             return View();
         }
-
+        [Route("beforechecklist/create")]
+        // POST: Create new rubber roller category
         [HttpPost]
-        [Route("schedule/create")]
-        public ActionResult Create(Schedule schedule)
+        public ActionResult Create(BeforeRollerIssueChecklist beforeRollerIssueChecklist)
         {
             if (ModelState.IsValid)
             {
-                _db.schedules.Add(schedule);
+                _db.beforeRollerIssueChecklists.Add(beforeRollerIssueChecklist);
                 _db.SaveChanges();
-                TempData["saveStatus"] = true;
-                TempData["saveStatusMsg"] = "New schedule has been successfully added!";
+                TempData["formStatus"] = true;
+                TempData["formStatusMsg"] = "New before checklist has been successfully added!";
                 return Redirect(Request.UrlReferrer.ToString());
             }
-
             return Redirect(Request.UrlReferrer.ToString());
         }
+
+
     }
 }

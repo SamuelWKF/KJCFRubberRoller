@@ -5,14 +5,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+
 namespace KJCFRubberRoller.Controllers
 {
-    public class ScheduleController : Controller
+    public class AfterChecklistController : Controller
     {
         private ApplicationDbContext _db;
 
-        // Constructor
-        public ScheduleController()
+        public AfterChecklistController()
         {
             _db = new ApplicationDbContext();
         }
@@ -24,29 +24,27 @@ namespace KJCFRubberRoller.Controllers
             _db.Dispose();
         }
 
-        [Route("schedule/list")]
-        // GET: Schedule
+        // GET: AfterChecklist
         public ActionResult Index()
         {
             return View();
         }
-
-        [Route("schedule/create")]
+        [Route("afterchecklist/create")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("schedule/create")]
-        public ActionResult Create(Schedule schedule)
+        [Route("afterchecklist/create")]
+        public ActionResult Create(AfterRollerProductionChecklist afterRollerProductionChecklist )
         {
             if (ModelState.IsValid)
             {
-                _db.schedules.Add(schedule);
+                _db.afterRollerProductionChecklists.Add(afterRollerProductionChecklist);
                 _db.SaveChanges();
                 TempData["saveStatus"] = true;
-                TempData["saveStatusMsg"] = "New schedule has been successfully added!";
+                TempData["saveStatusMsg"] = "New checklist has been successfully added!";
                 return Redirect(Request.UrlReferrer.ToString());
             }
 

@@ -1,7 +1,7 @@
 ﻿@model KJCFRubberRoller.Models.Schedule
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Add Schedule";
 }
 
 <div class="row mb-4">
@@ -22,7 +22,7 @@
         </div>
         <div class="bg-white container py-3">
             <p class="required">* Require field</p>
-            @using (Html.BeginForm("Create", "RollerCategory", FormMethod.Post))
+            @using (Html.BeginForm("Create", "Schedule", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
 
