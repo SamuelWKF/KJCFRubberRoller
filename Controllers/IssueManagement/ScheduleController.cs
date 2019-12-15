@@ -23,6 +23,7 @@ namespace KJCFRubberRoller.Controllers
             base.Dispose(disposing);
             _db.Dispose();
         }
+
         // GET: Schedule
         public ActionResult Index()
         {
@@ -50,8 +51,5 @@ namespace KJCFRubberRoller.Controllers
 
             return Redirect(Request.UrlReferrer.ToString());
         }
-
-
-
     }
 }
