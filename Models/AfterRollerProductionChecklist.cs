@@ -11,32 +11,40 @@ namespace KJCFRubberRoller.Models
     {
         [Key]
         [Required]
-        [DisplayName("Checklist Id")]
+        [DisplayName("Checklist ID")]
         public int id { get; set; }
+
         [Required]
-        [DisplayName("Roller Id")]
+        [DisplayName("Roller ID")]
         public virtual RubberRoller rollerID { get; set; }
+
         [Required]
-        [DisplayName("Date and Time")]
+        [DisplayName("Date Time")]
         public DateTime dateTime { get; set; }
+
         [Required]
         [DisplayName("Operation Time")]
         public int operationLine { get; set; }
+
         [MaxLength(100)]
         [Required]
         [DisplayName("Roller Appearance")]
         public string rollerAppearance { get; set; }
+
         [MaxLength(100)]
         [Required]
         [DisplayName("Roller Sent To")]
         public string rollerSendTo { get; set; }
+
         [MaxLength(255)]
         [Required]
         [DisplayName("Remark")]
         public string remarks { get; set; }
+
         [Required]
         [DisplayName("Prepared By")]
         public virtual ApplicationUser preparedBy { get; set; }
+
         [DisplayName("Verified By")]
         public virtual ApplicationUser verifiedBy { get; set; }
     }
