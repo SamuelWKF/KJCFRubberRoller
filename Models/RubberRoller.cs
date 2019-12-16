@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+using KJCFRubberRoller.CustomValidations;
 
 namespace KJCFRubberRoller.Models
 {
@@ -14,14 +16,16 @@ namespace KJCFRubberRoller.Models
         [DisplayName("Roller ID (System)")]
         public int id { get; set; }
 
+        public virtual RollerCategory RollerCategory { get; set; }
         [Required]
         [DisplayName("Roller Category")]
-        public virtual RollerCategory rollerCategoryID { get; set; }
+        public int rollerCategoryID { get; set; }
 
         [Required]
         [MaxLength(10)]
         [DisplayName("Roller ID")]
         [RegularExpression(@"^R\-\d{1,}$", ErrorMessage = "Please enter the correct roller format (R-012)")]
+        [UniqueRollerID]
         public string rollerID { get; set; }
 
         [Required]
@@ -49,7 +53,7 @@ namespace KJCFRubberRoller.Models
         public string condition { get; set; }
 
         [DisplayName("Last Usage Date")]
-        public DateTime last_usage_date { get; set; }
+        public DateTime? last_usage_date { get; set; }
 
         [MaxLength(255)]
         [DisplayName("Remark")]
@@ -58,7 +62,7 @@ namespace KJCFRubberRoller.Models
         [Required]
         [MaxLength(100)]
         [DisplayName("Roller Status")]
-        public string status { get; set; }   
+        public string status { get; set; }
 
         // Define relationships
         public virtual ICollection<RollerLocation> RollerLocations { get; set; }

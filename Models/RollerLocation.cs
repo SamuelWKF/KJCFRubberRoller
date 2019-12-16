@@ -14,8 +14,10 @@ namespace KJCFRubberRoller.Models
         [DisplayName("Roller Location ID")]
         public int rollerLocationID { get; set; }
 
+        [Required]
         [DisplayName("Rubber Roller")]
-        public virtual RubberRoller rollerID { get; set; }
+        public int rollerID { get; set; }
+        public virtual RubberRoller RubberRoller { get; set; }
 
         [MaxLength(50)]
         [DisplayName("Roller Location")]

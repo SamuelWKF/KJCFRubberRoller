@@ -1,0 +1,69 @@
+﻿@model IEnumerable<KJCFRubberRoller.Models.RubberRoller>
+
+@{
+    ViewBag.Title = "View All Rollers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="mx-auto">
+        <div class="py-2 bg-kjcf">
+            <h2 class="text-white text-center">Rubber Roller Category List</h2>
+        </div>
+        <div class="bg-white container py-3">
+            @Html.Label("Search:")
+            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control", placeholder = "Search roller category here..." })
+            <br />
+            <table class="table table-responsive table-hover table-striped sortable">
+                <tr>
+                    <th>
+                        No.
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.size)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.minAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.criticalStatus)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.remark)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model.Select((value, index) => new { value, index }))
+                {
+                    <tr>
+                        <td>
+                            @(item.index + 1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.size)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.minAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.criticalStatus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.remark)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit Details", "Edit", new { id = item.value.rollerCategoryID }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

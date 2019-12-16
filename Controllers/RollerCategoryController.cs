@@ -46,7 +46,7 @@ namespace KJCFRubberRoller.Controllers
 
             // Retrieve existing specific roller category from database
             RollerCategory rollerCategory = _db.rollerCategories.SingleOrDefault(c => c.rollerCategoryID == id);
-            
+
             // Ensure the retrieved value is not null
             if (rollerCategory == null)
                 return RedirectToAction("Index");
@@ -58,13 +58,17 @@ namespace KJCFRubberRoller.Controllers
         [HttpPost]
         public ActionResult Create(RollerCategory rollerCategory)
         {
-            if (ModelState.IsValid)
+            _db.rollerCategories.Add(rollerCategory);
+            int result = _db.SaveChanges();
+            if (result > 0)
             {
-                _db.rollerCategories.Add(rollerCategory);
-                _db.SaveChanges();
                 TempData["formStatus"] = true;
                 TempData["formStatusMsg"] = "New rubber roller category has been successfully added!";
-                return Redirect(Request.UrlReferrer.ToString());
+            }
+            else
+            {
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller category has not been successfully added.";
             }
             return Redirect(Request.UrlReferrer.ToString());
         }
@@ -80,18 +84,22 @@ namespace KJCFRubberRoller.Controllers
             if (rollerCat == null)
                 return RedirectToAction("Index");
 
-            if (ModelState.IsValid)
-            {
-                rollerCat.size = rollerCategory.size;
-                rollerCat.description = rollerCategory.description;
-                rollerCat.minAmount = rollerCategory.minAmount;
-                rollerCat.remark = rollerCategory.remark;
-                rollerCat.criticalStatus = rollerCategory.criticalStatus;
+            rollerCat.size = rollerCategory.size;
+            rollerCat.description = rollerCategory.description;
+            rollerCat.minAmount = rollerCategory.minAmount;
+            rollerCat.remark = rollerCategory.remark;
+            rollerCat.criticalStatus = rollerCategory.criticalStatus;
 
-                _db.SaveChanges();
+            int result = _db.SaveChanges();
+            if (result > 0)
+            {
                 TempData["formStatus"] = true;
                 TempData["formStatusMsg"] = "Rubber roller category has been successfully updated!";
-                return Redirect(Request.UrlReferrer.ToString());
+            }
+            else
+            {
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller category has not been successfully updated.";
             }
             return Redirect(Request.UrlReferrer.ToString());
         }

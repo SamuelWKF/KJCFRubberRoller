@@ -36,7 +36,7 @@
 
         @if (TempData["formStatus"] != null)
         {
-            <div class="alert @(TempData["formStatus"] != null ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+            <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
@@ -55,7 +55,6 @@
             {
                 @Html.AntiForgeryToken()
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.size)<span class="required">*</span>
                     @Html.TextBoxFor(model => model.size, new { @class = "form-control", placeholder = "Enter roller size" })

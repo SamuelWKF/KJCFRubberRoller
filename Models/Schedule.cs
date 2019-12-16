@@ -20,7 +20,8 @@ namespace KJCFRubberRoller.Models
 
         [Required]
         [DisplayName("Roller ID")]
-        public virtual RubberRoller rollerID { get; set; }
+        public int rollerID { get; set; }
+        public virtual RubberRoller RubberRoller { get; set; }
 
         [Required]
         [DisplayName("Start Date Time")]

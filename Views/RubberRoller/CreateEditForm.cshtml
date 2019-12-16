@@ -1,0 +1,194 @@
+﻿@model KJCFRubberRoller.Models.RubberRoller
+
+@{
+    if ((String)Url.RequestContext.RouteData.Values["id"] == null)
+    {
+        ViewBag.Title = "Add New Rubber Roller";
+    }
+    else
+    {
+        ViewBag.Title = "Update Rubber Roller Details";
+    }
+}
+
+@{
+    //Roller Type dropdown
+    List<SelectListItem> rollerType = new List<SelectListItem>();
+    rollerType.Add(new SelectListItem
+    {
+        Text = "Full Plate",
+        Value = "Full Plate"
+    });
+    rollerType.Add(new SelectListItem
+    {
+        Text = "Stencil",
+        Value = "Stencil"
+    });
+
+    //Roller usage dropdown
+    List<SelectListItem> rollerUsage = new List<SelectListItem>();
+    rollerUsage.Add(new SelectListItem
+    {
+        Text = "White Coating",
+        Value = "White Coating"
+    });
+    rollerUsage.Add(new SelectListItem
+    {
+        Text = "Lacquer",
+        Value = "Lacquer"
+    });
+
+    //Roller condition dropdown
+    List<SelectListItem> rollerCondition = new List<SelectListItem>();
+    rollerCondition.Add(new SelectListItem
+    {
+        Text = "Good",
+        Value = "Good"
+    });
+    rollerCondition.Add(new SelectListItem
+    {
+        Text = "Bad",
+        Value = "Bad"
+    });
+
+    //Roller supplier dropdown
+    List<SelectListItem> rollerSupplier = new List<SelectListItem>();
+    rollerSupplier.Add(new SelectListItem
+    {
+        Text = "Mega",
+        Value = "Mega"
+    });
+    rollerSupplier.Add(new SelectListItem
+    {
+        Text = "EIKOH",
+        Value = "EIKOH"
+    });
+    rollerSupplier.Add(new SelectListItem
+    {
+        Text = "Canco",
+        Value = "Canco"
+    });
+    rollerSupplier.Add(new SelectListItem
+    {
+        Text = "Other",
+        Value = "Other"
+    });
+}
+
+<div class="row mb-4">
+    <div class="col-md-8 mx-auto">
+
+        @if (TempData["formStatus"] != null)
+        {
+            <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                @TempData["formStatusMsg"]
+            </div>
+        }
+
+        <div class="py-2 bg-kjcf">
+            <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Rubber Roller" : $"Update Roller {Model.rollerID}")</h2>
+        </div>
+        <div class="bg-white container py-3">
+            <p class="required">* Require field</p>
+            @using (Html.BeginForm((String)Url.RequestContext.RouteData.Values["id"] == null ? "Create" : "Update", "RubberRoller", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                //Roller ID
+                <div class="form-group">
+                    @Html.LabelFor(model => model.rollerID)<span class="required">*</span>
+                    @Html.TextBoxFor(model => model.rollerID, new { @class = "form-control", placeholder = "Enter roller ID" })
+                    @Html.ValidationMessageFor(model => model.rollerID, "", new { @class = "text-danger" })
+                </div>
+
+                //Roller Category
+                <div class="form-group">
+                    @Html.LabelFor(model => model.rollerCategoryID)<span class="required">*</span>
+                    @Html.DropDownListFor(model => model.rollerCategoryID, (IEnumerable<SelectListItem>)ViewData["rollerCatList"], "Select rubber roller category", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.rollerCategoryID, "", new { @class = "text-danger" })
+                </div>
+
+                //Roller Type
+                <div class="form-group">
+                    @Html.LabelFor(model => model.type)<span class="required">*</span>
+                    @Html.DropDownListFor(model => model.type, rollerType, "Select rubber roller type", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.type, "", new { @class = "text-danger" })
+                </div>
+
+                //Roller Usage
+                <div class="form-group">
+                    @Html.LabelFor(model => model.usage)<span class="required">*</span>
+                    @Html.DropDownListFor(model => model.usage, rollerUsage, "Select rubber roller usage", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.usage, "", new { @class = "text-danger" })
+                </div>
+
+                //Roller Diameter
+                <div class="form-group">
+                    @Html.LabelFor(model => model.diameter)<span class="required">*</span>
+                    @Html.TextBoxFor(model => model.diameter, new { @class = "form-control", placeholder = "Enter roller diameter here", type = "number", step = "0.01", min = "0" })
+                    @Html.ValidationMessageFor(model => model.diameter, "", new { @class = "text-danger" })
+                </div>
+
+                //Roller Condition
+                <div class="form-group">
+                    @Html.LabelFor(model => model.condition)<span class="required">*</span>
+                    @Html.DropDownListFor(model => model.condition, rollerCondition, "Select rubber roller condition", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.condition, "", new { @class = "text-danger" })
+                </div>
+
+                //Remark
+                <div class="form-group">
+                    @Html.LabelFor(model => model.remark)
+                    @Html.TextAreaFor(model => model.remark, new { @class = "form-control", placeholder = "Enter any remarks here" })
+                    @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
+                </div>
+
+                //Roller Supplier
+                <div class="form-group">
+                    @Html.LabelFor(model => model.supplier)<span class="required">*</span>
+                    @Html.DropDownListFor(model => model.supplier, rollerSupplier, "Select rubber roller supplier", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.supplier, "", new { @class = "text-danger" })
+                </div>
+
+                //Roller Status
+                <div class="form-group">
+                    @Html.LabelFor(model => model.status)<span class="required">*</span>
+                    @Html.TextBoxFor(model => model.status, new { @class = "form-control", placeholder = "Enter roller status here" })
+                    @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                </div>
+
+                if ((String)Url.RequestContext.RouteData.Values["id"] != null)
+                {
+                    @Html.HiddenFor(m => m.id)
+                }
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <input type="reset" value="Clear" class="btn btn-primary btn-block" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Category" : "Update Roller Category")' class="btn btn-success btn-block" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        if (document.querySelector('.alert') !== null) {
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 5000);
+        }
+    })();
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
