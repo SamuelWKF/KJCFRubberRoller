@@ -30,6 +30,7 @@ namespace KJCFRubberRoller.Controllers
         // GET: RubberRoller
         public ActionResult Index()
         {
+            LogAction.log("Requested RubberRoller-Index webpage", User.Identity.GetUserId());
             List<RubberRoller> rubberRollers = _db.rubberRollers.ToList();
             return View(rubberRollers);
         }
@@ -37,6 +38,7 @@ namespace KJCFRubberRoller.Controllers
         // GET: RubberRoller
         public ActionResult StockOverview()
         {
+            LogAction.log("Requested RubberRoller-StockOverview webpage", User.Identity.GetUserId());
             List<RollerCategory> rollerCategories = _db.rollerCategories.ToList();
             return View(rollerCategories);
         }
@@ -44,6 +46,7 @@ namespace KJCFRubberRoller.Controllers
         // GET: Returns create form
         public ActionResult Create()
         {
+            LogAction.log("Requested RubberRoller-Create webpage", User.Identity.GetUserId());
             // Retrieve roller category
             var rollerCatList = _db.rollerCategories
                 .AsEnumerable()
@@ -72,14 +75,32 @@ namespace KJCFRubberRoller.Controllers
             if (rubberRoller == null)
                 return RedirectToAction("Index");
 
+            // Retrieve roller category
+            var rollerCatList = _db.rollerCategories
+                .AsEnumerable()
+                .Select(s => new
+                {
+                    ID = s.rollerCategoryID,
+                    description = string.Format("{0} - {1}", s.size, s.description)
+                }).ToList();
+
+            ViewData["rollerCatList"] = new SelectList(rollerCatList, "ID", "description");
+
+            LogAction.log(string.Format("Requested RubberRoller-Edit {0} webpage", id), User.Identity.GetUserId());
             return View("CreateEditForm", rubberRoller);
         }
 
         // POST: Create new rubber roller record
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(RubberRoller rubberRoller)
         {
-            if (!ModelState.IsValid)
+            // Check if roller ID exist from DB
+            var dbRoller = _db.rubberRollers.Where(r => r.rollerID == rubberRoller.rollerID).FirstOrDefault();
+            if (dbRoller != null)
+                ModelState.AddModelError("rollerID", "There is already an existing roller with the same roller ID.");
+
+            if (!ModelState.IsValid || dbRoller != null)
             {
                 // Retrieve roller category
                 var rollerCatList = _db.rollerCategories
@@ -99,8 +120,7 @@ namespace KJCFRubberRoller.Controllers
 
             if (rubberRoller.supplier.Equals("Canco"))
             {
-                TempData["rollerID"] = rubberRoller.id;
-                return RedirectToAction("CancoChecklist");
+                return RedirectToAction("CancoChecklist", new { rubberRoller.id});
             }
 
             if (result > 0)
@@ -116,75 +136,108 @@ namespace KJCFRubberRoller.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-        public ActionResult CancoChecklist()
+        public ActionResult CancoChecklist(int? id)
         {
-            if ((int)TempData["rollerID"] == 0)
+            LogAction.log("Requested RubberRoller-CancoChecklist webpage", User.Identity.GetUserId());
+            if (id == 0)
                 return RedirectToAction("Index");
 
             CancoChecklist cancoChecklist = new CancoChecklist();
-            cancoChecklist.RubberRoller = _db.rubberRollers.Find((int)TempData["rollerID"]);
+            cancoChecklist.RubberRoller = _db.rubberRollers.Find(id);
             cancoChecklist.date = DateTime.Now;
             return View("CancoChecklist", cancoChecklist);
         }
 
         // POST: Create new rubber roller record
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateCancoRoller(CancoChecklist cancoChecklist)
         {
-            // Retrieve rubber record & current user ID
-            RubberRoller rubber = _db.rubberRollers.Where(r => r.rollerID == cancoChecklist.RubberRoller.rollerID).FirstOrDefault();
-            var userId = User.Identity.GetUserId();
-
-            // Create new CancoChecklist record
-            CancoChecklist cc = new CancoChecklist();
-            cc.rollerID = rubber.id;
-            cc.RubberRoller = rubber;
-            cc.result = cancoChecklist.result;
-            cc.scar_issued = cancoChecklist.scar_issued;
-            cc.remarks = cancoChecklist.remarks;
-            cc.date = DateTime.Now;
-            cc.checkedBy = _db.Users.FirstOrDefault(u => u.Id == userId);
-
-            // Add to database
-            _db.cancoChecklists.Add(cc);
-            int result = _db.SaveChanges();
-            if (result > 0)
+            try
             {
-                TempData["formStatus"] = true;
-                TempData["formStatusMsg"] = "New rubber roller has been successfully added!";
+                // Retrieve rubber record & current user ID
+                RubberRoller rubber = _db.rubberRollers.Where(r => r.rollerID == cancoChecklist.RubberRoller.rollerID).FirstOrDefault();
+                var userId = User.Identity.GetUserId();
+
+                // Create new CancoChecklist record
+                CancoChecklist cc = new CancoChecklist();
+                cc.rollerID = rubber.id;
+                cc.RubberRoller = rubber;
+                cc.result = cancoChecklist.result;
+                cc.scar_issued = cancoChecklist.scar_issued;
+                cc.remarks = cancoChecklist.remarks;
+                cc.date = DateTime.Now;
+                cc.checkedBy = _db.Users.FirstOrDefault(u => u.Id == userId);
+
+                // Add to database
+                _db.cancoChecklists.Add(cc);
+                int result = _db.SaveChanges();
+
+                if (result > 0)
+                {
+                    LogAction.log("[RubberRoller-CreateCancoRoller] = Added new canco record", User.Identity.GetUserId());
+                    TempData["formStatus"] = true;
+                    TempData["formStatusMsg"] = "New rubber roller has been successfully added!";
+                }
+                return RedirectToAction("Create");
             }
-            else
+            catch (Exception ex)
             {
                 TempData["formStatus"] = false;
                 TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully added.";
+                LogAction.log("[RubberRoller-CreateCancoRoller] = Error: " + ex.Message, User.Identity.GetUserId());
+                return RedirectToAction("Create");
             }
-            return RedirectToAction("Create");
         }
 
         // POST: Update existing rubber roller record
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Update(RubberRoller rubberRoller)
         {
-            // Retrieve existing specific rubber roller from database
-            RubberRoller rubberRoll = _db.rubberRollers.SingleOrDefault(c => c.id == rubberRoller.id);
-
-            if (rubberRoll == null)
-                return RedirectToAction("Index");
-
-            if (ModelState.IsValid)
+            try
             {
-                rubberRoll.rollerID = rubberRoller.rollerID;
-                //rubberRoll.description = rubberRoller.description;
-                //rubberRoll.minAmount = rubberRoller.minAmount;
-                //rubberRoll.remark = rubberRoller.remark;
-                //rubberRoll.criticalStatus = rubberRoller.criticalStatus;
+                // Retrieve existing specific rubber roller from database
+                RubberRoller rubberRoll = _db.rubberRollers.SingleOrDefault(c => c.id == rubberRoller.id);
+                
+                bool notCancoRoller = !rubberRoll.supplier.Equals("Canco");
 
-                _db.SaveChanges();
-                TempData["formStatus"] = true;
-                TempData["formStatusMsg"] = "Rubber roller details has been successfully updated!";
+                if (rubberRoll == null)
+                    return RedirectToAction("Index");
+
+                // Update rubber roller details
+                if (rubberRoll.rollerID != rubberRoller.rollerID)
+                    rubberRoll.rollerID = rubberRoller.rollerID;
+                rubberRoll.rollerCategoryID = rubberRoller.rollerCategoryID;
+                rubberRoll.type = rubberRoller.type;
+                rubberRoll.usage = rubberRoller.usage;
+                rubberRoll.supplier = rubberRoller.supplier;
+                rubberRoll.diameter = rubberRoller.diameter;
+                rubberRoll.condition = rubberRoller.condition;
+                rubberRoll.remark = rubberRoller.remark;
+                rubberRoll.status = rubberRoller.status;
+
+                int result = _db.SaveChanges();
+
+                if (rubberRoller.supplier.Equals("Canco") && notCancoRoller)
+                    return RedirectToAction("CancoChecklist", new { rubberRoller.id });
+
+                if (result > 0)
+                {
+                    LogAction.log("[RubberRoller-Update] = Updated roller record", User.Identity.GetUserId());
+                    TempData["formStatus"] = true;
+                    TempData["formStatusMsg"] = "Rubber roller details has been successfully updated!";
+                }
+
                 return Redirect(Request.UrlReferrer.ToString());
             }
-            return Redirect(Request.UrlReferrer.ToString());
+            catch (Exception ex)
+            {
+                LogAction.log("[RubberRoller-Update] = Error: " + ex.Message, User.Identity.GetUserId());
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully updated.";
+                return Redirect(Request.UrlReferrer.ToString());
+            }
         }
     }
 }

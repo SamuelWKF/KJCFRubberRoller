@@ -24,8 +24,7 @@ namespace KJCFRubberRoller.Models
         [Required]
         [MaxLength(10)]
         [DisplayName("Roller ID")]
-        [RegularExpression(@"^R\-\d{1,}$", ErrorMessage = "Please enter the correct roller format (R-012)")]
-        [UniqueRollerID]
+        [RegularExpression(@"^R\-\d{1,}[\s\w\(\)\/]+$", ErrorMessage = "Please enter the correct roller format. Example: R-012, R-012 (P/S)")]
         public string rollerID { get; set; }
 
         [Required]

@@ -1,41 +1,48 @@
 ﻿@model IEnumerable<KJCFRubberRoller.Models.RubberRoller>
 
 @{
-    ViewBag.Title = "View All Rollers";
+    ViewBag.Title = "All Rubber Roller Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row mb-4">
     <div class="mx-auto">
         <div class="py-2 bg-kjcf">
-            <h2 class="text-white text-center">Rubber Roller Category List</h2>
+            <h2 class="text-white text-center">Rubber Roller List</h2>
         </div>
         <div class="bg-white container py-3">
             @Html.Label("Search:")
-            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control", placeholder = "Search roller category here..." })
+            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control", placeholder = "Search rubber roller here..." })
             <br />
             <table class="table table-responsive table-hover table-striped sortable">
-                <tr>
-                    <th>
-                        No.
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.size)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.minAmount)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.criticalStatus)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.remark)
-                    </th>
-                    <th></th>
-                </tr>
+                <thead>
+                    <tr class="text-center">
+                        <th>
+                            No.
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.rollerID)
+                        </th>
+                        <th>
+                            Roller Category
+                        </th>
+                        <th>On Supplier<br />Hand</th>
+                        <th>
+                            Available<br />at KJCF
+                        </th>
+                        <th>
+                            Remark
+                        </th>
+                        <th width="5%">
+                            Status
+                        </th>
+                        <th>Operation<br />Line No.</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
 
                 @foreach (var item in Model.Select((value, index) => new { value, index }))
                 {
@@ -44,22 +51,49 @@
                             @(item.index + 1)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.value.description)
+                            @Html.DisplayFor(modelItem => item.value.rollerID)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.value.size)
+                            @{
+                                var rollerCat = string.Format("{0} - {1}", item.value.RollerCategory.size, item.value.RollerCategory.description);
+                            }
+                            @rollerCat
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.value.minAmount)
+                            @if (item.value.RollerLocations.LastOrDefault() != null)
+                            {
+                                @Html.Display(item.value.RollerLocations.LastOrDefault().location)
+                            }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.value.criticalStatus)
+                            @if (item.value.RollerLocations.LastOrDefault() != null)
+                            {
+                                @Html.Display(item.value.RollerLocations.LastOrDefault().location)
+                            }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.value.remark)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit Details", "Edit", new { id = item.value.rollerCategoryID }, new { @class = "btn btn-block btn-success" })
+                            @Html.DisplayFor(modelItem => item.value.status)
+                        </td>
+                        <td>
+                            @if (item.value.RollerLocations.LastOrDefault() != null)
+                            {
+                                @Html.Display(item.value.RollerLocations.LastOrDefault().operationLine.ToString())
+                            }
+                        </td>
+                        <td>
+                            @Html.ActionLink("ED", "Edit", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("LH", "LocationHistory", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("MH", "MaintenanceHistory", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("OH", "OperationHistory", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
                         </td>
                     </tr>
                 }
