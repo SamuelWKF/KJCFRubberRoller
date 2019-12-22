@@ -10,6 +10,7 @@ namespace KJCFRubberRoller.Controllers.IssueManagement
     public class BeforeChecklistController : Controller
     {
         private ApplicationDbContext _db;
+        private string _controllerName = "BeforeChecklist";
 
         public BeforeChecklistController()
         {

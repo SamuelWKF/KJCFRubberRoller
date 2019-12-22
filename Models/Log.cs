@@ -24,7 +24,17 @@ namespace KJCFRubberRoller.Models
 
         [Required]
         [MaxLength(255)]
-        [DisplayName("Action Performed")]
+        [DisplayName("Controller")]
+        public string controller { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        [DisplayName("Action")]
         public string action { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        [DisplayName("Description")]
+        public string description { get; set; }
     }
 }

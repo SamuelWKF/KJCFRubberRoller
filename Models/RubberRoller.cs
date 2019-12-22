@@ -22,7 +22,7 @@ namespace KJCFRubberRoller.Models
         public int rollerCategoryID { get; set; }
 
         [Required]
-        [MaxLength(10)]
+        [MaxLength(15)]
         [DisplayName("Roller ID")]
         [RegularExpression(@"^R\-\d{1,}[\s\w\(\)\/]+$", ErrorMessage = "Please enter the correct roller format. Example: R-012, R-012 (P/S)")]
         public string rollerID { get; set; }

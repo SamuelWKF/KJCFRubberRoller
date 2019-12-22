@@ -11,6 +11,7 @@ namespace KJCFRubberRoller.Controllers
     public class AfterChecklistController : Controller
     {
         private ApplicationDbContext _db;
+        private string _controllerName = "AfterChecklist";
 
         public AfterChecklistController()
         {

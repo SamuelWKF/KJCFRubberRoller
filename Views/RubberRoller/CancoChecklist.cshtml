@@ -5,90 +5,92 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row mb-4">
-    <div class="col-md-8 mx-auto">
-        <div class="py-2 bg-kjcf">
-            <h2 class="text-white text-center">Canco Roller Checklist (@Model.RubberRoller.rollerID)</h2>
-        </div>
-        <div class="bg-white container py-3">
-            <p class="required">* Require field</p>
-            @using (Html.BeginForm("CreateCancoRoller", "RubberRoller", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="py-2 bg-kjcf">
+                <h2 class="text-white text-center">Canco Roller Checklist (@Model.RubberRoller.rollerID)</h2>
+            </div>
+            <div class="bg-white container py-3">
+                <p class="required">* Require field</p>
+                @using (Html.BeginForm("CreateCancoRoller", "RubberRoller", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
 
-                //Date
-                <div class="form-group">
-                    @Html.LabelFor(model => model.date)
-                    <input class="form-control" value="@string.Format("{0}-{1}-{2}", Model.date.Day, Model.date.Month, Model.date.Year)" readonly />
-                </div>
-
-                //Roller ID
-                <div class="form-group">
-                    @Html.LabelFor(model => model.RubberRoller.rollerID)
-                    @Html.TextBoxFor(model => model.RubberRoller.rollerID, new { @class = "form-control", @readonly = "readonly" })
-                </div>
-
-                //Roller Type
-                <div class="form-group">
-                    @Html.LabelFor(model => model.RubberRoller.type)
-                    @Html.TextBoxFor(model => model.RubberRoller.type, new { @class = "form-control", @readonly = "readonly" })
-
-                </div>
-
-                //Roller Usage
-                <div class="form-group">
-                    @Html.LabelFor(model => model.RubberRoller.usage)
-                    @Html.TextBoxFor(model => model.RubberRoller.usage, new { @class = "form-control", @readonly = "readonly" })
-
-                </div>
-
-                //Roller Diameter
-                <div class="form-group">
-                    @Html.LabelFor(model => model.RubberRoller.diameter)
-                    @Html.TextBoxFor(model => model.RubberRoller.diameter, new { @class = "form-control", @readonly = "readonly" })
-                </div>
-
-                //Result
-                <div class="form-check mb-2">
-                    @Html.LabelFor(model => model.result, new { @class = "form-check-label" })<span class="required">*</span><br />
-                    <div class="row">
-                        <div class="col-md-3">
-                            @Html.RadioButtonFor(m => m.result, "Accepted", new { @class = "form-check-input", @checked = "@checked" })Accepted
-                        </div>
-                        <div class="col-md-3">
-                            @Html.RadioButtonFor(m => m.result, "Not Accepted", new { @class = "form-check-input" })Not Accepted
-                        </div>
+                    //Date
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.date)
+                        <input class="form-control" value="@string.Format("{0}-{1}-{2}", Model.date.Day, Model.date.Month, Model.date.Year)" readonly />
                     </div>
-                </div>
 
-                //SCAR Issued
-                <div class="form-check mb-2">
-                    @Html.LabelFor(model => model.scar_issued, new { @class = "form-check-label" })<span class="required">*</span><br />
-                    <div class="row">
-                        <div class="col-md-3">
-                            @Html.RadioButtonFor(m => m.scar_issued, "Yes", new { @class = "form-check-input" })Yes
-                        </div>
-                        <div class="col-md-3">
-                            @Html.RadioButtonFor(m => m.scar_issued, "No", new { @class = "form-check-input", @checked = "checked" })No
+                    //Roller ID
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RubberRoller.rollerID)
+                        @Html.TextBoxFor(model => model.RubberRoller.rollerID, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+
+                    //Roller Type
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RubberRoller.type)
+                        @Html.TextBoxFor(model => model.RubberRoller.type, new { @class = "form-control", @readonly = "readonly" })
+
+                    </div>
+
+                    //Roller Usage
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RubberRoller.usage)
+                        @Html.TextBoxFor(model => model.RubberRoller.usage, new { @class = "form-control", @readonly = "readonly" })
+
+                    </div>
+
+                    //Roller Diameter
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RubberRoller.diameter)
+                        @Html.TextBoxFor(model => model.RubberRoller.diameter, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+
+                    //Result
+                    <div class="form-check mb-2">
+                        @Html.LabelFor(model => model.result, new { @class = "form-check-label" })<span class="required">*</span><br />
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.RadioButtonFor(m => m.result, "Accepted", new { @class = "form-check-input", @checked = "@checked" })Accepted
+                            </div>
+                            <div class="col-md-3">
+                                @Html.RadioButtonFor(m => m.result, "Not Accepted", new { @class = "form-check-input" })Not Accepted
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                //Remark
-                <div class="form-group">
-                    @Html.LabelFor(model => model.remarks)
-                    @Html.TextAreaFor(model => model.remarks, new { @class = "form-control", placeholder = "Enter any remarks here" })
-                </div>
+                    //SCAR Issued
+                    <div class="form-check mb-2">
+                        @Html.LabelFor(model => model.scar_issued, new { @class = "form-check-label" })<span class="required">*</span><br />
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.RadioButtonFor(m => m.scar_issued, "Yes", new { @class = "form-check-input" })Yes
+                            </div>
+                            <div class="col-md-3">
+                                @Html.RadioButtonFor(m => m.scar_issued, "No", new { @class = "form-check-input", @checked = "checked" })No
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <input type="button" value="Back" class="btn btn-lg btn-primary btn-block" />
+                    //Remark
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.remarks)
+                        @Html.TextAreaFor(model => model.remarks, new { @class = "form-control", placeholder = "Enter any remarks here" })
                     </div>
-                    <div class="col-md-6">
-                        <input type="submit" value="Confirm Checklist" class="btn btn-lg btn-success btn-block" />
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <input type="button" value="Back" class="btn btn-lg btn-primary btn-block" />
+                        </div>
+                        <div class="col-md-6">
+                            <input type="submit" value="Confirm Checklist" class="btn btn-lg btn-success btn-block" />
+                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 </div>

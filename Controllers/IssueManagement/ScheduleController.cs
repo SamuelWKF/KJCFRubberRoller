@@ -10,6 +10,7 @@ namespace KJCFRubberRoller.Controllers
     public class ScheduleController : Controller
     {
         private ApplicationDbContext _db;
+        private string _controllerName = "Schedule";
 
         // Constructor
         public ScheduleController()

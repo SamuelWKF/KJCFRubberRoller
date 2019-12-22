@@ -11,6 +11,7 @@ namespace KJCFRubberRoller.Controllers
     public class RollerCategoryController : Controller
     {
         private ApplicationDbContext _db;
+        private string _controllerName = "RollerCategory";
 
         // Constructor
         public RollerCategoryController()
@@ -28,7 +29,7 @@ namespace KJCFRubberRoller.Controllers
         // GET: RollerCategory
         public ActionResult Index()
         {
-            LogAction.log("Requested RollerCategory-Index webpage", User.Identity.GetUserId());
+            LogAction.log(this._controllerName, "GET", "Requested RollerCategory-Index webpage", User.Identity.GetUserId());
             List<RollerCategory> rollerCategories = _db.rollerCategories.ToList();
             return View(rollerCategories);
         }
@@ -36,7 +37,7 @@ namespace KJCFRubberRoller.Controllers
         // GET: Returns create form
         public ActionResult Create()
         {
-            LogAction.log("Requested RollerCategory-Create webpage", User.Identity.GetUserId());
+            LogAction.log(this._controllerName, "GET", "Requested RollerCategory-Create webpage", User.Identity.GetUserId());
             return View("CreateEditForm");
         }
 
@@ -54,7 +55,7 @@ namespace KJCFRubberRoller.Controllers
             if (rollerCategory == null)
                 return RedirectToAction("Index");
 
-            LogAction.log(string.Format("Requested RubberRoller-Edit {0} webpage", id), User.Identity.GetUserId());
+            LogAction.log(this._controllerName, "GET", string.Format("Requested RubberRoller-Edit {0} webpage", id), User.Identity.GetUserId());
             return View("CreateEditForm", rollerCategory);
         }
 
@@ -71,7 +72,7 @@ namespace KJCFRubberRoller.Controllers
                 {
                     TempData["formStatus"] = true;
                     TempData["formStatusMsg"] = "New rubber roller category has been successfully added!";
-                    LogAction.log("[RollerCategory-Create] = Added new roller category record", User.Identity.GetUserId());
+                    LogAction.log(this._controllerName, "POST", "Added new roller category record", User.Identity.GetUserId());
                 }
                 return Redirect(Request.UrlReferrer.ToString());
             }
@@ -79,7 +80,7 @@ namespace KJCFRubberRoller.Controllers
             {
                 TempData["formStatus"] = false;
                 TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller category has not been successfully added.";
-                LogAction.log("[RollerCategory-Create] = Error: " + ex.Message, User.Identity.GetUserId());
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
@@ -109,7 +110,7 @@ namespace KJCFRubberRoller.Controllers
                 {
                     TempData["formStatus"] = true;
                     TempData["formStatusMsg"] = "Rubber roller category has been successfully updated!";
-                    LogAction.log("[RollerCategory-Create] = Roller category details updated", User.Identity.GetUserId());
+                    LogAction.log(this._controllerName, "POST", "Roller category details updated", User.Identity.GetUserId());
                 }
                 return Redirect(Request.UrlReferrer.ToString());
             }
@@ -117,7 +118,7 @@ namespace KJCFRubberRoller.Controllers
             {
                 TempData["formStatus"] = false;
                 TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller category has not been successfully updated.";
-                LogAction.log("[RollerCategory-Update] = Error: " + ex.Message, User.Identity.GetUserId());
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }

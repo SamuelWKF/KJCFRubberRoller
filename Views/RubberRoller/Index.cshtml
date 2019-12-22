@@ -7,10 +7,10 @@
 
 <div class="row mb-4">
     <div class="mx-auto">
-        <div class="py-2 bg-kjcf">
+        <div class="py-2 mt-4 bg-kjcf">
             <h2 class="text-white text-center">Rubber Roller List</h2>
         </div>
-        <div class="bg-white container py-3">
+        <div class="bg-white container-fluid py-3">
             @Html.Label("Search:")
             @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control", placeholder = "Search rubber roller here..." })
             <br />
@@ -36,11 +36,11 @@
                         <th width="5%">
                             Status
                         </th>
-                        <th>Operation<br />Line No.</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th width="5%">Operation<br />Line No.</th>
+                        <th width="5%">Edit<br />Details</th>
+                        <th width="5%">Location<br />History</th>
+                        <th width="5%">Maintenance<br />History</th>
+                        <th width="5%">Operation<br />History</th>
                     </tr>
                 </thead>
 

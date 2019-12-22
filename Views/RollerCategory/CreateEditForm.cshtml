@@ -26,79 +26,81 @@
     });
     criticalStatusList.Add(new SelectListItem
     {
-        Text = "To be removed from database",
+        Text = "To considered to be removed from database",
         Value = "3"
     });
 }
 
-<div class="row mb-4">
-    <div class="col-md-8 mx-auto">
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
 
-        @if (TempData["formStatus"] != null)
-        {
-            <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    <span class="sr-only">Close</span>
-                </button>
-                @TempData["formStatusMsg"]
-            </div>
-        }
-
-        <div class="py-2 bg-kjcf">
-
-            <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Category" : "Update Roller Category")</h2>
-        </div>
-        <div class="bg-white container py-3">
-            <p class="required">* Require field</p>
-            @using (Html.BeginForm((String)Url.RequestContext.RouteData.Values["id"] == null ? "Create" : "Update", "RollerCategory", FormMethod.Post))
+            @if (TempData["formStatus"] != null)
             {
-                @Html.AntiForgeryToken()
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.size)<span class="required">*</span>
-                    @Html.TextBoxFor(model => model.size, new { @class = "form-control", placeholder = "Enter roller size" })
-                    @Html.ValidationMessageFor(model => model.size, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.description)<span class="required">*</span>
-                    @Html.TextBoxFor(model => model.description, new { @class = "form-control", placeholder = "Enter rubber roller category description" })
-                    @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.minAmount)<span class="required">*</span>
-                    @Html.TextBoxFor(model => model.minAmount, new { @class = "form-control", min = 0, placeholder = "Enter minimum roller amount", type = "number" })
-                    @Html.ValidationMessageFor(model => model.minAmount, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.remark)
-                    @Html.TextAreaFor(model => model.remark, new { @class = "form-control", placeholder = "Enter any remarks here" })
-                    @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.criticalStatus)<span class="required">*</span>
-                    @Html.DropDownListFor(model => model.criticalStatus, criticalStatusList, "Select critical status", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.criticalStatus, "", new { @class = "text-danger" })
-                </div>
-
-                if ((String)Url.RequestContext.RouteData.Values["id"] != null)
-                {
-                    @Html.HiddenFor(m => m.rollerCategoryID)
-                }
-
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <input type="reset" value="Clear" class="btn btn-primary btn-block" />
-                    </div>
-                    <div class="col-md-6">
-                        <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Category" : "Update Roller Category")' class="btn btn-success btn-block" />
-                    </div>
+                <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    @TempData["formStatusMsg"]
                 </div>
             }
+
+            <div class="py-2 bg-kjcf">
+
+                <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Category" : "Update Roller Category")</h2>
+            </div>
+            <div class="bg-white container py-3">
+                <p class="required">* Require field</p>
+                @using (Html.BeginForm((String)Url.RequestContext.RouteData.Values["id"] == null ? "Create" : "Update", "RollerCategory", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.size)<span class="required">*</span>
+                        @Html.TextBoxFor(model => model.size, new { @class = "form-control rSize", placeholder = "Enter roller size" })
+                        @Html.ValidationMessageFor(model => model.size, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.description)<span class="required">*</span>
+                        @Html.TextAreaFor(model => model.description, new { @class = "form-control", placeholder = "Enter rubber roller category description" })
+                        @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.minAmount)<span class="required">*</span>
+                        @Html.TextBoxFor(model => model.minAmount, new { @class = "form-control", min = 0, placeholder = "Enter minimum roller amount", type = "number" })
+                        @Html.ValidationMessageFor(model => model.minAmount, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.remark)
+                        @Html.TextAreaFor(model => model.remark, new { @class = "form-control", placeholder = "Enter any remarks here" })
+                        @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.criticalStatus)<span class="required">*</span>
+                        @Html.DropDownListFor(model => model.criticalStatus, criticalStatusList, "Select critical status", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.criticalStatus, "", new { @class = "text-danger" })
+                    </div>
+
+                    if ((String)Url.RequestContext.RouteData.Values["id"] != null)
+                    {
+                        @Html.HiddenFor(m => m.rollerCategoryID)
+                    }
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <input type="reset" value="Clear" class="btn btn-primary btn-block" />
+                        </div>
+                        <div class="col-md-6">
+                            <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Category" : "Update Roller Category")' class="btn btn-success btn-block" />
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -110,6 +112,9 @@
                 document.querySelector('.alert').remove();
             }, 5000);
         }
+        document.querySelector('.rSize').addEventListener('keyup', (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
     })();
 </script>
 

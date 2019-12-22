@@ -195,6 +195,14 @@
     <Compile Include="Migrations\201912151745296_SeedDatabase.designer.cs">
       <DependentUpon>201912151745296_SeedDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912221424518_Update.cs" />
+    <Compile Include="Migrations\201912221424518_Update.designer.cs">
+      <DependentUpon>201912221424518_Update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912221438440_Update1.cs" />
+    <Compile Include="Migrations\201912221438440_Update1.designer.cs">
+      <DependentUpon>201912221438440_Update1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AfterRollerProductionChecklist.cs" />
@@ -402,6 +410,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912151745296_SeedDatabase.resx">
       <DependentUpon>201912151745296_SeedDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912221424518_Update.resx">
+      <DependentUpon>201912221424518_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912221438440_Update1.resx">
+      <DependentUpon>201912221438440_Update1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
