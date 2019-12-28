@@ -47,8 +47,13 @@
     });
     rollerCondition.Add(new SelectListItem
     {
-        Text = "Bad",
-        Value = "Bad"
+        Text = "Fair",
+        Value = "Fair"
+    });
+    rollerCondition.Add(new SelectListItem
+    {
+        Text = "Reject",
+        Value = "Reject"
     });
 
     //Roller supplier dropdown
@@ -163,6 +168,20 @@
                         @Html.ValidationMessageFor(model => model.diameter, "", new { @class = "text-danger" })
                     </div>
 
+                    //Roller Shore Hardness
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.shoreHardness)<span class="required">*</span>
+                        @Html.TextBoxFor(model => model.shoreHardness, new { @class = "form-control", placeholder = "Enter roller shore hardness here", type = "number", step = "0.01", min = "0" })
+                        @Html.ValidationMessageFor(model => model.shoreHardness, "", new { @class = "text-danger" })
+                    </div>
+
+                    //Roller Depth of Groove
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.depthOfGroove)<span class="required">*</span>
+                        @Html.TextBoxFor(model => model.depthOfGroove, new { @class = "form-control", placeholder = "Enter roller depth of groove here", type = "number", step = "0.01", min = "0" })
+                        @Html.ValidationMessageFor(model => model.depthOfGroove, "", new { @class = "text-danger" })
+                    </div>
+
                     //Roller Condition
                     <div class="form-group">
                         @Html.LabelFor(model => model.condition)<span class="required">*</span>
@@ -176,14 +195,6 @@
                         @Html.TextAreaFor(model => model.remark, new { @class = "form-control", placeholder = "Enter any remarks here" })
                         @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
                     </div>
-
-                    //Roller Supplier
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.supplier)<span class="required">*</span>
-                        @Html.DropDownListFor(model => model.supplier, rollerSupplier, "Select rubber roller supplier", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.supplier, "", new { @class = "text-danger" })
-                    </div>
-
 
                     //Roller Status
                     <div class="form-group">

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,12 +19,39 @@ namespace KJCFRubberRoller.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        [Required]
+        [MaxLength(5)]
+        [StringLength(5)]
+        [DisplayName("Staff ID")]
+        [RegularExpression(@"^K\d{4}$", ErrorMessage = "Please enter the correct ID format")]
+        public string staffID { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        [DisplayName("Name")]
+        [RegularExpression(@"^[A-z\-\@\.\, ]{1,}$", ErrorMessage = "Please enter the correct name format.")]
+        public string name { get; set; }
+
+        [Required]
+        [MaxLength(12)]
+        [DisplayName("IC Number")]
+        [RegularExpression(@"^\d{12}$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 6542125456")]
+        public string IC { get; set; }
+
+        [Required]
+        [DisplayName("Position")]
+        [RegularExpression(@"^[1-4]$", ErrorMessage = "Please select the correct position.")]
+        public int position { get; set; }
+
+        [Required]
+        [DisplayName("Account Status")]
+        public int status { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         // Register all the database models
-        public DbSet<Staff> staffs { get; set; }
         public DbSet<Log> logs { get; set; }
         public DbSet<RollerCategory> rollerCategories { get; set; }
         public DbSet<RubberRoller> rubberRollers { get; set; }

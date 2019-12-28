@@ -1,5 +1,6 @@
 ﻿using KJCFRubberRoller.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,11 +28,11 @@ namespace KJCFRubberRoller.Controllers
         }
 
         // GET: RollerCategory
-        public ActionResult Index()
+        public ActionResult Index(int? i)
         {
             LogAction.log(this._controllerName, "GET", "Requested RollerCategory-Index webpage", User.Identity.GetUserId());
             List<RollerCategory> rollerCategories = _db.rollerCategories.ToList();
-            return View(rollerCategories);
+            return View(rollerCategories.ToPagedList(i ?? 1, 20));
         }
 
         // GET: Returns create form

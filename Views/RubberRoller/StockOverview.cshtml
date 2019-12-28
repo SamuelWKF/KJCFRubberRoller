@@ -1,5 +1,6 @@
-﻿@model IEnumerable<KJCFRubberRoller.Models.RollerCategory>
-
+﻿@model IPagedList<KJCFRubberRoller.Models.RollerCategory>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Roller Stock Overview";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,7 +22,7 @@
                 }
 
                 @Html.Label("Search:")
-                @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control", placeholder = "Search roller category here..." })
+                @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control stock_overview_search", placeholder = "Search roller category here..." })
                 <br />
                 <table class="table table-responsive table-hover table-striped sortable">
                     <tr class="text-center">
@@ -73,7 +74,27 @@
                         </tr>
                     }
                 </table>
+                @Html.PagedListPager(Model, i => Url.Action("StockOverview", "RubberRoller", new { i }))
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // IIFE (Immediately Invoked Function Expression)
+    (function () {
+        // Select the search input box for each of the table list
+        const searchBox = document.querySelector('input.stock_overview_search');
+        // Add event listeners to each search box
+        searchBox.addEventListener('input', (e) => {
+            const stockOverviewTable = document.querySelector('.table').children[1].children;
+            Array.from(stockOverviewTable).forEach((v, i) => {
+                if (v.innerText.toLowerCase().indexOf(searchBox.value.toLowerCase()) !== -1) {
+                    v.style.removeProperty('display');
+                } else {
+                    v.style.display = 'none';
+                }
+            });
+        });
+    })();
+</script>

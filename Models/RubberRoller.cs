@@ -36,15 +36,22 @@ namespace KJCFRubberRoller.Models
         [MaxLength(255)]
         [DisplayName("Usage")]
         public string usage { get; set; }
-
+       
         [Required]
-        [MaxLength(255)]
-        [DisplayName("Supplier")]
-        public string supplier { get; set; }
+        [MaxLength(100)]
+        [DisplayName("Shore Hardness")]
+        [RegularExpression(@"^[\d\-]+$", ErrorMessage = "Please enter the correct roller format. Example: 40-41")]
+        public string shoreHardness { get; set; }
 
         [Required]
         [DisplayName("Diameter")]
         public double diameter { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [DisplayName("Depth of Roller Groove")]
+        [RegularExpression(@"^[\d\-]+$", ErrorMessage = "Please enter the correct roller format. Example: 40-41")]
+        public string depthOfGroove { get; set; }
 
         [Required]
         [MaxLength(255)]

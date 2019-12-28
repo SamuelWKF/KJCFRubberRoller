@@ -1,5 +1,6 @@
-﻿@model IEnumerable<KJCFRubberRoller.Models.RollerCategory>
-
+﻿@model IPagedList<KJCFRubberRoller.Models.RollerCategory>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Roller Category List";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,8 +13,10 @@
                 <h2 class="text-white text-center">Rubber Roller Category List</h2>
             </div>
             <div class="bg-white container py-3">
+                @Html.ActionLink("Add New Rubber Roller Category", "Create", null, new { @class = "btn btn-block btn-primary" })
+                <br />
                 @Html.Label("Search:")
-                @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control", placeholder = "Search roller category here..." })
+                @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control roller_category_search", placeholder = "Search roller category here..." })
                 <br />
                 <table class="table table-responsive table-hover table-striped sortable">
                     <tr class="text-center">
@@ -21,19 +24,19 @@
                             No.
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.description)
+                            @Html.DisplayNameFor(model => model.First().description)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.size)
+                            @Html.DisplayNameFor(model => model.First().size)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.minAmount)
+                            @Html.DisplayNameFor(model => model.First().minAmount)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.criticalStatus)
+                            @Html.DisplayNameFor(model => model.First().criticalStatus)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.remark)
+                            @Html.DisplayNameFor(model => model.First().remark)
                         </th>
                         <th></th>
                     </tr>
@@ -65,7 +68,27 @@
                         </tr>
                     }
                 </table>
+                @Html.PagedListPager(Model, i => Url.Action("Index", "RollerCategory", new { i }))
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // IIFE (Immediately Invoked Function Expression)
+    (function () {
+        // Select the search input box for each of the table list
+        const searchBox = document.querySelector('input.roller_category_search');
+        // Add event listeners to each search box
+        searchBox.addEventListener('input', (e) => {
+            const rollerCategoryTable = document.querySelector('.table').children[1].children;
+            Array.from(rollerCategoryTable).forEach((v, i) => {
+                if (v.innerText.toLowerCase().indexOf(searchBox.value.toLowerCase()) !== -1) {
+                    v.style.removeProperty('display');
+                } else {
+                    v.style.display = 'none';
+                }
+            });
+        });
+    })();
+</script>

@@ -1,6 +1,7 @@
 ﻿using KJCFRubberRoller.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -29,15 +30,15 @@ namespace KJCFRubberRoller.Controllers
         }
 
         // GET: RubberRoller
-        public ActionResult Index()
+        public ActionResult Index(int? i)
         {
             LogAction.log(this._controllerName, "GET", "Requested RubberRoller-Index webpage", User.Identity.GetUserId());
             List<RubberRoller> rubberRollers = _db.rubberRollers.ToList();
-            return View(rubberRollers);
+            return View(rubberRollers.ToPagedList(i ?? 1, 20));
         }
 
         // GET: RubberRoller
-        public ActionResult StockOverview()
+        public ActionResult StockOverview(int? i)
         {
             LogAction.log(this._controllerName, "GET", "Requested RubberRoller-StockOverview webpage", User.Identity.GetUserId());
             List<RollerCategory> rollerCategories = _db.rollerCategories.ToList();
@@ -48,23 +49,16 @@ namespace KJCFRubberRoller.Controllers
                     count++;
             }
             TempData["totalBelowMinAmount"] = count;
-            return View(rollerCategories);
+            return View(rollerCategories.ToPagedList(i ?? 1, 20));
         }
 
         // GET: Returns create form
         public ActionResult Create()
         {
             LogAction.log(this._controllerName, "GET", "Requested RubberRoller-Create webpage", User.Identity.GetUserId());
+            
             // Retrieve roller category
-            var rollerCatList = _db.rollerCategories
-                .AsEnumerable()
-                .Select(s => new
-                {
-                    ID = s.rollerCategoryID,
-                    description = string.Format("{0} - {1}", s.size, s.description)
-                }).ToList();
-
-            ViewData["rollerCatList"] = new SelectList(rollerCatList, "ID", "description");
+            ViewData["rollerCatList"] = getRollerCategories();
             return View("CreateEditForm");
         }
 
@@ -83,18 +77,10 @@ namespace KJCFRubberRoller.Controllers
             if (rubberRoller == null)
                 return RedirectToAction("Index");
 
-            // Retrieve roller category
-            var rollerCatList = _db.rollerCategories
-                .AsEnumerable()
-                .Select(s => new
-                {
-                    ID = s.rollerCategoryID,
-                    description = string.Format("{0} - {1}", s.size, s.description)
-                }).ToList();
-
-            ViewData["rollerCatList"] = new SelectList(rollerCatList, "ID", "description");
-
             LogAction.log(this._controllerName, "GET", string.Format("Requested RubberRoller-Edit {0} webpage", id), User.Identity.GetUserId());
+            
+            // Retrieve roller category
+            ViewData["rollerCatList"] = getRollerCategories();
             return View("CreateEditForm", rubberRoller);
         }
 
@@ -110,26 +96,17 @@ namespace KJCFRubberRoller.Controllers
 
             if (!ModelState.IsValid || dbRoller != null)
             {
-                // Retrieve roller category
-                var rollerCatList = _db.rollerCategories
-                    .AsEnumerable()
-                    .Select(s => new
-                    {
-                        ID = s.rollerCategoryID,
-                        description = string.Format("{0} - {1}", s.size, s.description)
-                    }).ToList();
-
-                ViewData["rollerCatList"] = new SelectList(rollerCatList, "ID", "description");
+                ViewData["rollerCatList"] = getRollerCategories();
                 return View("CreateEditForm", rubberRoller);
             }
 
             _db.rubberRollers.Add(rubberRoller);
             int result = _db.SaveChanges();
 
-            if (rubberRoller.supplier.Equals("Canco"))
-            {
-                return RedirectToAction("CancoChecklist", new { rubberRoller.id });
-            }
+            //if (rubberRoller.supplier.Equals("Canco"))
+            //{
+            //    return RedirectToAction("CancoChecklist", new { rubberRoller.id });
+            //}
 
             if (result > 0)
             {
@@ -208,8 +185,6 @@ namespace KJCFRubberRoller.Controllers
                 // Retrieve existing specific rubber roller from database
                 RubberRoller rubberRoll = _db.rubberRollers.SingleOrDefault(c => c.id == rubberRoller.id);
 
-                bool notCancoRoller = !rubberRoll.supplier.Equals("Canco");
-
                 if (rubberRoll == null)
                     return RedirectToAction("Index");
 
@@ -219,7 +194,8 @@ namespace KJCFRubberRoller.Controllers
                 rubberRoll.rollerCategoryID = rubberRoller.rollerCategoryID;
                 rubberRoll.type = rubberRoller.type;
                 rubberRoll.usage = rubberRoller.usage;
-                rubberRoll.supplier = rubberRoller.supplier;
+                rubberRoll.shoreHardness = rubberRoller.shoreHardness;
+                rubberRoll.depthOfGroove = rubberRoller.depthOfGroove;
                 rubberRoll.diameter = rubberRoller.diameter;
                 rubberRoll.condition = rubberRoller.condition;
                 rubberRoll.remark = rubberRoller.remark;
@@ -227,8 +203,8 @@ namespace KJCFRubberRoller.Controllers
 
                 int result = _db.SaveChanges();
 
-                if (rubberRoller.supplier.Equals("Canco") && notCancoRoller)
-                    return RedirectToAction("CancoChecklist", new { rubberRoller.id });
+                //if (rubberRoller.supplier.Equals("Canco") && notCancoRoller)
+                //    return RedirectToAction("CancoChecklist", new { rubberRoller.id });
 
                 if (result > 0)
                 {
@@ -246,6 +222,20 @@ namespace KJCFRubberRoller.Controllers
                 TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully updated.";
                 return Redirect(Request.UrlReferrer.ToString());
             }
+        }
+
+        private SelectList getRollerCategories()
+        {
+            // Retrieve roller category
+            var rollerCatList = _db.rollerCategories
+                .AsEnumerable()
+                .Select(s => new
+                {
+                    ID = s.rollerCategoryID,
+                    description = string.Format("{0} - {1}", s.size, s.description)
+                }).ToList();
+
+            return new SelectList(rollerCatList, "ID", "description");
         }
     }
 }

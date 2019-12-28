@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using KJCFRubberRoller.Models;
+using System.Web.Security;
 
 namespace KJCFRubberRoller.Controllers
 {
@@ -22,32 +23,26 @@ namespace KJCFRubberRoller.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
+        public ApplicationSignInManager SignInManager {
+            get {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set {
+                _signInManager = value;
             }
         }
 
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
+        public ApplicationUserManager UserManager {
+            get {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
-            private set
-            {
+            private set {
                 _userManager = value;
             }
         }
@@ -120,7 +115,7 @@ namespace KJCFRubberRoller.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -134,11 +129,27 @@ namespace KJCFRubberRoller.Controllers
             }
         }
 
+        private SelectList getUserRoles()
+        {
+            ApplicationDbContext _db = new ApplicationDbContext();
+            // Retrieve user roles
+            var rollerCatList = _db.Roles
+                    .AsEnumerable()
+                    .Select((v, i) => new
+                    {
+                        ID = i + 1,
+                        name = v.Name
+                    }).ToList();
+
+            return new SelectList(rollerCatList, "ID", "name");
+        }
+
         //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewData["userPosition"] = getUserRoles();
             return View();
         }
 
@@ -149,26 +160,54 @@ namespace KJCFRubberRoller.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            ApplicationDbContext _db = new ApplicationDbContext();
+            var dbUser = _db.Users.Where(u => u.staffID == model.staffID).FirstOrDefault();
+            if (dbUser != null)
+            {
+                ViewData["userPosition"] = getUserRoles();
+                ModelState.AddModelError("staffID", "There is already an existing staff with the same staff ID.");
+                return View(model);
+            }
+
+            // Generate random password
+            ModelState.Remove("Password");
+            model.Password = Membership.GeneratePassword(20, 8);
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    staffID = model.staffID,
+                    name = model.name,
+                    IC = model.IC,
+                    position = model.position,
+                    status = AccountStatus.ACTIVE
+                };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
+                    await UserManager.AddToRoleAsync(user.Id, UserRole.getRole(user.position));
+                    TempData["formStatus"] = true;
+                    TempData["formStatusMsg"] = "Staff details has been successfully added!";
+                    // Sent account creation email
+                    SendMail.sendMail(model.Email,
+                        "Rubber Roller Management System Account Creation",
+                        "An account has been created for use of the Rubber Roller Management System with a temporary password. Please <b>change the password immediately</b> after login." +
+                        "<br/><br/>Your credentials are as follow:" +
+                        "<br/>Email: " + model.Email +
+                        "<br/>Password: " + model.Password);
+                    return Redirect(Request.UrlReferrer.ToString());
                 }
-                AddErrors(result);
+                ModelState.AddModelError("Email", result.Errors.Last());
             }
 
             // If we got this far, something failed, redisplay form
+            ViewData["userPosition"] = getUserRoles();
+            TempData["formStatus"] = false;
+            TempData["formStatusMsg"] = "Oops! Staff details has not been successfully added.";
             return View(model);
         }
 
@@ -203,18 +242,19 @@ namespace KJCFRubberRoller.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+                    ModelState.AddModelError("Email", "The email supplied does not exist.");
+                    return View(model);
                 }
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -427,10 +467,8 @@ namespace KJCFRubberRoller.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
+        private IAuthenticationManager AuthenticationManager {
+            get {
                 return HttpContext.GetOwinContext().Authentication;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace KJCFRubberRoller.Models
@@ -79,6 +80,34 @@ namespace KJCFRubberRoller.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [MaxLength(5)]
+        [StringLength(5)]
+        [DisplayName("Staff ID")]
+        [RegularExpression(@"^K\d{4}$", ErrorMessage = "Please enter the correct ID format")]
+        public string staffID { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        [DisplayName("Name")]
+        [RegularExpression(@"^[A-z\-\@\.\, ]{1,}$", ErrorMessage = "Please enter the correct name format.")]
+        public string name { get; set; }
+
+        [Required]
+        [MaxLength(12)]
+        [DisplayName("IC Number")]
+        [RegularExpression(@"^\d{12}$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 6542125456")]
+        public string IC { get; set; }
+
+        [Required]
+        [DisplayName("Position")]
+        [RegularExpression(@"^[1-4]$", ErrorMessage = "Please select the correct position.")]
+        public int position { get; set; }
+
+        [Required]
+        [DisplayName("Account Status")]
+        public int status { get; set; }
     }
 
     public class ResetPasswordViewModel
