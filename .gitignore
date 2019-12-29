@@ -343,3 +343,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+*.ldf
+App_Data/aspnet-KJCFRubberRoller-20191212105716_log.ldf

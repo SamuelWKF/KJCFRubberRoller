@@ -25,7 +25,7 @@ namespace KJCFRubberRoller.Models
 
         [Required]
         [DisplayName("Start Date Time")]
-        public DateTime startDateTime { get; set; }
+        public DateTime? startDateTime { get; set; }
 
         [Required]
         [DisplayName("End Date Time")]
