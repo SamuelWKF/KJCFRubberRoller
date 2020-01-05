@@ -1,4 +1,3 @@
-﻿
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,9 +32,9 @@ namespace KJCFRubberRoller.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set
-            {
-                _signInManager = value;
+            private set 
+            { 
+                _signInManager = value; 
             }
         }
 
@@ -334,7 +333,7 @@ namespace KJCFRubberRoller.Controllers
             base.Dispose(disposing);
         }
 
-        #region Helpers
+#region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -385,6 +384,6 @@ namespace KJCFRubberRoller.Controllers
             Error
         }
 
-        #endregion
+#endregion
     }
 }

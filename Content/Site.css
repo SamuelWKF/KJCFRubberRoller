@@ -17,6 +17,10 @@
     -webkit-background-size: cover;
 }
 
+.opact {
+    background-color: rgba(228,228,228,0.7);
+}
+
 .body-content {
     min-height: 100vh;
 }
