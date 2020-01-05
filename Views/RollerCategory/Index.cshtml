@@ -1,6 +1,7 @@
 ﻿@model IPagedList<KJCFRubberRoller.Models.RollerCategory>
 @using PagedList;
 @using PagedList.Mvc;
+@using KJCFRubberRoller.Models;
 @{
     ViewBag.Title = "Roller Category List";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -57,7 +58,10 @@
                                 @Html.DisplayFor(modelItem => item.value.minAmount)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.value.criticalStatus)
+                                @{
+                                    var status = RollerCat.getCriticalStatus(item.value.criticalStatus);
+                                }
+                                @status
                             </td>
                             <td class="text-left">
                                 @Html.DisplayFor(modelItem => item.value.remark)

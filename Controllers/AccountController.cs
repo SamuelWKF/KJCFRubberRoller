@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using KJCFRubberRoller.Models;
 using System.Web.Security;
+using System.Collections.Generic;
+using PagedList;
 
 namespace KJCFRubberRoller.Controllers
 {
@@ -18,6 +20,7 @@ namespace KJCFRubberRoller.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private string _controllerName = "Account";
 
         public AccountController()
         {
@@ -144,9 +147,19 @@ namespace KJCFRubberRoller.Controllers
             return new SelectList(rollerCatList, "ID", "name");
         }
 
+        // GET: /staff/list
+        [Route("Staff/List")]
+        public ActionResult List(int? i)
+        {
+            LogAction.log(this._controllerName, "GET", "Requested Account-List webpage", User.Identity.GetUserId());
+            ApplicationDbContext _db = new ApplicationDbContext();
+            List<ApplicationUser> users = _db.Users.ToList();
+            return View(users.ToPagedList(i ?? 1, 20));
+        }
+
         //
-        // GET: /Account/Register
-        [AllowAnonymous]
+        // GET: /staff/register
+        [Route("Staff/Register")]
         public ActionResult Register()
         {
             ViewData["userPosition"] = getUserRoles();
@@ -177,7 +190,7 @@ namespace KJCFRubberRoller.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email,
+                    UserName = model.name,
                     Email = model.Email,
                     staffID = model.staffID,
                     name = model.name,
@@ -209,6 +222,36 @@ namespace KJCFRubberRoller.Controllers
             TempData["formStatus"] = false;
             TempData["formStatusMsg"] = "Oops! Staff details has not been successfully added.";
             return View(model);
+        }
+
+        // GET
+        [HttpGet]
+        [Route("staff/edit/{staffID}")]
+        public ActionResult Edit(string staffID)
+        {
+            // Ensure ID is supplied
+            if (staffID == null)
+                return RedirectToAction("Index");
+
+            // Retrieve existing specific staff from database
+            ApplicationDbContext _db = new ApplicationDbContext();
+            ApplicationUser staff = _db.Users.SingleOrDefault(c => c.staffID == staffID);
+
+            // Ensure the retrieved value is not null
+            if (staff == null)
+                return RedirectToAction("Index");
+
+            LogAction.log(this._controllerName, "GET", string.Format("Requested Account-Edit {0} webpage", staffID), User.Identity.GetUserId());
+            return View("Edit", staff);
+        }
+
+        // POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("staff/update")]
+        public ActionResult Update()
+        {
+            return View();
         }
 
         //

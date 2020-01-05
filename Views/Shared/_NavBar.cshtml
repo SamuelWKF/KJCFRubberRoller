@@ -7,9 +7,30 @@
 
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { @class = "nav-link" })</li>
-            <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { @class = "nav-link" })</li>
-            <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { @class = "nav-link" })</li>
+            @if (User.IsInRole(KJCFRubberRoller.Models.UserRole.getRole(1)))
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="manageUserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Staff Account</a>
+                    <div class="dropdown-menu" aria-labelledby="manageUserDropdown">
+                        <a class="dropdown-item" href="/staff/list">View All Staff</a>
+                        @Html.ActionLink("Add New Staff Account", "Register", "staff", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "dropdown-item" })
+                    </div>
+                </li>
+            }
+            else if (User.IsInRole(KJCFRubberRoller.Models.UserRole.getRole(2)))
+            {
+
+            }
+            else if (User.IsInRole(KJCFRubberRoller.Models.UserRole.getRole(3)))
+            {
+
+            }
+            else if (User.IsInRole(KJCFRubberRoller.Models.UserRole.getRole(4)))
+            {
+                <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { @class = "nav-link" })</li>
+            }
         </ul>
         @Html.Partial("_LoginPartial")
     </div>
