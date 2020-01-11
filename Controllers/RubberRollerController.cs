@@ -56,7 +56,7 @@ namespace KJCFRubberRoller.Controllers
         public ActionResult Create()
         {
             LogAction.log(this._controllerName, "GET", "Requested RubberRoller-Create webpage", User.Identity.GetUserId());
-            
+
             // Retrieve roller category
             ViewData["rollerCatList"] = getRollerCategories();
             return View("CreateEditForm");
@@ -78,7 +78,7 @@ namespace KJCFRubberRoller.Controllers
                 return RedirectToAction("Index");
 
             LogAction.log(this._controllerName, "GET", string.Format("Requested RubberRoller-Edit {0} webpage", id), User.Identity.GetUserId());
-            
+
             // Retrieve roller category
             ViewData["rollerCatList"] = getRollerCategories();
             return View("CreateEditForm", rubberRoller);

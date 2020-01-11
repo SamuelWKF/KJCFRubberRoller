@@ -29,22 +29,22 @@
                         @Html.AntiForgeryToken()
                         <hr />
                         <div class="form-group">
-                            @Html.LabelFor(m => m.Email)
+                            @Html.LabelFor(m => m.Email)<span class="required">*</span>
                             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
                             <div class="form-group">
-                            @Html.LabelFor(m => m.staffID)
+                            @Html.LabelFor(m => m.staffID)<span class="required">*</span>
                             @Html.TextBoxFor(m => m.staffID, new { @class = "form-control staffID", maxlength = "5" })
                             @Html.ValidationMessageFor(model => model.staffID, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(m => m.name)
+                            @Html.LabelFor(m => m.name)<span class="required">*</span>
                             @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(m => m.IC)
+                            @Html.LabelFor(m => m.IC)<span class="required">*</span>
                             @Html.TextBoxFor(m => m.IC, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.IC, "", new { @class = "text-danger" })
                         </div>

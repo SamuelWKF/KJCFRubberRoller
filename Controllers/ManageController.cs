@@ -15,6 +15,7 @@ namespace KJCFRubberRoller.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private string _controllerName = "Manage";
 
         public ManageController()
         {
@@ -26,53 +27,68 @@ namespace KJCFRubberRoller.Controllers
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
+        public ApplicationSignInManager SignInManager {
+            get {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set {
+                _signInManager = value;
             }
         }
 
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
+        public ApplicationUserManager UserManager {
+            get {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
-            private set
-            {
+            private set {
                 _userManager = value;
             }
         }
 
         //
         // GET: /Manage/Index
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        [Route("profile/edit")]
+        public async Task<ActionResult> Index()
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
-
+            ApplicationDbContext _db = new ApplicationDbContext();
             var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
-            {
-                HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
-            };
+            var model = _db.Users.FirstOrDefault(u => u.Id == userId);
+            LogAction.log(this._controllerName, "GET", "Requested edit profile page", User.Identity.GetUserId());
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("profile/edit")]
+        public ActionResult UpdateProfile(ApplicationUser user)
+        {
+            try
+            {
+                using (ApplicationDbContext _db = new ApplicationDbContext())
+                {
+                    ApplicationUser staff = _db.Users.FirstOrDefault(u => u.Id == user.Id);
+                    if (staff != null)
+                    {
+                        staff.name = user.name;
+                        staff.IC = user.IC;
+                    }
+                    int result = _db.SaveChanges();
+                    if (result > 0)
+                    {
+                        TempData["formStatus"] = true;
+                        TempData["formStatusMsg"] = $"Profile details has been successfully updated!";
+                        LogAction.log(this._controllerName, "POST", "Profile details updated", User.Identity.GetUserId());
+                    }
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = "Oops! Something went wrong. Profile details has not been successfully updated.";
+                LogAction.log(this._controllerName, "POST", $"Error: {ex.Message}", User.Identity.GetUserId());
+                return Redirect(Request.UrlReferrer.ToString());
+            }
         }
 
         //
@@ -217,6 +233,7 @@ namespace KJCFRubberRoller.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
+            LogAction.log(this._controllerName, "GET", $"Requested change password page.", User.Identity.GetUserId());
             return View();
         }
 
@@ -238,7 +255,10 @@ namespace KJCFRubberRoller.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                TempData["formStatus"] = true;
+                TempData["formStatusMsg"] = "Password has been successfully changed!";
+                LogAction.log(this._controllerName, "POST", $"Password changed for user {User.Identity.GetUserName()}.", User.Identity.GetUserId());
+                return RedirectToAction("Index");
             }
             AddErrors(result);
             return View(model);
@@ -333,14 +353,12 @@ namespace KJCFRubberRoller.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
+        private IAuthenticationManager AuthenticationManager {
+            get {
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
@@ -384,6 +402,6 @@ namespace KJCFRubberRoller.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }
