@@ -421,6 +421,8 @@
     <Content Include="Views\Checklist\AfterChecklistCreate.cshtml" />
     <Content Include="Views\Checklist\BeforeChecklistCreate.cshtml" />
     <Content Include="Views\Schedule\View.cshtml" />
+    <Content Include="Views\MaintenanceReport\Index.cshtml" />
+    <Content Include="Views\MaintenanceReport\CreateEditMaintenanceRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
