@@ -5,6 +5,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@*Operational Line dropdown list*@
+@{
+    List<SelectListItem> operationLineList = new List<SelectListItem>();
+    operationLineList.Add(new SelectListItem
+    {
+        Text = "Line 1",
+        Value = "1"
+    });
+    operationLineList.Add(new SelectListItem
+    {
+        Text = "Line 2",
+        Value = "2",
+    });
+    operationLineList.Add(new SelectListItem
+    {
+        Text = "Line 3",
+        Value = "3",
+    });
+    operationLineList.Add(new SelectListItem
+    {
+        Text = "Line 4",
+        Value = "4"
+    });
+}
+
 <div class="row mb-4">
     <div class="col-md-8 mx-auto">
 
@@ -35,15 +60,15 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(Model => Model.dateTime)<span class="required">*</span>
-                    @Html.TextBoxFor(Model => Model.dateTime, new { @class = "form-control", placeholder = "Enter Date and Time" })
+                    @Html.LabelFor(Model => Model.dateTime)<span class="required" enabled="false">*</span>
+                    @Html.TextBoxFor(Model => System.DateTime.Now, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.dateTime, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group row">
                     <div class="col-md-6">
                         @Html.LabelFor(Model => Model.operationLine)<span class="required">*</span>
-                        @Html.TextBoxFor(Model => Model.operationLine, new { @class = "form-control", placeholder = "Enter Operation Line" })
+                        @Html.DropDownListFor(Model => Model.operationLine, operationLineList, "Select operation line", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.operationLine, "", new { @class = "text-danger" })
                     </div>
 
@@ -54,22 +79,24 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(Model => Model.rollerRoundness)<span class="required">*</span>
-                    @Html.TextBoxFor(Model => Model.rollerRoundness, new { @class = "form-control", placeholder = "Enter Roller Roundness" })
-                    @Html.ValidationMessageFor(model => model.rollerRoundness, "", new { @class = "text-danger" })
-                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(Model => Model.rollerRoundness)<span class="required">*</span>
+                        @Html.TextBoxFor(Model => Model.rollerRoundness, new { @class = "form-control", placeholder = "Enter Roller Roundness" })
+                        @Html.ValidationMessageFor(model => model.rollerRoundness, "", new { @class = "text-danger" })
+                    </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(Model => Model.hubsCondition)<span class="required">*</span>
-                    @Html.TextBoxFor(Model => Model.hubsCondition, new { @class = "form-control", placeholder = "Enter Hubs Condition" })
-                    @Html.ValidationMessageFor(model => model.hubsCondition, "", new { @class = "text-danger" })
-                </div>
+                  <div class="col-md-4">
+                      @Html.LabelFor(Model => Model.hubsCondition)<span class="required">*</span>
+                      @Html.TextBoxFor(Model => Model.hubsCondition, new { @class = "form-control", placeholder = "Enter Hubs Condition" })
+                      @Html.ValidationMessageFor(model => model.hubsCondition, "", new { @class = "text-danger" })
+                  </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(Model => Model.nutUsed)<span class="required">*</span>
-                    @Html.TextBoxFor(Model => Model.nutUsed, new { @class = "form-control", placeholder = "Enter Nuts Used" })
-                    @Html.ValidationMessageFor(model => model.nutUsed, "", new { @class = "text-danger" })
+                   <div class="col-md-4">
+                       @Html.LabelFor(Model => Model.nutUsed)<span class="required">*</span>
+                       @Html.TextBoxFor(Model => Model.nutUsed, new { @class = "form-control", placeholder = "Enter Nuts Used" })
+                       @Html.ValidationMessageFor(model => model.nutUsed, "", new { @class = "text-danger" })
+                   </div>
                 </div>
 
                 <div class="form-group row">

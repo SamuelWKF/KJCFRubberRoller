@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
+@using KJCFRubberRoller.Models
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -8,7 +9,15 @@
         <ul class="nav navbar-nav navbar-right">
             <li>
                 @{
-                    var name = User.Identity.GetUserName().Split(' ')[0];
+                    ApplicationDbContext _db = new ApplicationDbContext();
+                    var ID = User.Identity.GetUserId();
+                    var user = _db.Users.SingleOrDefault(u => u.Id == ID);
+                    string name = null;
+
+                    if (user != null)
+                    {
+                        name = user.name.Split(' ')[0];
+                    }
                 }
                 @Html.ActionLink(name, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
             </li>

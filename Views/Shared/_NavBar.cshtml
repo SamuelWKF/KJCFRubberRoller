@@ -1,4 +1,6 @@
-﻿<nav class="navbar navbar-expand-sm navbar-dark bg-kjcf sticky-top">
+﻿@using KJCFRubberRoller.Models
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-kjcf sticky-top">
     <a class="navbar-brand" href="#"><img src="~/Content/Images/kjcf.jpg" alt="KJCF" width="120px"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,7 +9,7 @@
 
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            @if (User.IsInRole(KJCFRubberRoller.Models.UserRole.getRole(1)))
+            @if (User.IsInRole(UserRole.getRole(1)) || User.IsInRole(UserRole.getRole(2)))
             {
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="manageUserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Staff Account</a>
@@ -17,15 +19,15 @@
                     </div>
                 </li>
             }
-            else if (User.IsInRole(KJCFRubberRoller.Models.UserRole.getRole(2)))
+            else if (User.IsInRole(UserRole.getRole(2)))
             {
 
             }
-            else if (User.IsInRole(KJCFRubberRoller.Models.UserRole.getRole(3)))
+            else if (User.IsInRole(UserRole.getRole(3)))
             {
 
             }
-            else if (User.IsInRole(KJCFRubberRoller.Models.UserRole.getRole(4)))
+            else if (User.IsInRole(UserRole.getRole(4)))
             {
                 <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { @class = "nav-link" })</li>
                 <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { @class = "nav-link" })</li>

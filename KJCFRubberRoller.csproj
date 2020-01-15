@@ -184,6 +184,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IssueManagement\AfterChecklistController.cs" />
     <Compile Include="Controllers\IssueManagement\BeforeChecklistController.cs" />
+    <Compile Include="Controllers\IssueManagement\ChecklistController.cs" />
     <Compile Include="Controllers\IssueManagement\ScheduleController.cs" />
     <Compile Include="Controllers\LogAction.cs" />
     <Compile Include="Controllers\MaintenanceReportController.cs" />
@@ -414,14 +415,14 @@
     <Content Include="Views\RubberRoller\CancoChecklist.cshtml" />
     <Content Include="Views\RubberRoller\Index.cshtml" />
     <Content Include="Views\RubberRoller\StockOverview.cshtml" />
-    <Content Include="Views\AfterChecklist\Create.cshtml" />
-    <Content Include="Views\BeforeChecklist\Create.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\List.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Checklist\AfterChecklistCreate.cshtml" />
     <Content Include="Views\Checklist\BeforeChecklistCreate.cshtml" />
     <Content Include="Views\Schedule\View.cshtml" />
+    <Content Include="Views\MaintenanceReport\Index.cshtml" />
+    <Content Include="Views\MaintenanceReport\CreateEditMaintenanceRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

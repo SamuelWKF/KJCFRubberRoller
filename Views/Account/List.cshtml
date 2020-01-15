@@ -16,6 +16,16 @@
             <div class="bg-white container py-3">
                 @Html.ActionLink("Add New Staff Account", "Register", null, new { @class = "btn btn-block btn-primary" })
                 <br />
+                @if (TempData["formStatus"] != null)
+                {
+                    <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        @TempData["formStatusMsg"]
+                    </div>
+                }
                 @Html.Label("Search:")
                 @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control staff_search", placeholder = "Search staff here..." })
                 <br />
@@ -91,6 +101,12 @@
                 }
             });
         });
+
+        if (document.querySelector('.alert') !== null) {
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 5000);
+        }
     })();
 </script>
 
