@@ -6,6 +6,8 @@
     <title>@ViewBag.Title - KJCF Rubber Roller Management</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="icon" href="~/Content/Images/kjcf_icon.jpg">
     <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/css/bootstrap-select.min.css">
 </head>
@@ -16,9 +18,7 @@
         @RenderBody()
     </div>
 
-
     @Html.Partial("_Footer")
-
 
     <script src="https://kit.fontawesome.com/0da0ab57ba.js" crossorigin="anonymous"></script>
     @Scripts.Render("~/bundles/sorttable")
