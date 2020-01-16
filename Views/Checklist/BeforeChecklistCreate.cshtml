@@ -1,8 +1,14 @@
 ﻿@model KJCFRubberRoller.Models.BeforeRollerIssueChecklist
 
 @{
-    ViewBag.Title = "BeforeChecklistCreate";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if ((String)Url.RequestContext.RouteData.Values["id"] == null)
+    {
+        ViewBag.Title = "Add New Before Roller Issue Checklist";
+    }
+    else
+    {
+        ViewBag.Title = "Update Before Roller Issue Checklist";
+    }
 }
 
 @*Operational Line dropdown list*@
@@ -30,96 +36,109 @@
     });
 }
 
-<div class="row mb-4">
-    <div class="col-md-8 mx-auto">
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
 
-        @if (TempData["saveStatus"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    <span class="sr-only">Close</span>
-                </button>
-                @TempData["saveStatusMsg"]
-            </div>
-        }
-        <div class="py-2 bg-kjcf">
-            <h2 class="text-white text-center">Add New Before Checklist</h2>
-        </div>
-        <div class="bg-white container py-3">
-            <p class="required">* Require field</p>
-            @using (Html.BeginForm("BeforeChecklistCreate", "Checklist", FormMethod.Post))
+            @if (TempData["formStatus"] != null)
             {
-                @Html.AntiForgeryToken()
-
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(Model => Model.rollerID)<span class="required">*</span>
-                    @Html.TextBoxFor(Model => Model.rollerID, new { @class = "form-control", placeholder = "Enter Roller ID" })
-                    @Html.ValidationMessageFor(model => model.rollerID, "", new { @class = "text-danger" })
+                <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    @TempData["formStatusMsg"]
                 </div>
-
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        @Html.LabelFor(Model => Model.operationLine)<span class="required">*</span>
-                        @Html.DropDownListFor(Model => Model.operationLine, operationLineList, "Select operation line", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.operationLine, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="col-md-6">
-                        @Html.LabelFor(Model => Model.rollerSH)<span class="required">*</span>
-                        @Html.TextBoxFor(Model => Model.rollerSH, new { @class = "form-control", placeholder = "Enter Roller Shore Hardness" })
-                        @Html.ValidationMessageFor(model => model.rollerSH, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-md-4">
-                        @Html.LabelFor(Model => Model.rollerRoundness)<span class="required">*</span>
-                        @Html.TextBoxFor(Model => Model.rollerRoundness, new { @class = "form-control", placeholder = "Enter Roller Roundness" })
-                        @Html.ValidationMessageFor(model => model.rollerRoundness, "", new { @class = "text-danger" })
-                    </div>
-
-                  <div class="col-md-4">
-                      @Html.LabelFor(Model => Model.hubsCondition)<span class="required">*</span>
-                      @Html.TextBoxFor(Model => Model.hubsCondition, new { @class = "form-control", placeholder = "Enter Hubs Condition" })
-                      @Html.ValidationMessageFor(model => model.hubsCondition, "", new { @class = "text-danger" })
-                  </div>
-
-                   <div class="col-md-4">
-                       @Html.LabelFor(Model => Model.nutUsed)<span class="required">*</span>
-                       @Html.TextBoxFor(Model => Model.nutUsed, new { @class = "form-control", placeholder = "Enter Nuts Used" })
-                       @Html.ValidationMessageFor(model => model.nutUsed, "", new { @class = "text-danger" })
-                   </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        @Html.LabelFor(Model => Model.preparedBy)<span class="required">*</span>
-                        @Html.TextBoxFor(Model => Model.preparedBy, new { @class = "form-control", placeholder = "Enter prepared by" })
-                        @Html.ValidationMessageFor(model => model.preparedBy, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="col-md-6">
-                        @Html.LabelFor(Model => Model.verifiedBy)<span class="required">*</span>
-                        @Html.TextBoxFor(Model => Model.verifiedBy, new { @class = "form-control", placeholder = "Enter Verified By" })
-                        @Html.ValidationMessageFor(model => model.verifiedBy, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <input type="reset" value="Clear" class="btn btn-danger btn-block" />
-                    </div>
-                    <div class="col-md-6">
-                        <input type="submit" value="Add New Before Checklist" class="btn btn-success btn-block" />
-                    </div>
-                </div>
-
             }
+
+            <div class="py-2 bg-kjcf">
+                <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Before Roller Issue Checklist" : $"Update Before Roller Issue Checklist {Model.rollerID}")</h2>
+            </div>
+            <div class="bg-white container py-3">
+                <p class="required">* Require field</p>
+                @using (Html.BeginForm((String)Url.RequestContext.RouteData.Values["id"] == null ? "Create" : "Update", "RubberRoller", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.rollerID)<span class="required">*</span>
+                        @Html.TextBoxFor(Model => Model.rollerID, new { @class = "form-control", placeholder = "Enter Roller ID" })
+                        @Html.ValidationMessageFor(model => model.rollerID, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(Model => Model.operationLine)<span class="required">*</span>
+                            @Html.DropDownListFor(Model => Model.operationLine, operationLineList, "Select operation line", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.operationLine, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.LabelFor(Model => Model.dateTime)<span class="required">*</span>
+                            @Html.TextBoxFor(Model => Model.dateTime, new { @class = "form-control", placeholder = "Enter Date and Time" })
+                            @Html.ValidationMessageFor(model => model.dateTime, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.LabelFor(Model => Model.rollerSH)<span class="required">*</span>
+                            @Html.TextBoxFor(Model => Model.rollerSH, new { @class = "form-control", placeholder = "Enter Roller Shore Hardness" })
+                            @Html.ValidationMessageFor(model => model.rollerSH, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(Model => Model.rollerRoundness)<span class="required">*</span>
+                            @Html.TextBoxFor(Model => Model.rollerRoundness, new { @class = "form-control", placeholder = "Enter Roller Roundness" })
+                            @Html.ValidationMessageFor(model => model.rollerRoundness, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.LabelFor(Model => Model.hubsCondition)<span class="required">*</span>
+                            @Html.TextBoxFor(Model => Model.hubsCondition, new { @class = "form-control", placeholder = "Enter Hubs Condition" })
+                            @Html.ValidationMessageFor(model => model.hubsCondition, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.LabelFor(Model => Model.nutUsed)<span class="required">*</span>
+                            @Html.TextBoxFor(Model => Model.nutUsed, new { @class = "form-control", placeholder = "Enter Nuts Used" })
+                            @Html.ValidationMessageFor(model => model.nutUsed, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            @Html.LabelFor(Model => Model.preparedBy)<span class="required">*</span>
+                            @Html.TextBoxFor(Model => Model.preparedBy, new { @class = "form-control", placeholder = "Enter prepared by" })
+                            @Html.ValidationMessageFor(model => model.preparedBy, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(Model => Model.verifiedBy)<span class="required">*</span>
+                            @Html.TextBoxFor(Model => Model.verifiedBy, new { @class = "form-control", placeholder = "Enter Verified By" })
+                            @Html.ValidationMessageFor(model => model.verifiedBy, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    if ((String)Url.RequestContext.RouteData.Values["id"] != null)
+                    {
+                        @Html.HiddenFor(m => m.id)
+                    }
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <input type="reset" value="Clear" class="btn btn-primary btn-block" />
+                </div>
+                <div class="col-md-6">
+                    <input type="submit" value="Add New Before Roller Issue Checklist" class="btn btn-success btn-block" />
+                </div>
+            </div>
+                }
+            </div>
         </div>
     </div>
 </div>
+
+
 
 <script>
     (function () {
@@ -128,11 +147,12 @@
                 document.querySelector('.alert').remove();
             }, 5000);
         }
+        document.querySelector('.rSize').addEventListener('keyup', (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
     })();
 </script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-

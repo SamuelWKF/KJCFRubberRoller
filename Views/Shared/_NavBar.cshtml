@@ -33,6 +33,13 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="manageRollerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Roller Schedule</a>
+                    <div class="dropdown-menu" aria-labelledby="manageRollerDropdown">
+                        @Html.ActionLink("View Schedule", "", "schedule", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "dropdown-item" })
+                        @Html.ActionLink("Add New Schedule", "create", "schedule", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "dropdown-item" })
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="manageRollerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Roller Maintenance</a>
                     <div class="dropdown-menu" aria-labelledby="manageRollerDropdown">
                         @Html.ActionLink("View All Maintenance", "", "maintenance", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })
@@ -45,13 +52,7 @@
                 <li class="nav-item">
                     @Html.ActionLink("Roller Issue", "stockoverview", "rubberroller", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="manageRollerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Roller Schedule</a>
-                    <div class="dropdown-menu" aria-labelledby="manageRollerDropdown">
-                        @Html.ActionLink("View Schedule", "", "schedule", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })
-                        @Html.ActionLink("Add New Schedule", "create", "schedule", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })
-                    </div>
-                </li>
+
             }
         </ul>
         @Html.Partial("_LoginPartial")

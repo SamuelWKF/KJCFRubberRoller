@@ -51,15 +51,15 @@
                 </div>
             }
 
-        <div class="py-2 bg-kjcf">
-            <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Schedule" : "Update Rubber Roller Schedule")</h2>
-        </div>
+            <div class="py-2 bg-kjcf">
+                <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Schedule" : "Update Rubber Roller Schedule")</h2>
+            </div>
             <div class="bg-white container py-3">
                 <p class="required">* Require field</p>
                 @using (Html.BeginForm("Create", "Schedule", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
 
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.operationLine)<span class="required">*</span>
@@ -73,7 +73,17 @@
                         @Html.ValidationMessageFor(model => model.rollerID, "", new { @class = "text-danger" })
                     </div>
 
-                   
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.startDateTime)<span class="required">*</span>
+                        @Html.TextBoxFor(Model => Model.startDateTime, new { @class = "form-control", placeholder = "Enter startDateTime" })
+                        @Html.ValidationMessageFor(model => model.startDateTime, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.endDateTime)<span class="required">*</span>
+                        @Html.TextBoxFor(Model => Model.endDateTime, new { @class = "form-control", placeholder = "Enter startDateTime" })
+                        @Html.ValidationMessageFor(model => model.endDateTime, "", new { @class = "text-danger" })
+                    </div>
+
 
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.product)<span class="required">*</span>
@@ -89,14 +99,14 @@
 
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.quantity)<span class="required">*</span>
-                        @Html.TextBoxFor(Model => Model.quantity, new { @class = "form-control",min = 0 , placeholder = "Enter Quantity" })
+                        @Html.TextBoxFor(Model => Model.quantity, new { @class = "form-control", min = 0, placeholder = "Enter Quantity" })
                         @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group row">
                         <div class="col-md-6">
                             @Html.LabelFor(Model => Model.startMileage)<span class="required">*</span>
-                            @Html.TextBoxFor(Model => Model.startMileage, new { @class = "form-control",min = 0, placeholder = "Enter Start Mileage" })
+                            @Html.TextBoxFor(Model => Model.startMileage, new { @class = "form-control", min = 0, placeholder = "Enter Start Mileage" })
                             @Html.ValidationMessageFor(model => model.startMileage, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-6">
@@ -134,10 +144,12 @@
                 document.querySelector('.alert').remove();
             }, 5000);
         }
+        document.querySelector('.rSize').addEventListener('keyup', (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
     })();
 </script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-

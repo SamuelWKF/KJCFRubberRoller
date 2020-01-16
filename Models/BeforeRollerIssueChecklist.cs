@@ -22,7 +22,7 @@ namespace KJCFRubberRoller.Models
 
         [Required]
         [DisplayName("Date Time")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy,HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? dateTime { get; set; }
 
         [Required]

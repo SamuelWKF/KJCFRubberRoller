@@ -24,11 +24,14 @@ namespace KJCFRubberRoller.Models
         public virtual RubberRoller RubberRoller { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy,HH:mm}", ApplyFormatInEditMode = true)]
         [DisplayName("Start Date Time")]
         public DateTime? startDateTime { get; set; }
 
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy,HH:mm}", ApplyFormatInEditMode = true)]
         [DisplayName("End Date Time")]
-        public DateTime endDateTime { get; set; }
+        public DateTime? endDateTime { get; set; }
 
         [MaxLength(255)]
         [DisplayName("Product Name")]

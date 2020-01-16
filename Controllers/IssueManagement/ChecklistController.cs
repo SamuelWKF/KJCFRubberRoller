@@ -1,4 +1,6 @@
 ﻿using KJCFRubberRoller.Models;
+using Microsoft.AspNet.Identity;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ namespace KJCFRubberRoller.Controllers
     public class ChecklistController : Controller
     {
         private ApplicationDbContext _db;
+        private string _controllerName = "BeforeRollerIssueChecklist";
 
         public ChecklistController()
         {
@@ -23,8 +26,16 @@ namespace KJCFRubberRoller.Controllers
             _db.Dispose();
         }
 
+        public ActionResult Index(int? i)
+        {
+            LogAction.log(this._controllerName, "GET", "Requested BeforeRollerIssueChecklist-Index webpage", User.Identity.GetUserId());
+            List<BeforeRollerIssueChecklist> beforeRollerIssueChecklists = _db.beforeRollerIssueChecklists.ToList();
+            return View(beforeRollerIssueChecklists.ToPagedList(i ?? 1, 20));
+        }
+
         public ActionResult BeforeChecklistCreate()
         {
+            LogAction.log(this._controllerName, "GET", "Requested BeforeRollerIssueChecklist-Create webpage", User.Identity.GetUserId());
             return View("BeforeChecklistCreate");
         }
 
@@ -32,19 +43,25 @@ namespace KJCFRubberRoller.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult BeforeChecklistCreate(BeforeRollerIssueChecklist beforeRollerIssueChecklist)
         {
-            if (ModelState.IsValid)
+            try
             {
-                DateTime dt = DateTime.Now;
-                Response.Write(dt.ToString("0:dd/MM/yyyy"));
-                    
                 _db.beforeRollerIssueChecklists.Add(beforeRollerIssueChecklist);
-                _db.SaveChanges();
-                TempData["saveStatus"] = true;
-                TempData["saveStatusMsg"] = "New Before Roller Issue has been successfully added!";
+                int result = _db.SaveChanges();
+                if (result > 0)
+                {
+                    TempData["formStatus"] = true;
+                    TempData["formStatusMsg"] = "New Before Rubber Roller Issue Checklist has been successfully added!";
+                    LogAction.log(this._controllerName, "POST", "Added New Before Rubber Roller Issue Checklist", User.Identity.GetUserId());
+                }
                 return Redirect(Request.UrlReferrer.ToString());
             }
-
-            return Redirect(Request.UrlReferrer.ToString());
+            catch (Exception ex)
+            {
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = "Oops! Something went wrong. The Before Rubber Roller Issue Checklist has not been successfully added.";
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
+                return Redirect(Request.UrlReferrer.ToString());
+            }
         }
 
       
@@ -72,11 +89,7 @@ namespace KJCFRubberRoller.Controllers
 
 
         // GET: Checklist
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+    
         public ActionResult CombineChecklistView()
         {
             return View();
