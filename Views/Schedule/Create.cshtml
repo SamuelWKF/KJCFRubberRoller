@@ -1,7 +1,14 @@
 ﻿@model KJCFRubberRoller.Models.Schedule
 
 @{
-    ViewBag.Title = "Add Schedule";
+    if ((String)Url.RequestContext.RouteData.Values["id"] == null)
+    {
+        ViewBag.Title = "Add New Roller Schedule";
+    }
+    else
+    {
+        ViewBag.Title = "Update Rubber Roller Schedule";
+    }
 }
 
 @*Operational Line dropdown list*@
@@ -33,20 +40,20 @@
     <div class="row mb-4">
         <div class="col-md-8 mx-auto">
 
-            @if (TempData["saveStatus"] != null)
+            @if (TempData["formStatus"] != null)
             {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    @TempData["saveStatusMsg"]
+                    @TempData["formStatusMsg"]
                 </div>
             }
 
-            <div class="py-2 bg-kjcf">
-                <h2 class="text-white text-center">Add New Schedule</h2>
-            </div>
+        <div class="py-2 bg-kjcf">
+            <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Schedule" : "Update Rubber Roller Schedule")</h2>
+        </div>
             <div class="bg-white container py-3">
                 <p class="required">* Require field</p>
                 @using (Html.BeginForm("Create", "Schedule", FormMethod.Post))
@@ -54,11 +61,11 @@
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                 <div class="form-group">
-                    @Html.LabelFor(Model => Model.operationLine)<span class="required">*</span>
-                    @Html.DropDownListFor(Model => Model.operationLine, operationLineList, "Select operation line", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.operationLine, "", new { @class = "text-danger" })
-                  </div>
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.operationLine)<span class="required">*</span>
+                        @Html.DropDownListFor(Model => Model.operationLine, operationLineList, "Select operation line", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.operationLine, "", new { @class = "text-danger" })
+                    </div>
 
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.rollerID)<span class="required">*</span>
@@ -66,19 +73,7 @@
                         @Html.ValidationMessageFor(model => model.rollerID, "", new { @class = "text-danger" })
                     </div>
 
-                    <div class="form-group row">
-                        <div class="col-md-6">
-                            @Html.LabelFor(Model => Model.startDateTime)<span class="required">*</span>
-                            @Html.TextBoxFor(Model => Model.startDateTime, new { @class = "form-control", placeholder = "Enter Start Date & Time" })
-                            @Html.ValidationMessageFor(model => model.startDateTime, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="col-md-6">
-                            @Html.LabelFor(Model => Model.endDateTime)<span class="required">*</span>
-                            @Html.TextBoxFor(Model => Model.endDateTime, new { @class = "form-control", placeholder = "Enter End Date & Time" })
-                            @Html.ValidationMessageFor(model => model.endDateTime, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+                   
 
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.product)<span class="required">*</span>
@@ -94,14 +89,14 @@
 
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.quantity)<span class="required">*</span>
-                        @Html.TextBoxFor(Model => Model.quantity, new { @class = "form-control", placeholder = "Enter Quantity" })
+                        @Html.TextBoxFor(Model => Model.quantity, new { @class = "form-control",min = 0 , placeholder = "Enter Quantity" })
                         @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group row">
                         <div class="col-md-6">
                             @Html.LabelFor(Model => Model.startMileage)<span class="required">*</span>
-                            @Html.TextBoxFor(Model => Model.startMileage, new { @class = "form-control", placeholder = "Enter Start Mileage" })
+                            @Html.TextBoxFor(Model => Model.startMileage, new { @class = "form-control",min = 0, placeholder = "Enter Start Mileage" })
                             @Html.ValidationMessageFor(model => model.startMileage, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-6">
