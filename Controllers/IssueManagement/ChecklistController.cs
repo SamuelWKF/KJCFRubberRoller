@@ -34,6 +34,9 @@ namespace KJCFRubberRoller.Controllers
         {
             if (ModelState.IsValid)
             {
+                DateTime dt = DateTime.Now;
+                Response.Write(dt.ToString("0:dd/MM/yyyy"));
+                    
                 _db.beforeRollerIssueChecklists.Add(beforeRollerIssueChecklist);
                 _db.SaveChanges();
                 TempData["saveStatus"] = true;
@@ -43,6 +46,8 @@ namespace KJCFRubberRoller.Controllers
 
             return Redirect(Request.UrlReferrer.ToString());
         }
+
+      
 
         public ActionResult AfterChecklistCreate()
         {
@@ -68,6 +73,11 @@ namespace KJCFRubberRoller.Controllers
 
         // GET: Checklist
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult CombineChecklistView()
         {
             return View();
         }

@@ -21,7 +21,8 @@ namespace KJCFRubberRoller.Models
 
         [Required]
         [DisplayName("Date Time")]
-        public DateTime dateTime { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = false,DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime? dateTime { get; set; }
 
         [Required]
         [DisplayName("Operation Time")]
