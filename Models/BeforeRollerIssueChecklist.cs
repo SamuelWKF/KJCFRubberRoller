@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace KJCFRubberRoller.Models
 {
@@ -21,7 +22,8 @@ namespace KJCFRubberRoller.Models
 
         [Required]
         [DisplayName("Date Time")]
-        public DateTime dateTime { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime? dateTime { get; set; }
 
         [Required]
         [DisplayName("Operation Line")]

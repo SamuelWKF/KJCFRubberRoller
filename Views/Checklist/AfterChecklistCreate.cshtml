@@ -81,12 +81,6 @@
                     @Html.ValidationMessageFor(model => model.rollerID, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(Model => Model.dateTime)<span class="required">*</span>
-                    @Html.TextBoxFor(Model => System.DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss"), new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.dateTime, "", new { @class = "text-danger" })
-                </div>
-
                 <div class="col-md-6">
                     @Html.LabelFor(Model => Model.operationLine)<span class="required">*</span>
                     @Html.DropDownListFor(Model => Model.operationLine, operationLineList, "Select operation line", new { @class = "form-control" })

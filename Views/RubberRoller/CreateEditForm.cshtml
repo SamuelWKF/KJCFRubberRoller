@@ -171,14 +171,14 @@
                     //Roller Shore Hardness
                     <div class="form-group">
                         @Html.LabelFor(model => model.shoreHardness)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.shoreHardness, new { @class = "form-control", placeholder = "Enter roller shore hardness here", type = "number", step = "0.01", min = "0" })
+                        @Html.TextBoxFor(model => model.shoreHardness, new { @class = "form-control", placeholder = "Enter roller shore hardness here"})
                         @Html.ValidationMessageFor(model => model.shoreHardness, "", new { @class = "text-danger" })
                     </div>
 
                     //Roller Depth of Groove
                     <div class="form-group">
                         @Html.LabelFor(model => model.depthOfGroove)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.depthOfGroove, new { @class = "form-control", placeholder = "Enter roller depth of groove here", type = "number", step = "0.01", min = "0" })
+                        @Html.TextBoxFor(model => model.depthOfGroove, new { @class = "form-control", placeholder = "Enter roller depth of groove here"})
                         @Html.ValidationMessageFor(model => model.depthOfGroove, "", new { @class = "text-danger" })
                     </div>
 

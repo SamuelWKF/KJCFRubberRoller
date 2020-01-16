@@ -259,6 +259,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\background.jpg" />
     <Content Include="Content\Images\kjcf.jpg" />
+    <Content Include="Content\Images\kjcf_icon.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -421,8 +422,9 @@
     <Content Include="Views\Checklist\AfterChecklistCreate.cshtml" />
     <Content Include="Views\Checklist\BeforeChecklistCreate.cshtml" />
     <Content Include="Views\Schedule\View.cshtml" />
-    <Content Include="Views\MaintenanceReport\Index.cshtml" />
+    <Content Include="Views\RubberRoller\StockDetails.cshtml" />
     <Content Include="Views\MaintenanceReport\CreateEditMaintenanceRecord.cshtml" />
+    <Content Include="Views\MaintenanceReport\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
