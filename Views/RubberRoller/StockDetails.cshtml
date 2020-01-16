@@ -1,0 +1,128 @@
+﻿@model IPagedList<KJCFRubberRoller.Models.RubberRoller>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    var title = $"{Model.First().RollerCategory.size} - {Model.First().RollerCategory.description}";
+    ViewBag.Title = $"Stock Details for {title}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="mx-auto">
+        <div class="py-2 mt-4 bg-kjcf">
+            <h2 class="text-white text-center">Stock Details for Roller "@title"</h2>
+        </div>
+        <div class="bg-white container-fluid py-3">
+            @Html.ActionLink("Add New Rubber Roller", "Create", null, new { @class = "btn btn-block btn-primary" })
+            <br />
+            @Html.Label("Search:")
+            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control rr_list_search", placeholder = "Search rubber roller here..." })
+            <br />
+            <table class="table table-responsive table-hover table-striped sortable">
+                <thead>
+                    <tr class="text-center">
+                        <th>
+                            No.
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().rollerID)
+                        </th>
+                        <th>
+                            Roller Category
+                        </th>
+                        <th>On Supplier<br />Hand</th>
+                        <th>
+                            Available<br />at KJCF
+                        </th>
+                        <th>
+                            Remark
+                        </th>
+                        <th width="5%">
+                            Status
+                        </th>
+                        <th width="5%">Operation<br />Line No.</th>
+                        <th width="5%">Edit<br />Details</th>
+                        <th width="5%">Location<br />History</th>
+                        <th width="5%">Maintenance<br />History</th>
+                        <th width="5%">Operation<br />History</th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model.Select((value, index) => new { value, index }))
+                {
+                    <tr>
+                        <td>
+                            @(item.index + 1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.rollerID)
+                        </td>
+                        <td>
+                            @{
+                                var rollerCat = string.Format("{0} - {1}", item.value.RollerCategory.size, item.value.RollerCategory.description);
+                            }
+                            @rollerCat
+                        </td>
+                        <td>
+                            @if (item.value.RollerLocations.LastOrDefault() != null)
+                            {
+                                @Html.Display(item.value.RollerLocations.LastOrDefault().location)
+                            }
+                        </td>
+                        <td>
+                            @if (item.value.RollerLocations.LastOrDefault() != null)
+                            {
+                                @Html.Display(item.value.RollerLocations.LastOrDefault().location)
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.remark)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.status)
+                        </td>
+                        <td>
+                            @if (item.value.RollerLocations.LastOrDefault() != null)
+                            {
+                                @Html.Display(item.value.RollerLocations.LastOrDefault().operationLine.ToString())
+                            }
+                        </td>
+                        <td>
+                            @Html.ActionLink("ED", "Edit", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("LH", "LocationHistory", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("MH", "MaintenanceHistory", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("OH", "OperationHistory", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                    </tr>
+                }
+            </table>
+            @Html.PagedListPager(Model, i => Url.Action("Index", "RubberRoller", new { i }))
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // IIFE (Immediately Invoked Function Expression)
+    (function () {
+        // Select the search input box for each of the table list
+        const searchBox = document.querySelector('input.rr_list_search');
+        // Add event listeners to each search box
+        searchBox.addEventListener('input', (e) => {
+            const rubberRollerTable = document.querySelector('.table').children[1].children;
+            Array.from(rubberRollerTable).forEach((v, i) => {
+                if (v.innerText.toLowerCase().indexOf(searchBox.value.toLowerCase()) !== -1) {
+                    v.style.removeProperty('display');
+                } else {
+                    v.style.display = 'none';
+                }
+            });
+        });
+    })();
+</script>

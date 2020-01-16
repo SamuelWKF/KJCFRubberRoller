@@ -224,6 +224,18 @@ namespace KJCFRubberRoller.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("rubberroller/stockdetails/{id}")]
+        public ActionResult StockDetails(int id, int? i)
+        {
+            if (id == 0)
+                return Redirect(Request.UrlReferrer.ToString());
+
+            LogAction.log(this._controllerName, "GET", $"Requested RubberRoller-StockDetails {id} webpage", User.Identity.GetUserId());
+            List<RubberRoller> rubberRollers = _db.rubberRollers.Where(r => r.rollerCategoryID == id).ToList();
+            return View(rubberRollers.ToPagedList(i ?? 1, 20));
+        }
+
         private SelectList getRollerCategories()
         {
             // Retrieve roller category
