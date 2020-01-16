@@ -68,23 +68,33 @@ namespace KJCFRubberRoller.Controllers
 
         public ActionResult AfterChecklistCreate()
         {
+            LogAction.log(this._controllerName, "GET", "Requested AfterChecklistCreate-Create webpage", User.Identity.GetUserId());
             return View("AfterChecklistCreate");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AfterChecklistCreate(AfterRollerProductionChecklist afterChecklistCreate)
+        public ActionResult AfterChecklistCreate(AfterRollerProductionChecklist afterRollerProductionChecklist)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _db.afterRollerProductionChecklists.Add(afterChecklistCreate);
-                _db.SaveChanges();
-                TempData["saveStatus"] = true;
-                TempData["saveStatusMsg"] = "New After Production Checklist has been successfully added!";
+                _db.afterRollerProductionChecklists.Add(afterRollerProductionChecklist);
+                int result = _db.SaveChanges();
+                if (result > 0)
+                {
+                    TempData["formStatus"] = true;
+                    TempData["formStatusMsg"] = "New After Rubber Roller Production Checklist has been successfully added!";
+                    LogAction.log(this._controllerName, "POST", "Added New After Rubber Roller Production Checklist", User.Identity.GetUserId());
+                }
                 return Redirect(Request.UrlReferrer.ToString());
             }
-
-            return Redirect(Request.UrlReferrer.ToString());
+            catch (Exception ex)
+            {
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = "Oops! Something went wrong. The After Rubber Roller Issue Production has not been successfully added.";
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
+                return Redirect(Request.UrlReferrer.ToString());
+            }
         }
 
 
