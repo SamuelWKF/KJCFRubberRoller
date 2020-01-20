@@ -1,0 +1,95 @@
+﻿@model IPagedList<KJCFRubberRoller.Models.RollerLocation>
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    string title = " ";
+    if (Model.FirstOrDefault() != null)
+    {
+        title = Model.FirstOrDefault().RubberRoller.rollerID;
+    }
+    ViewBag.Title = $"Location History {(title == " " ? "" : title)}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="mx-auto">
+        <div class="py-2 mt-4 bg-kjcf">
+            <h2 class="text-white text-center">Location History for Roller @title</h2>
+        </div>
+        <div class="bg-white container-fluid py-3">
+            @Html.Label("Search:")
+            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control rr_location_search", placeholder = "Search location record here..." })
+            <br />
+            <table class="table table-responsive table-hover table-striped sortable">
+                <thead>
+                    <tr class="text-center">
+                        <th>
+                            No.
+                        </th>
+                        <th>
+                            Location
+                        </th>
+                        <th>Operation<br />Line No.</th>
+                        <th>
+                            Date Time<br />In
+                        </th>
+                        <th>
+                            Date Time<br />Out
+                        </th>
+                    </tr>
+                </thead>
+                @if (Model.FirstOrDefault() == null)
+                {
+                    <tr><td colspan="5" class="text-center">No history record</td></tr>
+                }
+
+                @if (Model != null)
+                {
+                    foreach (var item in Model.Select((value, index) => new { value, index }))
+                    {
+                        <tr>
+                            <td>
+                                @(item.index + 1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.value.location)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.value.operationLine)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.value.dateTimeIn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.value.dateTimeOut)
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+            @Html.PagedListPager(Model, i => Url.Action("Index", "RubberRoller", new { i }))
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // IIFE (Immediately Invoked Function Expression)
+    (function () {
+        // Select the search input box for each of the table list
+        const searchBox = document.querySelector('input.rr_location_search');
+        // Add event listeners to each search box
+        searchBox.addEventListener('input', (e) => {
+            const table = document.querySelector('.table').children[1].children;
+            Array.from(table).forEach((v, i) => {
+                if (v.innerText.toLowerCase().indexOf(searchBox.value.toLowerCase()) !== -1) {
+                    v.style.removeProperty('display');
+                } else {
+                    v.style.display = 'none';
+                }
+            });
+        });
+    })();
+</script>
+

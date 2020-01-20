@@ -117,19 +117,6 @@
 
                     <div class="form-group row">
                         <div class="col-md-6">
-                            @Html.LabelFor(Model => Model.preparedBy)<span class="required">*</span>
-                            @Html.TextBoxFor(Model => Model.preparedBy, new { @class = "form-control", placeholder = "Enter Prepared By" })
-                            @Html.ValidationMessageFor(model => model.preparedBy, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="col-md-6">
-                            @Html.LabelFor(Model => Model.verifiedBy)<span class="required">*</span>
-                            @Html.TextBoxFor(Model => Model.verifiedBy, new { @class = "form-control", placeholder = "Enter Verified By" })
-                            @Html.ValidationMessageFor(model => model.verifiedBy, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-md-6">
                             <input type="reset" value="Clear" class="btn btn-danger btn-block" />
                         </div>
                         <div class="col-md-6">

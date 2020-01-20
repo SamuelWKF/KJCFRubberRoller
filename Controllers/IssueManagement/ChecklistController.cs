@@ -45,6 +45,9 @@ namespace KJCFRubberRoller.Controllers
         {
             try
             {
+                var userID = User.Identity.GetUserId();
+                ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == userID);
+                beforeRollerIssueChecklist.preparedBy = user;
                 _db.beforeRollerIssueChecklists.Add(beforeRollerIssueChecklist);
                 int result = _db.SaveChanges();
                 if (result > 0)
@@ -78,6 +81,9 @@ namespace KJCFRubberRoller.Controllers
         {
             try
             {
+                var userID = User.Identity.GetUserId();
+                ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == userID);
+                afterRollerProductionChecklist.preparedBy = user;
                 _db.afterRollerProductionChecklists.Add(afterRollerProductionChecklist);
                 int result = _db.SaveChanges();
                 if (result > 0)

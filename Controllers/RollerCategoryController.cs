@@ -67,13 +67,16 @@ namespace KJCFRubberRoller.Controllers
         {
             try
             {
-                _db.rollerCategories.Add(rollerCategory);
-                int result = _db.SaveChanges();
-                if (result > 0)
+                if (ModelState.IsValid)
                 {
-                    TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = "New rubber roller category has been successfully added!";
-                    LogAction.log(this._controllerName, "POST", "Added new roller category record", User.Identity.GetUserId());
+                    _db.rollerCategories.Add(rollerCategory);
+                    int result = _db.SaveChanges();
+                    if (result > 0)
+                    {
+                        TempData["formStatus"] = true;
+                        TempData["formStatusMsg"] = "New rubber roller category has been successfully added!";
+                        LogAction.log(this._controllerName, "POST", "Added new roller category record", User.Identity.GetUserId());
+                    }
                 }
                 return Redirect(Request.UrlReferrer.ToString());
             }

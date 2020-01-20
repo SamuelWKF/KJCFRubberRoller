@@ -108,19 +108,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <div class="col-md-6">
-                            @Html.LabelFor(Model => Model.preparedBy)<span class="required">*</span>
-                            @Html.TextBoxFor(Model => Model.preparedBy, new { @class = "form-control", placeholder = "Enter prepared by" })
-                            @Html.ValidationMessageFor(model => model.preparedBy, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="col-md-6">
-                            @Html.LabelFor(Model => Model.verifiedBy)<span class="required">*</span>
-                            @Html.TextBoxFor(Model => Model.verifiedBy, new { @class = "form-control", placeholder = "Enter Verified By" })
-                            @Html.ValidationMessageFor(model => model.verifiedBy, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
                     if ((String)Url.RequestContext.RouteData.Values["id"] != null)
                     {
                         @Html.HiddenFor(m => m.id)

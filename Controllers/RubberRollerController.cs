@@ -236,6 +236,27 @@ namespace KJCFRubberRoller.Controllers
             return View(rubberRollers.ToPagedList(i ?? 1, 20));
         }
 
+        [HttpGet]
+        [Route("rubberroller/location_history/{id}")]
+        public ActionResult LocationHistory(int id, int? i)
+        {
+            if (id == 0)
+                return RedirectToAction("Index");
+
+            LogAction.log(this._controllerName, "GET", $"Requested webpage RubberRoller-LocationHistory for Roller: {id}", User.Identity.GetUserId());
+            List<RollerLocation> rollerLocations = _db.rollerLocations.Where(r => r.rollerID == id).ToList();
+            return View(rollerLocations.ToPagedList(i ?? 1, 20));
+        }
+
+        [HttpGet]
+        [Route("rubberroller/location")]
+        public ActionResult Location(int? i)
+        {
+            LogAction.log(this._controllerName, "GET", $"Requested RubberRoller-Location webpage", User.Identity.GetUserId());
+            List<RubberRoller> rubberRollers = _db.rubberRollers.ToList();
+            return View(rubberRollers.ToPagedList(i ?? 1, 20));
+        }
+
         private SelectList getRollerCategories()
         {
             // Retrieve roller category
