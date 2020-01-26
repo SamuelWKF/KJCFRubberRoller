@@ -9,13 +9,13 @@ using System.Web.Mvc;
 
 namespace KJCFRubberRoller.Controllers
 {
-    public class MaintenanceReportController : Controller
+    public class MaintenanceController : Controller
     {
         private ApplicationDbContext _db;
-        private string _controllerName = "MaintenanceReport";
+        private string _controllerName = "Maintenance";
 
         // Constructor
-        public MaintenanceReportController()
+        public MaintenanceController()
         {
             _db = new ApplicationDbContext();
         }
@@ -29,16 +29,15 @@ namespace KJCFRubberRoller.Controllers
 
         public ActionResult Index(int? i)
         {
-            LogAction.log(this._controllerName, "GET", "Requested MaintenanceReport-Index webpage", User.Identity.GetUserId());
-            List<Maintenance> maintenances  = _db.maintenances.ToList();
-            return View(maintenances.ToPagedList(i ?? 1, 20));
+            LogAction.log(this._controllerName, "GET", "Requested Maintenance-Index webpage", User.Identity.GetUserId());
+            List<Maintenance> maintenance  = _db.maintenances.ToList();
+            return View(maintenance.ToPagedList(i ?? 1, 20));
         }
 
         // GET: Returns create form
         public ActionResult Create()
         {
-            LogAction.log(this._controllerName, "GET", "Requested MaintenanceReport-Create webpage", User.Identity.GetUserId());
-            
+            LogAction.log(this._controllerName, "GET", "Requested Maintenance-Create webpage", User.Identity.GetUserId());
             return View("CreateEditMaintenanceRecord");
         }
 
@@ -54,7 +53,7 @@ namespace KJCFRubberRoller.Controllers
 
             if (!ModelState.IsValid || dbRoller != null)
             {
-               
+                
                 return View("CreateEditMaintenanceRecord", maintenance);
             }
 
