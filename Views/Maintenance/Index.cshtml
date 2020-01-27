@@ -1,23 +1,26 @@
 ﻿@model IPagedList<KJCFRubberRoller.Models.Maintenance>
 @using PagedList;
 @using PagedList.Mvc;
-
 @{
-    ViewBag.Title = "All Rubber Roller Maintenance Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+   ViewBag.Title = "All Rubber Roller Maintenance Details";
+   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row mb-4">
-    <div class="mx-auto">
-        <div class="py-2 mt-4 bg-kjcf">
-            <h2 class="text-white text-center">Rubber Roller Maintenance Record</h2>
+    <div class="row mb-4">
+        <div class="mx-auto">
+            <div class="py-2 mt-4 bg-kjcf">
+                <h2 class="text-white text-center">Rubber Roller Maintenance Records</h2>
+            </div>
+            <div class="bg-white container-fluid py-3">
+                @Html.ActionLink("Add New Maintenance Report", "Create", null, new { @class = "btn btn-block btn-primary" })
+                <br />
+                @Html.Label("Search:")
+                @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control rr_list_search", placeholder = "Search rubber roller here..." })
+                <br />
+
+
+                @Html.PagedListPager(Model, i => Url.Action("Index", "Maintenance", new { i }))
+            </div>
         </div>
-        <div class="bg-white container-fluid py-3">
-            @Html.ActionLink("File New Maintenance", "Create", null, new { @class = "btn btn-block btn-primary" })
-            @Html.ActionLink("Request for Maintenance", "Create", null, new { @class = "btn btn-block btn-primary" })
-            @Html.ActionLink("Show Rubber Roller Maintenance History", "Create", null, new { @class = "btn btn-block btn-primary" })
-            <br />
-        </div>
-        @Html.PagedListPager(Model, i => Url.Action("Index", "Maintenance", new { i }))
     </div>
-</div>
+
