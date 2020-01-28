@@ -44,10 +44,9 @@ namespace KJCFRubberRoller.Controllers
         //FormCollection will store the submitted form data automatically when the form is submitted
         public ActionResult Create(FormCollection collection)
         {
-            Maintenance maintenance = new Maintenance();
             string rollID = collection["rollID"];
             RubberRoller rubber = _db.rubberRollers.FirstOrDefault(r => r.rollerID == rollID);
-            return Redirect("CreateEditMaintenanceRecord");
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
        //POST: Create new rubber roller Maintenance record
@@ -57,13 +56,12 @@ namespace KJCFRubberRoller.Controllers
        {
             if (!ModelState.IsValid)
             {
-                Maintenance m = new Maintenance();
-
+                //Get reported person's ID
                 var uID = User.Identity.GetUserId();
                 ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == uID);
                 maintenance.reportedBy = user;
-
-                m.reportDateTime = DateTime.Now;
+                //reportDate&time
+                maintenance.reportDateTime = DateTime.Now;
 
                 return View("CreateEditMaintenanceRecord", maintenance);
             }
@@ -82,5 +80,53 @@ namespace KJCFRubberRoller.Controllers
              }
        return Redirect(Request.UrlReferrer.ToString());
        }
+
+        // POST: Update existing rubber roller record
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(Maintenance maintenance)
+        {
+            try
+            {
+                // Retrieve existing specific rubber roller from database
+                Maintenance maintenances = _db.maintenances.SingleOrDefault(m => m.maintenanceID == maintenance.maintenanceID);
+
+                if (maintenances == null)
+                    return RedirectToAction("Index");
+
+                // Update rubber roller details
+                if (maintenances.rollerID != maintenance.rollerID)
+                    maintenances.rollerID = maintenance.rollerID;
+                maintenances.diameterCore = maintenance.diameterCore;
+                maintenances.diameterRoller = maintenance.diameterRoller;
+                maintenances.totalMileage = maintenance.totalMileage;
+                maintenances.openingStockDate = maintenance.openingStockDate;
+                maintenances.lastProductionLine = maintenance.lastProductionLine;
+                maintenances.reason = maintenance.reason;
+                maintenances.remark = maintenance.remark;
+                maintenances.newDiameter = maintenance.newDiameter;
+                maintenances.newShoreHardness = maintenance.newShoreHardness;
+                maintenances.correctiveAction = maintenance.correctiveAction;
+                maintenances.reportedBy = maintenance.reportedBy;
+                maintenances.reportDateTime = maintenance.reportDateTime;
+
+                int result = _db.SaveChanges();
+                if (result > 0)
+                {
+                    LogAction.log(this._controllerName, "POST", "Updated roller record", User.Identity.GetUserId());
+                    TempData["formStatus"] = true;
+                    TempData["formStatusMsg"] = "Rubber roller details has been successfully updated!";
+                }
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+            catch (Exception ex)
+            {
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully updated.";
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+        }
     }
 }
