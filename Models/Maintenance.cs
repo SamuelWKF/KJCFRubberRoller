@@ -46,11 +46,12 @@ namespace KJCFRubberRoller.Models
         public int totalMileage { get; set; }
 
         [DisplayName("Opening Stock Date")]
+        //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy,HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime openingStockDate { get; set; }
 
-        [DisplayName("Last Production Line")]
+        [DisplayName("Last Operation Line")]
         public int lastProductionLine { get; set; }
-
+        
         [MaxLength(255)]
         [DisplayName("Reason")]
         public string reason { get; set; }
@@ -64,6 +65,7 @@ namespace KJCFRubberRoller.Models
 
         [MaxLength(255)]
         [DisplayName("New Shore Hardness")]
+        [RegularExpression(@"^[\d\-]+$", ErrorMessage = "Please enter the correct roller format. Example: 40-41")]
         public string newShoreHardness { get; set; }
 
         [MaxLength(255)]
