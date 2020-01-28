@@ -47,6 +47,8 @@ namespace KJCFRubberRoller.Models
 
         [DisplayName("Opening Stock Date")]
         //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy,HH:mm}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]      
+        [RegularExpression(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$", ErrorMessage = "Invalid date format.")]
         public DateTime openingStockDate { get; set; }
 
         [DisplayName("Last Operation Line")]

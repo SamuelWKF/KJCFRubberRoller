@@ -41,6 +41,14 @@ namespace KJCFRubberRoller.Controllers
             return View("CreateEditMaintenanceRecord");
         }
 
+        [HttpGet]
+        [Route("maintenance/requestmaintenance")]
+        public ActionResult Location(int? i)
+        {
+            LogAction.log(this._controllerName, "GET", $"Requested Maintenance-Request webpage", User.Identity.GetUserId());
+            return View("RequestMaintenance");
+        }
+
         //FormCollection will store the submitted form data automatically when the form is submitted
         public ActionResult Create(FormCollection collection)
         {
@@ -63,7 +71,7 @@ namespace KJCFRubberRoller.Controllers
                 //reportDate&time
                 maintenance.reportDateTime = DateTime.Now;
 
-                return View("CreateEditMaintenanceRecord", maintenance);
+                return RedirectToAction("CreateEditMaintenanceRecord", maintenance);
             }
              _db.maintenances.Add(maintenance);
              int result = _db.SaveChanges();

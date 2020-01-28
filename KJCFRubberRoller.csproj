@@ -427,6 +427,7 @@
     <Content Include="Views\RubberRoller\Location.cshtml" />
     <Content Include="Views\Maintenance\CreateEditMaintenanceRecord.cshtml" />
     <Content Include="Views\Maintenance\Index.cshtml" />
+    <Content Include="Views\Maintenance\RequestMaintenance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

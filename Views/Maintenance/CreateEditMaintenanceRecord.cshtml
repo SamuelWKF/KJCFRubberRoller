@@ -90,11 +90,11 @@
 
                     //Roller Opening Stock Date
                     <div class="form-group">
-                        @Html.LabelFor(model => model.openingStockDate)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.openingStockDate, new { @class = "form-control", placeholder = "Enter opening stock date here" })
-                       
+                        @Html.LabelFor(model => model.openingStockDate)<span class="required">*</span>                                              
+                        @Html.TextBoxFor(model => model.openingStockDate, new { @class = "form-control", @id = "datepicker", placeholder = "Enter opening stock date here" })
+                        @Html.ValidationMessageFor(model => model.openingStockDate, "", new { @class = "text-danger" })
                     </div>
-
+                   
                     //Roller Last operation line
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.lastProductionLine)<span class="required">*</span>

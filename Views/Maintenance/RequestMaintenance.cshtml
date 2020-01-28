@@ -1,0 +1,53 @@
+﻿@model KJCFRubberRoller.Models.Maintenance
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Request for Maintenance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="py-2 mt-4 bg-kjcf">
+            <h2 class="text-white text-center">Request for Maintenance</h2>
+        </div>
+
+        <div class="bg-white container-fluid py-3">
+            @Html.Label("Maintenance ID :")
+            @Html.TextBox("maintenanceID", "", new { @readonly = "true" })
+            <br />
+            @Html.Label("Date Reported :")
+            @Html.TextBox("reportedDate", "", new { @readonly = "true" })
+            <br />
+            @Html.Label("Roller ID :")
+            @Html.TextBox("rollID", "", new { @readonly = "true" })
+            <br />
+
+            <table class="table table-responsive table-hover table-striped sortable">
+                <thead>
+                    <tr class="text-center">
+                        <td>
+                            Rubber Roller
+                        </td>
+                        <td>
+                            Description
+                        </td>
+                        <td>
+                            Location
+                        </td>
+                        <td>
+                            Last Usage Date
+                        </td>
+
+
+                </thead>
+
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
