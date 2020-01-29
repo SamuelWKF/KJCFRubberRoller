@@ -1,9 +1,7 @@
 ﻿@model KJCFRubberRoller.Models.Maintenance
-@using PagedList;
-@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Request for Maintenance";
+    ViewBag.Title = "To Request for Maintenance";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -96,4 +94,22 @@
     </div>
 </div>
 
+<script>
+    (function () {
+        if (document.querySelector('.alert') !== null) {
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 5000);
+        }
+        document.querySelector('.rID').addEventListener('keyup', (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    })();
+</script>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Bootstrap Select script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script>
+}

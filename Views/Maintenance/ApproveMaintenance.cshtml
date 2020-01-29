@@ -1,0 +1,115 @@
+﻿@model KJCFRubberRoller.Models.Maintenance
+
+@{
+    ViewBag.Title = "To get Approval for Maintenance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="py-2 mt-4 bg-kjcf">
+            <h2 class="text-white text-center">Kian Joo Can Factory Berhad</h2>
+        </div>
+
+        <div class="bg-white container-fluid py-3">
+            <table class="table table-bordered">
+                <tr>
+                    <td>@Html.Label("Maintenance ID")</td>
+                    <td>@Html.TextBox("maintenanceID", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Date Reported")</td>
+                    <td>@Html.TextBox("reportedDate", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="bg-white container-fluid py-3">
+            <table class="table table-bordered">
+                <tr>
+                    <td>@Html.Label("Title")</td>
+                    <td>@Html.TextBox("title", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="bg-white container-fluid py-3">
+
+            <table class="table table-bordered ">
+                <tr>
+                    <td>@Html.Label("Roller ID")</td>
+                    <td>@Html.TextBox("rollID", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Diameter Core")</td>
+                    <td>@Html.TextBox("diametercore", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Diameter Roller")</td>
+                    <td>@Html.TextBox("diameteroller", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Mielage")</td>
+                    <td>@Html.TextBox("mielage", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Opening Stock Date")</td>
+                    <td>@Html.TextBox("openingstockdate", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Last Production Line Used")</td>
+                    <td>@Html.TextBox("lastproductionline", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Reason")</td>
+                    <td>@Html.TextBox("reason", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Remarks")</td>
+                    <td>@Html.TextBox("Remarks", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("New Diameter")</td>
+                    <td>@Html.TextBox("newdiameter", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("New Shore Hardness")</td>
+                    <td>@Html.TextBox("newshorehardness", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Corrective Action")</td>
+                    <td>@Html.TextBox("correctiveaction", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+            </table>
+
+            <div class="form-group row ">
+                <div class="col-md-6">
+                    <input type="reset" value="Reject" class="btn btn-primary btn-block" />
+                </div>
+                <div class="col-md-6">
+                    <input type="submit" value="Approve for Maintenance" class="btn btn-success btn-block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        if (document.querySelector('.alert') !== null) {
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 5000);
+        }
+        document.querySelector('.rID').addEventListener('keyup', (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    })();
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Bootstrap Select script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script>
+}

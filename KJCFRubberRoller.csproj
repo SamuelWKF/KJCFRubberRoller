@@ -428,6 +428,8 @@
     <Content Include="Views\Maintenance\CreateEditMaintenanceRecord.cshtml" />
     <Content Include="Views\Maintenance\Index.cshtml" />
     <Content Include="Views\Maintenance\RequestMaintenance.cshtml" />
+    <Content Include="Views\Maintenance\ApproveMaintenance.cshtml" />
+    <Content Include="Views\Maintenance\MaintenanceHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
