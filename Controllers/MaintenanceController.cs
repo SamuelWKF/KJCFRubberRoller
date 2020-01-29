@@ -30,8 +30,8 @@ namespace KJCFRubberRoller.Controllers
         public ActionResult Index(int? i)
         {
             LogAction.log(this._controllerName, "GET", "Requested Maintenance-Index webpage", User.Identity.GetUserId());
-            List<Maintenance> maintenance  = _db.maintenances.ToList();
-            return View(maintenance.ToPagedList(i ?? 1, 20));
+            List<Maintenance> maintenances = _db.maintenances.ToList();
+            return View(maintenances.ToPagedList(i ?? 1, 20));
         }
 
         // GET: Returns create form
@@ -42,29 +42,77 @@ namespace KJCFRubberRoller.Controllers
         }
 
         [HttpGet]
-        [Route("maintenance/requestmaintenance")]
-        public ActionResult Location(int? i)
+        [Route("maintenance/requestmaintenance/{id}")]
+        public ActionResult Location(int id, int? i)
         {
-            LogAction.log(this._controllerName, "GET", $"Requested Maintenance-Request webpage", User.Identity.GetUserId());
-            return View("RequestMaintenance");
+            if (id == 0)
+                return RedirectToAction("Index");
+            LogAction.log(this._controllerName, "GET", $"Requested webpage Maintenance-RequestForMaintenance for Roller: {id}", User.Identity.GetUserId());
+            List<Maintenance> maintenances = _db.maintenances.Where(r => r.maintenanceID == id).ToList();
+            return View(maintenances.ToPagedList(i ?? 1, 20));
+            
+            //return View("RequestMaintenance");
         }
 
-       
+        [HttpGet]
+        [Route("maintenance/maintenancehistory/{id}")]
+        public ActionResult LocationHistory(int id, int? i)
+        {
+            if (id == 0)
+                return RedirectToAction("Index");
+            LogAction.log(this._controllerName, "GET", $"Requested webpage Maintenance-MaintenanceHistory for Roller: {id}", User.Identity.GetUserId());
+            List<Maintenance> maintenances = _db.maintenances.Where(r => r.rollerID == id).ToList();
+            return View(maintenances.ToPagedList(i ?? 1, 20));
+            
+            //return View(rollerLocations.ToPagedList(i ?? 1, 20));
+        }
+
+
 
         //FormCollection will store the submitted form data automatically when the form is submitted
-        public ActionResult Create(FormCollection collection)
+        public void SavedData(FormCollection collection)
         {
             string rollID = collection["rollID"];
             RubberRoller rubber = _db.rubberRollers.FirstOrDefault(r => r.rollerID == rollID);
-            return Redirect(Request.UrlReferrer.ToString());
+            //return Redirect(Request.UrlReferrer.ToString());
         }
 
-       //POST: Create new rubber roller Maintenance record
-       [HttpPost]
-       [ValidateAntiForgeryToken]
-       public ActionResult Create(Maintenance maintenance)           
-       {
-            if (!ModelState.IsValid)
+        //POST: Create new rubber roller Maintenance record
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Maintenance maintenance)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //Get reported person's ID
+                    var uID = User.Identity.GetUserId();
+                    ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == uID);
+                    maintenance.reportedBy = user;
+                    //reportDate&time
+                    maintenance.reportDateTime = DateTime.Now;
+
+                    _db.maintenances.Add(maintenance);
+                    int result = _db.SaveChanges();
+                    if (result > 0)
+                    {
+                        TempData["formStatus"] = true;
+                        TempData["formStatusMsg"] = "New rubber roller category has been successfully added!";
+                        LogAction.log(this._controllerName, "POST", "Added new roller category record", User.Identity.GetUserId());
+                    }
+                }
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+            catch (Exception ex)
+            {
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller category has not been successfully added.";
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+        }
+           /*if (!ModelState.IsValid)
             {
                 //Get reported person's ID
                 var uID = User.Identity.GetUserId();
@@ -89,7 +137,7 @@ namespace KJCFRubberRoller.Controllers
                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully added.";
              }
        return Redirect(Request.UrlReferrer.ToString());
-       }
+       }*/
 
         // POST: Update existing rubber roller record
         [HttpPost]

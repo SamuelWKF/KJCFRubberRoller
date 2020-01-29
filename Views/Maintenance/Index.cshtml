@@ -15,10 +15,6 @@
         <div class="bg-white container-fluid py-3">
             @Html.ActionLink("Add New Maintenance Report", "Create", null, new { @class = "btn btn-block btn-primary" })
             <br />
-            @Html.ActionLink("Maintenance Report", "Request", null, new { @class = "btn btn-block btn-primary" })
-            <br />
-            @Html.ActionLink("Maintenance History", "History", null, new { @class = "btn btn-block btn-primary" })
-            <br />
             @Html.Label("Search:")
             @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control rr_list_search", placeholder = "Search maintenance report here..." })
             <br />
@@ -34,34 +30,40 @@
                         </th>
                         <th>
                             Roller ID
-
+                        </th>
+                        <th>
+                            Status
                         </th>
                         <th width="5%">Edit<br />Details</th>
-                        <th width="20%">Maintenance<br />History</th>
-                        <th width="8%">Request for<br />Maintenance</th>
+                        <th width="5%">Request for<br />Maintenance</th>
+                        <th width="5%">Maintenance<br />History</th>
+
 
                         @foreach (var item in Model.Select((value, index) => new { value, index }))
                         {
-                        <tr>
-                            <td>
-                                @(item.index + 1)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.value.maintenanceID)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.value.rollerID)
-                            </td>
-                            <td>
-                                @Html.ActionLink("ED", "Edit", new { id = item.value.maintenanceID }, new { @class = "btn btn-block btn-success" })
-                            </td>
-                            <td>
-                                @Html.ActionLink("MH", "MaintenanceHistory", new { id = item.value.maintenanceID }, new { @class = "btn btn-block btn-success" })
-                            </td>
-                            <td>
-                                @Html.ActionLink("RM", "RequestforMaintenance", new { id = item.value.maintenanceID }, new { @class = "btn btn-block btn-success" })
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @(item.index + 1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.maintenanceID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.rollerID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.value.status)
+                        </td>
+                        <td>
+                            @Html.ActionLink("ED", "Edit", new { id = item.value.maintenanceID }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("RM", "RequestforMaintenance", new { id = item.value.maintenanceID }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("MH", "MaintenanceHistory", new { id = item.value.maintenanceID }, new { @class = "btn btn-block btn-success" })
+                        </td>
+                    </tr>
                     }
                 </table>
                 @Html.PagedListPager(Model, i => Url.Action("Index", "Maintenance", new { i }))
