@@ -28,7 +28,6 @@ namespace KJCFRubberRoller.Models
         [DisplayName("Start Date Time")]
         public DateTime? startDateTime { get; set; }
 
-        [Required]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy,HH:mm}", ApplyFormatInEditMode = true)]
         [DisplayName("End Date Time")]
         public DateTime? endDateTime { get; set; }
@@ -55,5 +54,11 @@ namespace KJCFRubberRoller.Models
         [MaxLength(255)]
         [DisplayName("Remark")]
         public string remark { get; set; }
+    
+        [DisplayName("Status")]
+        public int status { get; set; }
+        
+        public virtual ICollection<BeforeRollerIssueChecklist> BeforeRollerIssueChecklists { get; set; }
+        public virtual ICollection<AfterRollerProductionChecklist> AfterRollerProductionChecklists { get; set; }
     }
 }

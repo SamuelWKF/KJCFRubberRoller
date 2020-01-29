@@ -17,7 +17,7 @@
                 @if (TempData["totalBelowMinAmount"] != null)
                 {
                     <div class="alert alert-danger fade show" role="alert">
-                        There are a total of @TempData["totalBelowMinAmount"] roller(s) that has hit the minimum amount threshold.
+                        <b>ALERT: @TempData["totalBelowMinAmount"] roller(s)</b> has hit the minimum roller amount threshold.
                     </div>
                 }
 
@@ -44,34 +44,44 @@
                         <th>
                             On Supplier<br />Hand
                         </th>
-                        <th></th>
+                        <th>View Rollers</th>
                     </tr>
 
-                    @foreach (var item in Model.Select((value, index) => new { value, index }))
+                    @if (Model.FirstOrDefault() == null)
                     {
-                        <tr class="text-center @((item.value.RubberRollers.Count < item.value.minAmount) ? "text-danger font-weight-bold" : "")">
-                            <td>
-                                @(item.index + 1)
-                            </td>
-                            <td class="text-left">
-                                @string.Format("{0} - {1}", item.value.size, item.value.description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.value.minAmount)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.value.RubberRollers.Count)
-                            </td>
-                            <td>
-                                @string.Format("{0}", item.value.RubberRollers.Where(r => r.status != rollerSupplierStatus).Count())
-                            </td>
-                            <td>
-                                @string.Format("{0}", item.value.RubberRollers.Where(r => r.status == rollerSupplierStatus).Count())
-                            </td>
-                            <td>
-                                @Html.ActionLink("View Rollers", "StockDetails", new { id = item.value.rollerCategoryID }, new { @class = "btn btn-block btn-success" })
-                            </td>
-                        </tr>
+                        <tr><td colspan="7" class="text-center">There are currently no rubber rollers stock record.</td></tr>
+                    }
+
+                    @if (Model.FirstOrDefault() != null)
+                    {
+                        foreach (var item in Model.Select((value, index) => new { value, index }))
+                        {
+                            <tr class="text-center @((item.value.RubberRollers.Count < item.value.minAmount) ? "text-danger font-weight-bold" : "")">
+                                <td>
+                                    @(item.index + 1)
+                                </td>
+                                <td class="text-left">
+                                    @string.Format("{0} - {1}", item.value.size, item.value.description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.value.minAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.value.RubberRollers.Count)
+                                </td>
+                                <td>
+                                    @string.Format("{0}", item.value.RubberRollers.Where(r => r.status != rollerSupplierStatus).Count())
+                                </td>
+                                <td>
+                                    @string.Format("{0}", item.value.RubberRollers.Where(r => r.status == rollerSupplierStatus).Count())
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("StockDetails", "RubberRoller", new { id = item.value.rollerCategoryID })" class="btn btn-block btn-success">
+                                        <i class="far fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
                     }
                 </table>
                 @Html.PagedListPager(Model, i => Url.Action("StockOverview", "RubberRoller", new { i }))

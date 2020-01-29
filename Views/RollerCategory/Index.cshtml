@@ -9,7 +9,7 @@
 
 <div class="container">
     <div class="row mb-4">
-        <div class="mx-auto">
+        <div class="col-md-12 mx-auto">
             <div class="py-2 bg-kjcf">
                 <h2 class="text-white text-center">Rubber Roller Category List</h2>
             </div>
@@ -19,7 +19,7 @@
                 @Html.Label("Search:")
                 @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control roller_category_search", placeholder = "Search roller category here..." })
                 <br />
-                <table class="table table-responsive table-hover table-striped sortable">
+                <table class="table w-100 table-hover table-striped sortable">
                     <tr class="text-center">
                         <th>
                             No.
@@ -39,37 +39,48 @@
                         <th>
                             @Html.DisplayNameFor(model => model.First().remark)
                         </th>
-                        <th></th>
+                        <th>Edit Details</th>
                     </tr>
 
-                    @foreach (var item in Model.Select((value, index) => new { value, index }))
+
+                    @if (Model.FirstOrDefault() == null)
                     {
-                        <tr class="text-center">
-                            <td>
-                                @(item.index + 1)
-                            </td>
-                            <td class="text-left">
-                                @Html.DisplayFor(modelItem => item.value.description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.value.size)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.value.minAmount)
-                            </td>
-                            <td>
-                                @{
-                                    var status = RollerCat.getCriticalStatus(item.value.criticalStatus);
-                                }
-                                @status
-                            </td>
-                            <td class="text-left">
-                                @Html.DisplayFor(modelItem => item.value.remark)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit Details", "Edit", new { id = item.value.rollerCategoryID }, new { @class = "btn btn-block btn-success" })
-                            </td>
-                        </tr>
+                        <tr><td colspan="7" class="text-center">There are currently no rubber roller category record.</td></tr>
+                    }
+
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.Select((value, index) => new { value, index }))
+                        {
+                            <tr class="text-center">
+                                <td>
+                                    @(item.index + 1)
+                                </td>
+                                <td class="text-left">
+                                    @Html.DisplayFor(modelItem => item.value.description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.value.size)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.value.minAmount)
+                                </td>
+                                <td>
+                                    @{
+                                        var status = RollerCat.getCriticalStatus(item.value.criticalStatus);
+                                    }
+                                    @status
+                                </td>
+                                <td class="text-left">
+                                    @Html.DisplayFor(modelItem => item.value.remark)
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Edit", "RollerCategory", new { id = item.value.rollerCategoryID })" class="btn btn-success">
+                                        <i class='far fa-edit'></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
                     }
                 </table>
                 @Html.PagedListPager(Model, i => Url.Action("Index", "RollerCategory", new { i }))

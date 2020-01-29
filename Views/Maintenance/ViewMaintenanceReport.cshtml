@@ -1,0 +1,192 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = $"View Maintenance Report #{Model.maintenanceID}";
+}
+
+@model KJCFRubberRoller.Models.Maintenance
+@using KJCFRubberRoller.Models
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12 mx-auto">
+            <div class="py-2 bg-kjcf">
+                <h2 class="text-white text-center">Maintenance Report #@Model.maintenanceID</h2>
+            </div>
+
+            <div class="bg-white container px-4 pb-1">
+                <div class="row">
+                    <div class="col-md-2 border">Status</div>
+                    <div class="col-md-10 border"><b>@RollerMaintenance.getStatus(Model.status)</b></div>
+                </div>
+                @if (Model.status == 3)
+                {
+                    <div class="row">
+                        <div class="col-md-2 border">Reject Reason</div>
+                        <div class="col-md-10 border"><b>@Model.statusRemark</b></div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-md-2 border">Reported By</div>
+                    <div class="col-md-10 border"><b>@Model.reportedBy.name</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Reported Date Time</div>
+                    <div class="col-md-10 border"><b>@Model.reportDateTime</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Approved By</div>
+                    @{
+                        var approvedBy = "-";
+                        if (Model.verfiedBy != null)
+                        {
+                            approvedBy = Model.verfiedBy.name;
+                        }
+                    }
+                    <div class="col-md-10 border"><b>@approvedBy</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Approved Date Time</div>
+                    @{
+                        var approvedDateTime = "-";
+                        if (Model.approveDateTime != null)
+                        {
+                            approvedDateTime = Model.approveDateTime.ToString();
+                        }
+                    }
+                    <div class="col-md-10 border"><b>@approvedDateTime</b></div>
+                </div>
+            </div>
+
+            <div class="bg-white container px-4 pb-1">
+                <div class="row">
+                    <div class="col-md-2 border">Roller ID</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.RubberRoller.rollerID</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 border">
+                        IMAGE HERE
+                    </div>
+                    <div class="col-md-8 border">
+                        <div class="row">
+                            <div class="col-md-3 border">Diameter Core (ID)</div>
+                            <div class="col-md-9 border font-weight-bold">@Model.diameterCore mm</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">Diameter Roller (OD)</div>
+                            <div class="col-md-9 border font-weight-bold">@Model.diameterRoller mm</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">Mileage</div>
+                            <div class="col-md-9 border font-weight-bold">@Model.totalMileage</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">Opening Stock Date</div>
+                            @{
+                                var dateFormatted = $"{Model.openingStockDate.Day}-{Model.openingStockDate.Month}-{Model.openingStockDate.Year}";
+                            }
+                            <div class="col-md-9 border font-weight-bold">@dateFormatted</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">Last Production Line Used</div>
+                            @{
+                                var lineFormatted = $"L{Model.lastProductionLine}";
+                            }
+                            <div class="col-md-9 border font-weight-bold">@lineFormatted</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">Reason</div>
+                            <div class="col-md-9 border font-weight-bold">@Model.reason</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">Remarks</div>
+                            <div class="col-md-9 border font-weight-bold">@Model.remark</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">Send To</div>
+                            <div class="col-md-9 border font-weight-bold">@Model.sendTo</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">New Diameter</div>
+                            <div class="col-md-9 border font-weight-bold">@Model.newDiameter</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">New Shore Hardness</div>
+                            <div class="col-md-9 border font-weight-bold">@Model.newShoreHardness</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 border">Corrective Action</div>
+                            <div class="col-md-9 border font-weight-bold">@Model.correctiveAction</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row pt-2">
+                    @if (Model.status == 1 && (User.IsInRole(UserRole.getRole(1)) || User.IsInRole(UserRole.getRole(2))))
+                    {
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#rejectModal">Reject</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#approveModal">Approve</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <a href="@Url.Action("Index", "Maintenance")" class="btn btn-block btn-primary">Back</a>
+                        </div>
+                    }
+                </div>
+
+                <!-- Reject modal -->
+                <div class="modal fade" data-backdrop="static" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Reason for Reject Maintenance</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            @using (Html.BeginForm("RejectReport", "Maintenance", FormMethod.Post))
+                            {
+                                <div class="modal-body">
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("maintenanceID", Model.maintenanceID)
+                                    @Html.TextArea("rejectReason", "", new { @class = "form-control", placeholder = "Enter reject reason here", required = "true" })
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger btn-block">Confirm Reject</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Approve modal -->
+                <div class="modal fade" data-backdrop="static" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirm Maintenance Approval?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Please note that there will be <b>no further changes</b> to the maintenance report after approval. 
+                            </div>
+                            @using (Html.BeginForm("ApproveReport", "Maintenance", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("maintenanceID", Model.maintenanceID)
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success btn-block">Confirm Approval</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "New Rubber Roller Issue";
+}
+
+@model KJCFRubberRoller.Models.RubberRoller
+
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="py-2 bg-kjcf">
+                <h2 class="text-white text-center">Search Rubber Roller</h2>
+            </div>
+
+            <div class="bg-white container py-3">
+                <p class="required">* Require field</p>
+
+                @using (Html.BeginForm("create", "Schedule", FormMethod.Get))
+                {
+                    //Roller ID
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.rollerID)<span class="required">*</span>
+                        @Html.DropDownListFor(model => model.id, (IEnumerable<SelectListItem>)ViewData["rollerList"], "Select rubber roller", new { @class = "form-control selectpicker", data_live_search = "true" })
+                        @Html.ValidationMessageFor(model => model.rollerID, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="submit" value="Select Roller" class="btn btn-success btn-block" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Bootstrap Select script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script>
+}

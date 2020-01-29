@@ -201,6 +201,9 @@ namespace KJCFRubberRoller.Controllers
                 rubberRoll.remark = rubberRoller.remark;
                 rubberRoll.status = rubberRoller.status;
 
+                // Update rubber roller location
+                UpdateRubberRollerLocation(rubberRoll);
+
                 int result = _db.SaveChanges();
 
                 //if (rubberRoller.supplier.Equals("Canco") && notCancoRoller)
@@ -222,6 +225,12 @@ namespace KJCFRubberRoller.Controllers
                 TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully updated.";
                 return Redirect(Request.UrlReferrer.ToString());
             }
+        }
+
+        // Private method to update rubber roller location
+        private void UpdateRubberRollerLocation(RubberRoller rubberRoller)
+        {
+
         }
 
         [HttpGet]

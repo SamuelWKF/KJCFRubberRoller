@@ -1,0 +1,110 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Confirm Maintenance Detail";
+}
+@model KJCFRubberRoller.Models.Maintenance
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12 mx-auto">
+            <div class="py-2 bg-kjcf">
+                <h2 class="text-white text-center">Confirm Maintenance Report Detail</h2>
+            </div>
+            <div class="bg-white container px-4 pb-1">
+                @using (Html.BeginForm((String)Url.RequestContext.RouteData.Values["id"] == null ? "Create" : "Update", "Maintenance", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-2 border">Report Date</div>
+                        <div class="col-md-10 border font-weight-bold">@Model.reportDateTime</div>
+                        @Html.HiddenFor(m => m.reportDateTime)
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 border">Title</div>
+                        <div class="col-md-10 border font-weight-bold">@Model.title</div>
+                        @Html.HiddenFor(m => m.title)
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 border">Roller ID</div>
+                        <div class="col-md-10 border font-weight-bold">@Model.RubberRoller.rollerID</div>
+                        @Html.HiddenFor(m => m.rollerID)
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 border">
+                            IMAGE HERE
+                            @*@Html.HiddenFor(m => m.rollerID);*@
+                        </div>
+                        <div class="col-md-8 border">
+                            <div class="row">
+                                <div class="col-md-3 border">Diameter Core (ID)</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.diameterCore mm</div>
+                                @Html.HiddenFor(m => m.diameterCore)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">Diameter Roller (OD)</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.diameterRoller mm</div>
+                                @Html.HiddenFor(m => m.diameterRoller)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">Mileage</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.totalMileage</div>
+                                @Html.HiddenFor(m => m.totalMileage)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">Opening Stock Date</div>
+                                @{
+                                    var dateFormatted = $"{Model.openingStockDate.Day}-{Model.openingStockDate.Month}-{Model.openingStockDate.Year}";
+                                }
+                                <div class="col-md-9 border font-weight-bold">@dateFormatted</div>
+                                @Html.HiddenFor(m => m.openingStockDate)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">Last Production Line Used</div>
+                                @{
+                                    var lineFormatted = $"L{Model.lastProductionLine}";
+                                }
+                                <div class="col-md-9 border font-weight-bold">@lineFormatted</div>
+                                @Html.HiddenFor(m => m.lastProductionLine)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">Reason</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.reason</div>
+                                @Html.HiddenFor(m => m.reason)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">Remarks</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.remark</div>
+                                @Html.HiddenFor(m => m.remark)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">Send To</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.sendTo</div>
+                                @Html.HiddenFor(m => m.sendTo)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">New Diameter</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.newDiameter</div>
+                                @Html.HiddenFor(m => m.newDiameter)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">New Shore Hardness</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.newShoreHardness</div>
+                                @Html.HiddenFor(m => m.newShoreHardness)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">Corrective Action</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.correctiveAction</div>
+                                @Html.HiddenFor(m => m.correctiveAction)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row pt-2">
+                        <div class="col-md-12">
+                            <input type="submit" value='Confirm Maintenance Record Detail' class="btn btn-success btn-block" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

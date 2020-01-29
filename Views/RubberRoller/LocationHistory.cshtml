@@ -13,7 +13,7 @@
 }
 
 <div class="row mb-4">
-    <div class="mx-auto">
+    <div class="col-md-6 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
             <h2 class="text-white text-center">Location History for Roller @title</h2>
         </div>
@@ -21,7 +21,7 @@
             @Html.Label("Search:")
             @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control rr_location_search", placeholder = "Search location record here..." })
             <br />
-            <table class="table table-responsive table-hover table-striped sortable">
+            <table class="table table-hover table-striped sortable">
                 <thead>
                     <tr class="text-center">
                         <th>
@@ -41,7 +41,7 @@
                 </thead>
                 @if (Model.FirstOrDefault() == null)
                 {
-                    <tr><td colspan="5" class="text-center">No history record</td></tr>
+                    <tr><td colspan="5" class="text-center">There are currently no location history record.</td></tr>
                 }
 
                 @if (Model != null)
@@ -49,19 +49,19 @@
                     foreach (var item in Model.Select((value, index) => new { value, index }))
                     {
                         <tr>
-                            <td>
+                            <td class="text-center">
                                 @(item.index + 1)
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.location)
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.operationLine)
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.dateTimeIn)
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.dateTimeOut)
                             </td>
                         </tr>

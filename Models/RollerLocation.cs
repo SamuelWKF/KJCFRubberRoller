@@ -24,13 +24,13 @@ namespace KJCFRubberRoller.Models
         public string location { get; set; }
 
         [DisplayName("Operation Line")]
-        [RegularExpression(@"^[1-9][0-9]?$|^100$", ErrorMessage = "Please enter the correct operation line format")]
+        [RegularExpression(@"^[0-9][0-9]?$|^100$", ErrorMessage = "Please enter the correct operation line format")]
         public int operationLine { get; set; }
 
         [DisplayName("Date Time In")]
-        public DateTime dateTimeIn { get; set; }
+        public DateTime? dateTimeIn { get; set; }
 
         [DisplayName("Date Time Out")]
-        public DateTime dateTimeOut { get; set; }
+        public DateTime? dateTimeOut { get; set; }
     }
 }

@@ -1,0 +1,201 @@
+﻿@using KJCFRubberRoller.Models
+@model KJCFRubberRoller.Models.AfterRollerProductionChecklist
+
+@{
+    ViewBag.Title = "After Roller Production Checklist";
+
+    Schedule schedule = null;
+    if (ViewData["schedule"] == null)
+    {
+        schedule = Model.Schedule;
+    }
+    else
+    {
+        schedule = (Schedule)ViewData["schedule"];
+    }
+
+    //Roller Send to dropdown
+    List<SelectListItem> sendTo = new List<SelectListItem>();
+    sendTo.Add(new SelectListItem
+    {
+        Text = "Roller Room",
+        Value = "Roller Room"
+    });
+    sendTo.Add(new SelectListItem
+    {
+        Text = "Canco",
+        Value = "Canco"
+    });
+    sendTo.Add(new SelectListItem
+    {
+        Text = "Refurbish to EIKOH",
+        Value = "Refurbish to EIKOH"
+    });
+}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-10 mx-auto">
+
+            <div class="py-2 bg-kjcf">
+                <h2 class="text-white text-center">After Roller Production Checklist</h2>
+            </div>
+
+            @if (TempData["formStatus"] != null)
+            {
+                <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    @TempData["formStatusMsg"]
+                </div>
+            }
+
+            <div class="bg-white container py-3">
+                @using (Html.BeginForm("CompleteOperation", "Schedule", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("scheduleID", schedule.scheduleID)
+
+                    //Roller ID
+                    <div class="form-group">
+                        @Html.Label("Roller ID")
+                        @Html.TextBox("rollID", schedule.RubberRoller.rollerID, new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    //Roller Description
+                    <div class="form-group">
+                        @Html.Label("Roller Descriptions")
+                        @Html.TextBox("rollerDescription", $"{schedule.RubberRoller.RollerCategory.size} - {schedule.RubberRoller.RollerCategory.description}", new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    //Operation Line
+                    <div class="form-group">
+                        @Html.Label("Operation Line")
+                        @Html.TextBox("operationLine", $"L{schedule.operationLine}", new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Roller Condition (After Production to verify)</th>
+                                <th>Enter value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*Roller Appearance*@
+                            <tr>
+                                <td>1</td>
+                                <td><p class="font-weight-bold">Roller appearance, have any marking, dent mark?</p></td>
+                                <td>
+                                    @Html.RadioButtonFor(Model => Model.rollerAppearance, "Yes") @Html.Label("Yes")
+                                    @Html.RadioButtonFor(Model => Model.rollerAppearance, "No", new { @checked = "checked" }) @Html.Label("No")
+                                    @Html.ValidationMessageFor(model => model.rollerAppearance, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+
+                            @*Roller Send To*@
+                            <tr>
+                                <td>2</td>
+                                <td><p class="font-weight-bold">Roller send to:</p></td>
+                                <td>
+                                    @Html.DropDownListFor(model => model.rollerSendTo, sendTo, "Select roller send to", new { @class = "form-control", id = "rollerSendTo" })<br />
+                                    @Html.TextBox("roomLocation", "", new { @class = "form-control", style = "display:none", id = "roomLocationInput", maxlength = "3", placeholder = "Enter roller room rack location" })
+                                    @Html.ValidationMessageFor(model => model.rollerSendTo, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+
+                            @*Roller Mileage Run*@
+                            <tr>
+                                <td>3</td>
+                                <td><p class="font-weight-bold">Mileage Run:</p></td>
+                                <td>
+                                    @Html.TextBox("mileageRun", "", new { @class = "form-control", placeholder = "Enter mileage run here", type = "number", min = "0", required = "required" })
+                                </td>
+                            </tr>
+
+                            @*End Date Time*@
+                            <tr>
+                                <td>4</td>
+                                <td><p class="font-weight-bold">End Date Time:</p></td>
+                                <td>
+                                    @Html.TextBox("endDT", "", new { @class = "form-control", id = "endDate", type = "datetime-local", placeholder = "Enter end date time here" })
+                                </td>
+                            </tr>
+
+                            @*Remark*@
+                            <tr>
+                                <td>5</td>
+                                <td><p class="font-weight-bold">Other remark.</p></td>
+                                <td>
+                                    @Html.TextAreaFor(model => model.remarks, new { @class = "form-control", placeholder = "Enter any remarks here" })
+                                    @Html.ValidationMessageFor(model => model.remarks, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <input type="reset" value="Clear" class="btn btn-primary btn-block" />
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#confirmCompleteOperationModal">Submit Checklist & Complete Operation</button>
+                        </div>
+                    </div>
+
+                    <!-- Confirmation modal -->
+                    <div class="modal fade" data-backdrop="static" id="confirmCompleteOperationModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirm to Complete Operation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Confirm to mark operation as complete?<br /><br />
+                                    Please note any further changes to schedule details, before & after checklist is <b>not allowed</b> after operation is marked as completed.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success btn-block">Confirm to Complete Operation</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        document.querySelector('#endDate').setAttribute('min', new Date().toISOString().substring(0, 16));
+        let sendToDropdown = document.querySelector('#rollerSendTo');
+
+        sendToDropdown.addEventListener("change", (e) => {
+            let input = document.querySelector('#roomLocationInput');
+            if (e.target.value === "Roller Room") {
+                input.style.display = "";
+                input.setAttribute("required", "required");
+            } else {
+                input.removeAttribute("required");
+                input.style.display = "none";
+            }
+        });
+
+        if (document.querySelector('.alert') !== null) {
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 5000);
+        }
+    })();
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

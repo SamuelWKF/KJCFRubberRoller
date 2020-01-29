@@ -15,18 +15,14 @@ namespace KJCFRubberRoller.Models
         public int id { get; set; }
 
         [Required]
-        [DisplayName("Roller ID")]
-        public int rollerID { get; set; }
-        public virtual RubberRoller RubberRoller { get; set; }
+        [DisplayName("Schedule ID")]
+        public int scheduleID { get; set; }
+        public virtual Schedule Schedule { get; set; }
 
         [Required]
         [DisplayName("Date Time")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy, HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? dateTime { get; set; }
-
-        [Required]
-        [DisplayName("Operation Time")]
-        public int operationLine { get; set; }
 
         [MaxLength(100)]
         [Required]
@@ -39,7 +35,6 @@ namespace KJCFRubberRoller.Models
         public string rollerSendTo { get; set; }
 
         [MaxLength(255)]
-        [Required]
         [DisplayName("Remark")]
         public string remarks { get; set; }
 

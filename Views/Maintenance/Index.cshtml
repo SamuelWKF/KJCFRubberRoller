@@ -1,24 +1,36 @@
 ﻿@model IPagedList<KJCFRubberRoller.Models.Maintenance>
 @using PagedList;
 @using PagedList.Mvc;
+@using KJCFRubberRoller.Models
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All Maintenance Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row mb-4">
-    <div class="col-12">
+    <div class="col-md-10 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
-            <h2 class="text-white text-center">Rubber Roller Maintenance Records</h2>
+            <h2 class="text-white text-center">All Maintenance Report</h2>
         </div>
-
         <div class="bg-white container-fluid py-3">
-            @Html.ActionLink("Add New Maintenance Report", "Create", null, new { @class = "btn btn-block btn-primary" })
+
+            @if (TempData["formStatus"] != null)
+            {
+                <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show pb-2" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    @TempData["formStatusMsg"]
+                </div>
+            }
+
+            @Html.ActionLink("File New Maintenance Report", "CreateSearch", null, new { @class = "btn btn-block btn-primary" })
             <br />
             @Html.Label("Search:")
-            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control rr_list_search", placeholder = "Search maintenance report here..." })
+            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control maintenance_list_search", placeholder = "Search rubber roller here..." })
             <br />
-
             <table class="table table-responsive table-hover table-striped sortable">
                 <thead>
                     <tr class="text-center">
@@ -26,67 +38,112 @@
                             No.
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.First().maintenanceID)
-                        </th>
-                        <th>
                             Roller ID
                         </th>
                         <th>
+                            Reported Date Time
+                        </th>
+                        <th>Reported By</th>
+                        <th>
+                            Approved Date time
+                        </th>
+                        <th>
+                            Approved By
+                        </th>
+                        <th>
+                            Send To
+                        </th>
+                        <th>
+                            Reason
+                        </th>
+                        <th width="5%">
                             Status
                         </th>
-                        <th width="5%">Edit<br />Details</th>
-                        <th width="5%">Request for<br />Maintenance</th>
-                        <th width="5%">Maintenance<br />History</th>
-
-
-                        @foreach (var item in Model.Select((value, index) => new { value, index }))
-                        {
-                    <tr>
-                        <td>
-                            @(item.index + 1)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.value.maintenanceID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.value.rollerID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.value.status)
-                        </td>
-                        <td>
-                            @Html.ActionLink("ED", "Edit", new { id = item.value.maintenanceID }, new { @class = "btn btn-block btn-success" })
-                        </td>
-                        <td>
-                            @Html.ActionLink("RM", "RequestforMaintenance", new { id = item.value.maintenanceID }, new { @class = "btn btn-block btn-success" })
-                        </td>
-                        <td>
-                            @Html.ActionLink("MH", "MaintenanceHistory", new { id = item.value.maintenanceID }, new { @class = "btn btn-block btn-success" })
-                        </td>
+                        <th width="5%">
+                            View
+                        </th>
+                        <th width="5%">
+                            Edit<br />Details
+                        </th>
                     </tr>
+                </thead>
+                @if (Model.FirstOrDefault() == null)
+                {
+                    <tr><td colspan="11" class="text-center">There are currently no maintenance record.</td></tr>
+                }
+
+                @if (Model != null)
+                {
+                    foreach (var item in Model.Select((value, index) => new { value, index }))
+                    {
+                        <tr class="text-center">
+                            <td>
+                                @(item.index + 1)
+                            </td>
+                            <td>@Html.DisplayFor(m => item.value.RubberRoller.rollerID)</td>
+                            <td>@Html.DisplayFor(m => item.value.reportDateTime)</td>
+                            <td>@Html.DisplayFor(m => item.value.reportedBy.name)</td>
+                            @{
+                                var date = item.value.approveDateTime == null ? "-" : item.value.approveDateTime.ToString();
+                            }
+                            <td>@date</td>
+                            @{
+                                var name = item.value.verfiedBy == null ? "-" : item.value.verfiedBy.name;
+                            }
+                            <td>@name</td>
+                            <td>@Html.DisplayFor(m => item.value.sendTo)</td>
+                            <td class="text-justify">@Html.DisplayFor(m => item.value.reason)</td>
+                            @{
+                                var status = RollerMaintenance.getStatus(item.value.status);
+                            }
+                            <td>@status</td>
+                            <td>
+                                <a href="/maintenance/@item.value.maintenanceID/view" class="btn btn-block btn-success">
+                                    <i class="far fa-eye"></i>
+                                </a>
+                            </td>
+                            <td>
+                                @if (item.value.status == 1)
+                                {
+                                    <a href="/maintenance/@item.value.maintenanceID/edit" class="btn btn-block btn-success">
+                                        <i class='far fa-edit'></i>
+                                    </a>
+                                }
+                            </td>
+                        </tr>
                     }
-                </table>
-                @Html.PagedListPager(Model, i => Url.Action("Index", "Maintenance", new { i }))
-            </div>
+                }
+            </table>
+            @Html.PagedListPager(Model, i => Url.Action("Index", "RubberRoller", new { i }))
+        </div>
     </div>
 </div>
 
 
-    <script>
-        // IIFE (Immediately Invoked Function Expression)
-        (function () {
-            // Select the search input box for each of the table list
-            const searchBox = document.querySelector('input.rr_list_search');
-            // Add event listeners to each search box
-            searchBox.addEventListener('input', (e) => {
-                const rubberRollerTable = document.querySelector('.table').children[1].children;
-                Array.from(rubberRollerTable).forEach((v, i) => {
-                    if (v.innerText.toLowerCase().indexOf(searchBox.value.toLowerCase()) !== -1) {
-                        v.style.removeProperty('display');
-                    } else {
-                        v.style.display = 'none';
-                    }
-                });
+<script>
+    // IIFE (Immediately Invoked Function Expression)
+    (function () {
+        if (document.querySelector('.alert') !== null) {
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 5000);
+        }
+        document.querySelector('.rSize').addEventListener('keyup', (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
+
+        // Select the search input box for each of the table list
+        const searchBox = document.querySelector('input.maintenance_list_search');
+        // Add event listeners to each search box
+        searchBox.addEventListener('input', (e) => {
+            const table = document.querySelector('.table').children[1].children;
+            Array.from(table).forEach((v, i) => {
+                if (v.innerText.toLowerCase().indexOf(searchBox.value.toLowerCase()) !== -1) {
+                    v.style.removeProperty('display');
+                } else {
+                    v.style.display = 'none';
+                }
             });
-        })();
-    </script>
+        });
+    })();
+</script>

@@ -20,7 +20,7 @@
                 <thead>
                     <tr class="text-center">
                         <th>
-                            Rubber Roller
+                            Roller ID
                         </th>
                         <th>
                             Description
@@ -42,7 +42,7 @@
                 </thead>
                 @if (Model.FirstOrDefault() == null)
                 {
-                    <tr><td colspan="5" class="text-center">No history record</td></tr>
+                    <tr><td colspan="7" class="text-center">There are currently no location record.</td></tr>
                 }
 
                 @if (Model != null)
@@ -56,7 +56,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.value.RollerCategory.size) - @Html.DisplayFor(modelItem => item.value.RollerCategory.description)
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @{
                                     string location = "-";
                                     var rollerLocation = item.value.RollerLocations.LastOrDefault();
@@ -74,13 +74,13 @@
                                 }
                                 @location
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.last_usage_date)
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.last_usage_date)
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.condition)
                             </td>
                             <td>

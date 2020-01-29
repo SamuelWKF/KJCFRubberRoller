@@ -1,0 +1,194 @@
+﻿@model KJCFRubberRoller.Models.Schedule
+@using KJCFRubberRoller.Models
+
+@{
+    ViewBag.Title = "View Operation Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-md-8 mx-auto">
+        <div class="py-2 mt-4 bg-kjcf">
+            <h2 class="text-white text-center">Operation #@Model.scheduleID Detail</h2>
+        </div>
+        <div class="bg-white py-3">
+            <div class="container">
+
+                @*Schedule Detail*@
+                <div class="row col-md-13 pl-3 pt-1 bg-kjcf">
+                    <h5 class="text-white text-center">Schedule Detail</h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Date</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.startDateTime.Value.ToString("dd-MMM-yyyy")</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Prepared By</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.AfterRollerProductionChecklists.First().preparedBy.name</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Status</div>
+                    <div class="col-md-10 border font-weight-bold">@ScheduleStatus.getStatusString(Model.status)</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Operation Start Time</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.startDateTime.Value.ToString("hh:mm tt")</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Operation End Time</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.endDateTime.Value.ToString("hh:mm tt")</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Operation Line</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.operationLine</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Product</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.product</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Tin Plate Size</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.tinplateSize</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Quantity</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.quantity</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Remark</div>
+                    @{
+                        var remark = Model.remark == null ? "-" : Model.remark;
+                    }
+                    <div class="col-md-10 border font-weight-bold">@remark</div>
+                </div>
+
+                <br />
+
+                @*Rubber Roller Detail*@
+                <div class="row col-md-13 pl-3 pt-1 bg-kjcf">
+                    <h5 class="text-white text-center">Rubber Roller Detail</h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Roller ID</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.RubberRoller.rollerID</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Roller Description</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.RubberRoller.RollerCategory.size - @Model.RubberRoller.RollerCategory.description</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Roller Operation Start Mileage</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.startMileage</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Roller Total Mileage</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.endMileage</div>
+                </div>
+
+                <br />
+
+                @*Before Issue Checklist*@
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="bg-kjcf text-white">Before Issue Checklist</th>
+                        </tr>
+                        <tr>
+                            <th>No.</th>
+                            <th>Roller Condition (Before Sending to the Line)</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*Roller Shore Hardness*@
+                        <tr>
+                            <td>1</td>
+                            <td><p class="font-weight-bold">SH of roller is within 33 to 38 for stencil items.</p></td>
+                            <td>
+                                @Model.BeforeRollerIssueChecklists.First().rollerSH
+                            </td>
+                        </tr>
+
+                        @*Roller Roundness*@
+                        <tr>
+                            <td>2</td>
+                            <td><p class="font-weight-bold">Roller Roundness < 0.30mm for the left and right hub.</p></td>
+                            <td>
+                                @Model.BeforeRollerIssueChecklists.First().rollerRoundness
+                            </td>
+                        </tr>
+
+                        @*Hubs condition*@
+                        <tr>
+                            <td>3</td>
+                            <td><p class="font-weight-bold">Hubs in good condition. Please use gauge to confirm.</p></td>
+                            <td>
+                                @Model.BeforeRollerIssueChecklists.First().hubsCondition
+                            </td>
+                        </tr>
+
+                        @*Nut Used*@
+                        <tr>
+                            <td>4</td>
+                            <td><p class="font-weight-bold">Nut used are 8.00mm and NOT 6.00mm.</p></td>
+                            <td>
+                                @Model.BeforeRollerIssueChecklists.First().nutUsed
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                @*After Production Checklist*@
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="bg-kjcf text-white">After Production Checklist</th>
+                        </tr>
+                        <tr>
+                            <th>No.</th>
+                            <th>Roller Condition (After Production to verify)</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*Roller Appearance*@
+                        <tr>
+                            <td>1</td>
+                            <td><p class="font-weight-bold">Roller appearance, have any marking, dent mark?</p></td>
+                            <td>
+                                @Model.AfterRollerProductionChecklists.First().rollerAppearance
+                            </td>
+                        </tr>
+
+                        @*Roller Send To*@
+                        <tr>
+                            <td>2</td>
+                            <td><p class="font-weight-bold">Roller send to:</p></td>
+                            <td>
+                                @Model.AfterRollerProductionChecklists.First().rollerSendTo
+                            </td>
+                        </tr>
+
+                        @*Remark*@
+                        <tr>
+                            <td>5</td>
+                            <td><p class="font-weight-bold">Other remark.</p></td>
+                            <td>
+                                @{
+                                    var rmk = Model.AfterRollerProductionChecklists.First().remarks == "" ? "-" : Model.AfterRollerProductionChecklists.First().remarks;
+                                }
+                                @rmk
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="@Request.UrlReferrer.ToString()" class="btn btn-block btn-primary">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

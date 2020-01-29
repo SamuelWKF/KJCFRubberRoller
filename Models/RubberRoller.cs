@@ -72,8 +72,6 @@ namespace KJCFRubberRoller.Models
 
         // Define relationships
         public virtual ICollection<RollerLocation> RollerLocations { get; set; }
-        public virtual ICollection<BeforeRollerIssueChecklist> BeforeRollerIssueChecklists { get; set; }
-        public virtual ICollection<AfterRollerProductionChecklist> AfterRollerProductionChecklists { get; set; }
         public virtual ICollection<Maintenance> Maintenances { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
     }

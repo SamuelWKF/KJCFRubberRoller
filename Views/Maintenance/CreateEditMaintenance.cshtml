@@ -1,0 +1,235 @@
+﻿@using KJCFRubberRoller.Models
+@model KJCFRubberRoller.Models.Maintenance
+
+@{
+    if ((String)Url.RequestContext.RouteData.Values["id"] == null)
+    {
+        ViewBag.Title = "File New Maintenance Report";
+    }
+    else
+    {
+        ViewBag.Title = $"Update Maintenance Report #{Model.maintenanceID}";
+    }
+
+    RubberRoller rubber = null;
+    if (ViewData["rubber"] == null)
+    {
+        rubber = Model.RubberRoller;
+    }
+    else
+    {
+        rubber = (RubberRoller)ViewData["rubber"];
+    }
+
+    //Roller supplier dropdown
+    List<SelectListItem> rollerSupplier = new List<SelectListItem>();
+    rollerSupplier.Add(new SelectListItem
+    {
+        Text = "Mega",
+        Value = "Mega"
+    });
+    rollerSupplier.Add(new SelectListItem
+    {
+        Text = "EIKOH",
+        Value = "EIKOH"
+    });
+    rollerSupplier.Add(new SelectListItem
+    {
+        Text = "Canco",
+        Value = "Canco"
+    });
+}
+
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <div class="py-2 bg-kjcf mt-4">
+            <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["id"] == null ? "File New Maintenance Report" : $"Update Maintenance Report #{Model.maintenanceID}")</h2>
+        </div>
+
+        @if (TempData["formStatus"] != null)
+        {
+            <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show pb-2" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                @TempData["formStatusMsg"]
+            </div>
+        }
+
+        <div class="bg-white container-fluid py-3">
+            <p class="required">* Require field</p>
+            @using (Html.BeginForm((String)Url.RequestContext.RouteData.Values["id"] == null ? "CreateConfirm" : "Update", "Maintenance", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    <div class="col-md-2 border">Date</div>
+                    <div class="col-md-10 border font-weight-bold">@DateTime.Now.ToString("dd-MMM-yyy")</div>
+                    @Html.HiddenFor(m => m.reportDateTime, new { Value = DateTime.Now })
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Title</div>
+                    <div class="col-md-10 border font-weight-bold">
+                        @Html.TextBoxFor(model => model.title, new { @class = "form-control", placeholder = "Enter title here"})
+                        @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Roller ID</div>
+                    <div class="col-md-10 border font-weight-bold">@rubber.rollerID</div>
+                    @Html.HiddenFor(m => m.rollerID, new { Value = rubber.id})
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 border">
+                        IMAGE HERE
+                        @*@Html.HiddenFor(m => m.rollerID);*@
+                    </div>
+                    <div class="col-md-8 border">
+                        @*Diameter Core*@
+                        <div class="row">
+                            <div class="col-md-3 border"><label>Diameter Core (ID)<br/>(Millimeter - mm)</label><span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.diameterCore, new { @class = "form-control", placeholder = "Enter roller diameter core here", type = "number", step = "0.01", min = "0" })
+                                @Html.ValidationMessageFor(model => model.diameterCore, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*Diameter Roller*@
+                    <div class="row">
+                        <div class="col-md-3 border"><label>Diameter Roller (OD)<br />(Millimeter - mm)</label><span class="required">*</span></div>
+                        <div class="col-md-9 border font-weight-bold">@Html.TextBox("diameterRoller", rubber.diameter, new { @class = "form-control", @readonly = "true" })</div>
+                    </div>
+
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.totalMileage)<span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.totalMileage, new { @class = "form-control", placeholder = "Enter roller's total mileage here" })
+                                @Html.ValidationMessageFor(model => model.totalMileage, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*Opening Stock Date*@
+                        <div class="row">
+                            <div class="col-md-3 border">
+                                @Html.LabelFor(model => model.openingStockDate)<span class="required">*</span>
+                            </div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.openingStockDate, new { @class = "form-control openingDateInput", @type = "date", placeholder = "Enter opening stock date" })
+                                @Html.ValidationMessageFor(model => model.openingStockDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*Last production line used*@
+                        <div class="row">
+                            <div class="col-md-3 border">Last Production Line Used</div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @{
+                                    var sched = rubber.Schedules.LastOrDefault();
+                                    var lastProdLine = "";
+                                    if (sched == null)
+                                    {
+                                        lastProdLine = "-";
+
+                                    }
+                                    else
+                                    {
+                                        lastProdLine = $"L{sched.operationLine.ToString()}";
+                                    }
+                                }
+                                @Html.TextBox("lastProdLine", lastProdLine, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+
+                        @*Send To*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.sendTo)<span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.DropDownListFor(model => model.sendTo, rollerSupplier, "Select send to supplier", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.sendTo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*Reason*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.reason)<span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextAreaFor(model => model.reason, new { @class = "form-control", placeholder = "Enter reason here" })
+                                @Html.ValidationMessageFor(model => model.reason, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*Roller Remark*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.remark)</div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextAreaFor(model => model.remark, new { @class = "form-control", placeholder = "Enter any remarks here" })
+                                @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*New Roller Diameter*@
+                        <div class="row">
+                        <div class="col-md-3 border"><label>New Diameter<br />(Millimeter - mm)</label><span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.newDiameter, new { @class = "form-control", placeholder = "Enter roller new diameter here", type = "number", step = "0.01", min = "0" })
+                                @Html.ValidationMessageFor(model => model.newDiameter, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*New Roller Shore Hardness*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.newShoreHardness)<span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.newShoreHardness, new { @class = "form-control", placeholder = "Enter roller new shore hardness here" })
+                                @Html.ValidationMessageFor(model => model.newShoreHardness, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*Corrective Action*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.correctiveAction)</div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.correctiveAction, new { @class = "form-control", placeholder = "Enter roller corrective action here" })
+                                @Html.ValidationMessageFor(model => model.correctiveAction, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                if ((String)Url.RequestContext.RouteData.Values["id"] != null)
+                {
+                    @Html.HiddenFor(m => m.maintenanceID)
+                }
+
+                <div class="form-group mt-3 row">
+                    <div class="col-md-6">
+                        <input type="reset" value="Clear" class="btn btn-primary btn-block" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Maintenance Record" : "Update Maintenance Report")' class="btn btn-success btn-block" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Bootstrap Select script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script>
+
+    <script>
+        (function () {
+            let input = document.querySelector('.openingDateInput');
+            @if (Model != null) {
+                <text>
+                input.value = `@Model.openingStockDate.Year-${('0' + @Model.openingStockDate.Month).slice(-2)}-@Model.openingStockDate.Day`;
+                </text>
+            }
+        })();
+    </script>
+}

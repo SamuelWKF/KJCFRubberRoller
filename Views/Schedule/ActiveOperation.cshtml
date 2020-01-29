@@ -1,0 +1,142 @@
+﻿@model IPagedList<KJCFRubberRoller.Models.Schedule>
+@using PagedList;
+@using PagedList.Mvc;
+@using KJCFRubberRoller.Models;
+
+@{
+    ViewBag.Title = "Active Operation List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-md-10 mx-auto">
+        <div class="py-2 mt-4 bg-kjcf">
+            <h2 class="text-white text-center">Active Operation List</h2>
+        </div>
+        <div class="bg-white container-fluid py-3">
+
+            @if (TempData["formStatus"] != null)
+            {
+                <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    @TempData["formStatusMsg"]
+                </div>
+            }
+
+            @Html.Label("Search:")
+            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control active_opt_search", placeholder = "Search active operation here..." })
+            <br />
+            <table class="table table-responsive table-hover sortable">
+                <thead>
+                    <tr class="text-center">
+                        <th>
+                            No.
+                        </th>
+                        <th>Roller ID</th>
+                        <th>Operation Line</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Start Date Time</th>
+                        <th>End Date Time</th>
+                        <th class="w-25">Remark</th>
+                        <th>Status</th>
+                        <th>View Details</th>
+                        <th>Edit Details</th>
+                        <th>Mark Operation<br />Completed</th>
+                    </tr>
+                </thead>
+
+                @if (Model.FirstOrDefault() == null)
+                {
+                    <tr><td colspan="12" class="text-center">There are currently no schedule record.</td></tr>
+                }
+
+                @if (Model != null)
+                {
+                    foreach (var item in Model.Select((value, index) => new { value, index }))
+                    {
+                        <tr>
+                            <td class="text-center">@(item.index + 1)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.RubberRoller.rollerID)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.operationLine)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.product)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.quantity)</td>
+                            <td>
+                                @{
+                                    var startDateTime = item.value.startDateTime.Value.ToString("dd-MMM-yyy hh:mm: tt");
+                                }
+                                @startDateTime
+                            </td>
+                            <td>
+                                @{
+                                    var endDateTime = "-";
+                                    if (item.value.endDateTime != null)
+                                    {
+                                        endDateTime = item.value.endDateTime.Value.ToString("dd-MMM-yyy hh:mm: tt");
+                                    }
+                                }
+                                @endDateTime
+                            </td>
+                            <td>
+                                @{
+                                    var remark = "-";
+                                    if (item.value.remark != "")
+                                    {
+                                        remark = item.value.remark;
+                                    }
+                                }
+                                @remark
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    var status = ScheduleStatus.getStatusString(item.value.status);
+                                }
+                                @status
+                            </td>
+                            <td>
+                                <a href="/schedule/@item.value.scheduleID/view" class="btn btn-block btn-success">
+                                    <i class="far fa-eye"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/schedule/@item.value.scheduleID/view" class="btn btn-block btn-success">
+                                    <i class='far fa-edit'></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/schedule/@item.value.scheduleID/mark_complete" class="btn btn-block btn-success">
+                                    <i class="fas fa-clipboard-check"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+            @Html.PagedListPager(Model, i => Url.Action("Index", "RubberRoller", new { i }))
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    // IIFE (Immediately Invoked Function Expression)
+    (function () {
+        // Select the search input box for each of the table list
+        const searchBox = document.querySelector('input.active_opt_search');
+        // Add event listeners to each search box
+        searchBox.addEventListener('input', (e) => {
+            const table = document.querySelector('.table').children[1].children;
+            Array.from(table).forEach((v, i) => {
+                if (v.innerText.toLowerCase().indexOf(searchBox.value.toLowerCase()) !== -1) {
+                    v.style.removeProperty('display');
+                } else {
+                    v.style.display = 'none';
+                }
+            });
+        });
+    })();
+</script>

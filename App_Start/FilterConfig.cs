@@ -8,7 +8,8 @@ namespace KJCFRubberRoller
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            //filters.Add(new AuthorizeAttribute());
+            // Require all access to login
+            filters.Add(new AuthorizeAttribute());
         }
     }
 }

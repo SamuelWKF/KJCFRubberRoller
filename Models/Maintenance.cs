@@ -27,15 +27,19 @@ namespace KJCFRubberRoller.Models
         public virtual ApplicationUser verfiedBy { get; set; }
 
         [Required]
+        [DisplayName("Title")]
+        public string title { get; set; }
+
+        [Required]
         [DisplayName("Date Reported")]
-        public DateTime reportDateTime { get; set; }
+        public DateTime? reportDateTime { get; set; }
 
         [DisplayName("Date Approved")]
-        public DateTime approveDateTime { get; set; }
+        public DateTime? approveDateTime { get; set; }
 
         [Required]
         [DisplayName("Diameter Core")]
-        public int diameterCore { get; set; }
+        public double diameterCore { get; set; }
 
         [Required]
         [DisplayName("Roller Diameter")]
@@ -46,15 +50,13 @@ namespace KJCFRubberRoller.Models
         public int totalMileage { get; set; }
 
         [DisplayName("Opening Stock Date")]
-        //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy,HH:mm}", ApplyFormatInEditMode = true)]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]      
-        //[RegularExpression(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$", ErrorMessage = "Invalid date format.")]
         public DateTime openingStockDate { get; set; }
 
-        [DisplayName("Last Operation Line")]
+        [DisplayName("Last Production Line")]
         public int lastProductionLine { get; set; }
-        
+
         [MaxLength(255)]
+        [Required]
         [DisplayName("Reason")]
         public string reason { get; set; }
 
@@ -62,12 +64,17 @@ namespace KJCFRubberRoller.Models
         [DisplayName("Remark")]
         public string remark { get; set; }
 
+        [Required]
         [DisplayName("New Diameter")]
         public double newDiameter { get; set; }
 
+        [Required]
+        [DisplayName("Send To")]
+        public string sendTo { get; set; }
+
+        [Required]
         [MaxLength(255)]
         [DisplayName("New Shore Hardness")]
-        [RegularExpression(@"^[\d\-]+$", ErrorMessage = "Please enter the correct roller format. Example: 40-41")]
         public string newShoreHardness { get; set; }
 
         [MaxLength(255)]
@@ -77,5 +84,8 @@ namespace KJCFRubberRoller.Models
         [Required]
         [DisplayName("Maintenance Status")]
         public int status { get; set; }
+
+        [DisplayName("Reject Status Remark")]
+        public string statusRemark { get; set; }
     }
 }

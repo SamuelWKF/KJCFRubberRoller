@@ -2,15 +2,19 @@
 @using PagedList;
 @using PagedList.Mvc;
 @{
-    var title = $"{Model.First().RollerCategory.size} - {Model.First().RollerCategory.description}";
+    string title = " ";
+    if (Model.FirstOrDefault() != null)
+    {
+        title = $"{Model.First().RollerCategory.size} - {Model.First().RollerCategory.description}";
+    }
     ViewBag.Title = $"Stock Details for {title}";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row mb-4">
-    <div class="mx-auto">
+    <div class="col-md-10 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
-            <h2 class="text-white text-center">Stock Details for Roller "@title"</h2>
+            <h2 class="text-white text-center">Stock Details for Category "@title"</h2>
         </div>
         <div class="bg-white container-fluid py-3">
             @Html.ActionLink("Add New Rubber Roller", "Create", null, new { @class = "btn btn-block btn-primary" })
@@ -27,20 +31,17 @@
                         <th>
                             @Html.DisplayNameFor(model => model.First().rollerID)
                         </th>
-                        <th>
-                            Roller Category
-                        </th>
                         <th>On Supplier<br />Hand</th>
                         <th>
                             Available<br />at KJCF
                         </th>
                         <th>
-                            Remark
-                        </th>
-                        <th width="5%">
                             Status
                         </th>
                         <th width="5%">Operation<br />Line No.</th>
+                        <th>
+                            Remark
+                        </th>
                         <th width="5%">Edit<br />Details</th>
                         <th width="5%">Location<br />History</th>
                         <th width="5%">Maintenance<br />History</th>
@@ -48,58 +49,84 @@
                     </tr>
                 </thead>
 
-                @foreach (var item in Model.Select((value, index) => new { value, index }))
+                @if (Model.FirstOrDefault() == null)
                 {
-                    <tr>
-                        <td>
-                            @(item.index + 1)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.value.rollerID)
-                        </td>
-                        <td>
-                            @{
-                                var rollerCat = string.Format("{0} - {1}", item.value.RollerCategory.size, item.value.RollerCategory.description);
-                            }
-                            @rollerCat
-                        </td>
-                        <td>
-                            @if (item.value.RollerLocations.LastOrDefault() != null)
-                            {
-                                @Html.Display(item.value.RollerLocations.LastOrDefault().location)
-                            }
-                        </td>
-                        <td>
-                            @if (item.value.RollerLocations.LastOrDefault() != null)
-                            {
-                                @Html.Display(item.value.RollerLocations.LastOrDefault().location)
-                            }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.value.remark)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.value.status)
-                        </td>
-                        <td>
-                            @if (item.value.RollerLocations.LastOrDefault() != null)
-                            {
-                                @Html.Display(item.value.RollerLocations.LastOrDefault().operationLine.ToString())
-                            }
-                        </td>
-                        <td>
-                            @Html.ActionLink("ED", "Edit", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
-                        </td>
-                        <td>
-                            @Html.ActionLink("LH", "LocationHistory", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
-                        </td>
-                        <td>
-                            @Html.ActionLink("MH", "MaintenanceHistory", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
-                        </td>
-                        <td>
-                            @Html.ActionLink("OH", "OperationHistory", new { id = item.value.id }, new { @class = "btn btn-block btn-success" })
-                        </td>
-                    </tr>
+                    <tr><td colspan="11" class="text-center">There are currently no rubber rollers for the selected roller category.</td></tr>
+                }
+
+                @if (Model.FirstOrDefault() != null)
+                {
+                    foreach (var item in Model.Select((value, index) => new { value, index }))
+                    {
+                        <tr>
+                            <td class="text-center">
+                                @(item.index + 1)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.value.rollerID)
+                            </td>
+                            <td class="text-center">
+                                @if (item.value.RollerLocations.LastOrDefault() != null)
+                                {
+                                    @Html.Display(item.value.RollerLocations.LastOrDefault().location)
+                                }
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    string locat = "-";
+                                    var rollLocation = item.value.RollerLocations.LastOrDefault();
+                                    if (rollLocation != null)
+                                    {
+                                        if (rollLocation.operationLine == 0)
+                                        {
+                                            locat = rollLocation.location;
+                                        }
+                                    }
+                                }
+                                @locat
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.value.status)
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    string location = "-";
+                                    var rollerLocation = item.value.RollerLocations.LastOrDefault();
+                                    if (rollerLocation != null)
+                                    {
+                                        if (rollerLocation.operationLine != 0)
+                                        {
+                                            location = $"L{rollerLocation.operationLine}";
+                                        }
+                                    }
+                                }
+                                @location
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.value.remark)
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Edit", "RubberRoller", new { id = item.value.id })" class="btn btn-success">
+                                    <i class='far fa-edit'></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("LocationHistory", "RubberRoller", new { id = item.value.id })" class="btn btn-success">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("MaintenanceHistory", "RubberRoller", new { id = item.value.id })" class="btn btn-success">
+                                    <i class="fas fa-history"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("OperationHistory", "RubberRoller", new { id = item.value.id })" class="btn btn-success">
+                                    <i class="fas fa-tools"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 }
             </table>
             @Html.PagedListPager(Model, i => Url.Action("Index", "RubberRoller", new { i }))

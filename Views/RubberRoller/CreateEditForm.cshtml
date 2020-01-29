@@ -104,6 +104,11 @@
     });
     rollerStatus.Add(new SelectListItem
     {
+        Text = "Waiting to be sent for maintenance",
+        Value = "Waiting to be sent for maintenance"
+    });
+    rollerStatus.Add(new SelectListItem
+    {
         Text = "Sent to maintenance",
         Value = "Sent to maintenance"
     });
@@ -143,7 +148,7 @@
                     //Roller Category
                     <div class="form-group">
                         @Html.LabelFor(model => model.rollerCategoryID)<span class="required">*</span>
-                        @Html.DropDownListFor(model => model.rollerCategoryID, (IEnumerable<SelectListItem>)ViewData["rollerCatList"], "Select rubber roller category", new { @class = "form-control selectpicker",  data_live_search="true" })
+                        @Html.DropDownListFor(model => model.rollerCategoryID, (IEnumerable<SelectListItem>)ViewData["rollerCatList"], "Select rubber roller category", new { @class = "form-control selectpicker", data_live_search = "true" })
                         @Html.ValidationMessageFor(model => model.rollerCategoryID, "", new { @class = "text-danger" })
                     </div>
 
@@ -163,7 +168,7 @@
 
                     //Roller Diameter
                     <div class="form-group">
-                        @Html.LabelFor(model => model.diameter)<span class="required">*</span>
+                        @Html.LabelFor(model => model.diameter) (Millimeter - mm)<span class="required">*</span>
                         @Html.TextBoxFor(model => model.diameter, new { @class = "form-control", placeholder = "Enter roller diameter here", type = "number", step = "0.01", min = "0" })
                         @Html.ValidationMessageFor(model => model.diameter, "", new { @class = "text-danger" })
                     </div>
@@ -171,14 +176,14 @@
                     //Roller Shore Hardness
                     <div class="form-group">
                         @Html.LabelFor(model => model.shoreHardness)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.shoreHardness, new { @class = "form-control", placeholder = "Enter roller shore hardness here"})
+                        @Html.TextBoxFor(model => model.shoreHardness, new { @class = "form-control", placeholder = "Enter roller shore hardness here" })
                         @Html.ValidationMessageFor(model => model.shoreHardness, "", new { @class = "text-danger" })
                     </div>
 
                     //Roller Depth of Groove
                     <div class="form-group">
                         @Html.LabelFor(model => model.depthOfGroove)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.depthOfGroove, new { @class = "form-control", placeholder = "Enter roller depth of groove here"})
+                        @Html.TextBoxFor(model => model.depthOfGroove, new { @class = "form-control", placeholder = "Enter roller depth of groove here" })
                         @Html.ValidationMessageFor(model => model.depthOfGroove, "", new { @class = "text-danger" })
                     </div>
 

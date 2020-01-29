@@ -1,0 +1,149 @@
+﻿@using KJCFRubberRoller.Models
+@model KJCFRubberRoller.Models.BeforeRollerIssueChecklist
+
+@{
+    if ((String)Url.RequestContext.RouteData.Values["id"] == null)
+    {
+        ViewBag.Title = "Before Roller Issue Checklist";
+    }
+    else
+    {
+        ViewBag.Title = "Update Before Roller Issue Checklist";
+    }
+
+    Schedule schedule = null;
+    if (ViewData["schedule"] == null)
+    {
+        schedule = Model.Schedule;
+    }
+    else
+    {
+        schedule = (Schedule)ViewData["schedule"];
+    }
+
+}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-10 mx-auto">
+
+            @if (TempData["formStatus"] != null)
+            {
+                <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    @TempData["formStatusMsg"]
+                </div>
+            }
+
+            <div class="py-2 bg-kjcf">
+                <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Before Roller Issue Checklist" : $"Update Before Roller Issue Checklist")</h2>
+            </div>
+            <div class="bg-white container py-3">
+                @using (Html.BeginForm("CreateBeforeChecklist", "Schedule", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    //Schedule ID
+                    @Html.HiddenFor(Model => Model.scheduleID, new { Value = schedule.scheduleID })
+
+                    //Roller ID
+                    <div class="form-group">
+                        @Html.Label("Roller ID")
+                        @Html.TextBox("rollID", schedule.RubberRoller.rollerID, new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    //Roller Description
+                    <div class="form-group">
+                        @Html.Label("Roller Descriptions")
+                        @Html.TextBox("rollerDescription", $"{schedule.RubberRoller.RollerCategory.size} - {schedule.RubberRoller.RollerCategory.description}", new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    //Operation Line
+                    <div class="form-group">
+                        @Html.Label("Operation Line")
+                        @Html.TextBox("operationLine", $"L{schedule.operationLine}", new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Roller Condition (Before Sending to the Line)</th>
+                                <th>Enter value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*Roller Shore Hardness*@
+                            <tr>
+                                <td>1</td>
+                                <td><p class="font-weight-bold">SH of roller is within 33 to 38 for stencil items.</p></td>
+                                <td>
+                                    @Html.TextBoxFor(Model => Model.rollerSH, new { @class = "form-control", placeholder = "Enter Roller Shore Hardness" })
+                                    @Html.ValidationMessageFor(model => model.rollerSH, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+
+                            @*Roller Roundness*@
+                            <tr>
+                                <td>2</td>
+                                <td><p class="font-weight-bold">Roller Roundness < 0.30mm for the left and right hub.</p></td>
+                                <td>
+                                    @Html.TextBoxFor(Model => Model.rollerRoundness, new { @class = "form-control", placeholder = "Enter Roller Roundness" })
+                                    @Html.ValidationMessageFor(model => model.rollerRoundness, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+
+                            @*Hubs condition*@
+                            <tr>
+                                <td>3</td>
+                                <td><p class="font-weight-bold">Hubs in good condition. Please use gauge to confirm.</p></td>
+                                <td>
+                                    @Html.RadioButtonFor(Model => Model.hubsCondition, "Yes", new { @checked = "checked" }) @Html.Label("Yes")
+                                    @Html.RadioButtonFor(Model => Model.hubsCondition, "No") @Html.Label("No")
+                                    @Html.ValidationMessageFor(model => model.hubsCondition, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+
+                            @*Nut Used*@
+                            <tr>
+                                <td>4</td>
+                                <td><p class="font-weight-bold">Nut used are 8.00mm and NOT 6.00mm.</p></td>
+                                <td>
+                                    @Html.RadioButtonFor(Model => Model.nutUsed, "Yes", new { @checked = "checked" }) @Html.Label("Yes")
+                                    @Html.RadioButtonFor(Model => Model.nutUsed, "No") @Html.Label("No")
+                                    @Html.ValidationMessageFor(model => model.nutUsed, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <input type="reset" value="Clear" class="btn btn-primary btn-block" />
+                        </div>
+                        <div class="col-md-6">
+                            <input type="submit" value="Submit Before Roller Issue Checklist" class="btn btn-success btn-block" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        if (document.querySelector('.alert') !== null) {
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 5000);
+        }
+    })();
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -16,7 +16,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KJCFRubberRoller</RootNamespace>
     <AssemblyName>KJCFRubberRoller</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -28,7 +28,6 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -106,15 +105,17 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -156,7 +157,6 @@
       <Private>True</Private>
       <HintPath>packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -182,10 +182,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IssueManagement\AfterChecklistController.cs" />
-    <Compile Include="Controllers\IssueManagement\BeforeChecklistController.cs" />
-    <Compile Include="Controllers\IssueManagement\ChecklistController.cs" />
-    <Compile Include="Controllers\IssueManagement\ScheduleController.cs" />
+    <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\LogAction.cs" />
     <Compile Include="Controllers\MaintenanceController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -226,6 +223,62 @@
     <Compile Include="Migrations\201912271237176_IdentityUserModelUpdate1.cs" />
     <Compile Include="Migrations\201912271237176_IdentityUserModelUpdate1.designer.cs">
       <DependentUpon>201912271237176_IdentityUserModelUpdate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001260558399_UpdateMaintenance.cs" />
+    <Compile Include="Migrations\202001260558399_UpdateMaintenance.designer.cs">
+      <DependentUpon>202001260558399_UpdateMaintenance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001260603014_UpdateMaintenance1.cs" />
+    <Compile Include="Migrations\202001260603014_UpdateMaintenance1.designer.cs">
+      <DependentUpon>202001260603014_UpdateMaintenance1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001260628599_UpdateMaintenance2.cs" />
+    <Compile Include="Migrations\202001260628599_UpdateMaintenance2.designer.cs">
+      <DependentUpon>202001260628599_UpdateMaintenance2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001260834509_UpdateMaintenance3.cs" />
+    <Compile Include="Migrations\202001260834509_UpdateMaintenance3.designer.cs">
+      <DependentUpon>202001260834509_UpdateMaintenance3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001260931449_UpdateMaintenance4.cs" />
+    <Compile Include="Migrations\202001260931449_UpdateMaintenance4.designer.cs">
+      <DependentUpon>202001260931449_UpdateMaintenance4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001261757490_UpdateMaintenance5.cs" />
+    <Compile Include="Migrations\202001261757490_UpdateMaintenance5.designer.cs">
+      <DependentUpon>202001261757490_UpdateMaintenance5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001281119272_UpdateSchedule.cs" />
+    <Compile Include="Migrations\202001281119272_UpdateSchedule.designer.cs">
+      <DependentUpon>202001281119272_UpdateSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001281120164_UpdateSchedule1.cs" />
+    <Compile Include="Migrations\202001281120164_UpdateSchedule1.designer.cs">
+      <DependentUpon>202001281120164_UpdateSchedule1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001281446169_UpdateSchedule2.cs" />
+    <Compile Include="Migrations\202001281446169_UpdateSchedule2.designer.cs">
+      <DependentUpon>202001281446169_UpdateSchedule2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001290745589_UpdateMaintenanceNSchedule.cs" />
+    <Compile Include="Migrations\202001290745589_UpdateMaintenanceNSchedule.designer.cs">
+      <DependentUpon>202001290745589_UpdateMaintenanceNSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001290750585_UpdateMaintenanceNSchedule1.cs" />
+    <Compile Include="Migrations\202001290750585_UpdateMaintenanceNSchedule1.designer.cs">
+      <DependentUpon>202001290750585_UpdateMaintenanceNSchedule1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001290751584_UpdateMaintenanceNSchedule2.cs" />
+    <Compile Include="Migrations\202001290751584_UpdateMaintenanceNSchedule2.designer.cs">
+      <DependentUpon>202001290751584_UpdateMaintenanceNSchedule2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001291554266_UpdateAfterChklist.cs" />
+    <Compile Include="Migrations\202001291554266_UpdateAfterChklist.designer.cs">
+      <DependentUpon>202001291554266_UpdateAfterChklist.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001291626134_UpdateRollerLocation.cs" />
+    <Compile Include="Migrations\202001291626134_UpdateRollerLocation.designer.cs">
+      <DependentUpon>202001291626134_UpdateRollerLocation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -411,7 +464,6 @@
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\RollerCategory\Index.cshtml" />
-    <Content Include="Views\Schedule\Create.cshtml" />
     <Content Include="Views\RubberRoller\CreateEditForm.cshtml" />
     <Content Include="Views\RubberRoller\CancoChecklist.cshtml" />
     <Content Include="Views\RubberRoller\Index.cshtml" />
@@ -423,13 +475,22 @@
     <Content Include="Views\Checklist\BeforeChecklistCreate.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\RubberRoller\StockDetails.cshtml" />
+    <Content Include="Views\Maintenance\CreateEditMaintenance.cshtml" />
+    <Content Include="Views\Maintenance\Index.cshtml" />
     <Content Include="Views\RubberRoller\LocationHistory.cshtml" />
     <Content Include="Views\RubberRoller\Location.cshtml" />
-    <Content Include="Views\Maintenance\CreateEditMaintenanceRecord.cshtml" />
-    <Content Include="Views\Maintenance\Index.cshtml" />
-    <Content Include="Views\Maintenance\RequestMaintenance.cshtml" />
-    <Content Include="Views\Maintenance\ApproveMaintenance.cshtml" />
-    <Content Include="Views\Maintenance\MaintenanceHistory.cshtml" />
+    <Content Include="Views\Schedule\View.cshtml" />
+    <Content Include="Views\Checklist\CombineChecklistView.cshtml" />
+    <Content Include="Views\Maintenance\CreateSearch.cshtml" />
+    <Content Include="Views\Maintenance\CreateConfirm.cshtml" />
+    <Content Include="Views\Maintenance\ViewMaintenanceReport.cshtml" />
+    <Content Include="Views\Schedule\SearchRoller.cshtml" />
+    <Content Include="Views\Schedule\BeforeChecklist.cshtml" />
+    <Content Include="Views\Schedule\ScheduleCreateEditForm.cshtml" />
+    <Content Include="Views\Schedule\ActiveOperation.cshtml" />
+    <Content Include="Views\Schedule\AfterChecklist.cshtml" />
+    <Content Include="Views\Schedule\CompletedOperation.cshtml" />
+    <Content Include="Views\Schedule\ViewOperationDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -460,6 +521,48 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912271237176_IdentityUserModelUpdate1.resx">
       <DependentUpon>201912271237176_IdentityUserModelUpdate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001260558399_UpdateMaintenance.resx">
+      <DependentUpon>202001260558399_UpdateMaintenance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001260603014_UpdateMaintenance1.resx">
+      <DependentUpon>202001260603014_UpdateMaintenance1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001260628599_UpdateMaintenance2.resx">
+      <DependentUpon>202001260628599_UpdateMaintenance2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001260834509_UpdateMaintenance3.resx">
+      <DependentUpon>202001260834509_UpdateMaintenance3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001260931449_UpdateMaintenance4.resx">
+      <DependentUpon>202001260931449_UpdateMaintenance4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001261757490_UpdateMaintenance5.resx">
+      <DependentUpon>202001261757490_UpdateMaintenance5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001281119272_UpdateSchedule.resx">
+      <DependentUpon>202001281119272_UpdateSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001281120164_UpdateSchedule1.resx">
+      <DependentUpon>202001281120164_UpdateSchedule1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001281446169_UpdateSchedule2.resx">
+      <DependentUpon>202001281446169_UpdateSchedule2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001290745589_UpdateMaintenanceNSchedule.resx">
+      <DependentUpon>202001290745589_UpdateMaintenanceNSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001290750585_UpdateMaintenanceNSchedule1.resx">
+      <DependentUpon>202001290750585_UpdateMaintenanceNSchedule1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001290751584_UpdateMaintenanceNSchedule2.resx">
+      <DependentUpon>202001290751584_UpdateMaintenanceNSchedule2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001291554266_UpdateAfterChklist.resx">
+      <DependentUpon>202001291554266_UpdateAfterChklist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001291626134_UpdateRollerLocation.resx">
+      <DependentUpon>202001291626134_UpdateRollerLocation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
