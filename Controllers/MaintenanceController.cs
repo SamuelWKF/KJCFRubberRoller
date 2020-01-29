@@ -43,7 +43,7 @@ namespace KJCFRubberRoller.Controllers
 
         [HttpGet]
         [Route("maintenance/requestmaintenance/{id}")]
-        public ActionResult Location(int id, int? i)
+        public ActionResult RequestMaintenance(int id, int? i)
         {
             if (id == 0)
                 return RedirectToAction("Index");
@@ -56,7 +56,7 @@ namespace KJCFRubberRoller.Controllers
 
         [HttpGet]
         [Route("maintenance/maintenancehistory/{id}")]
-        public ActionResult LocationHistory(int id, int? i)
+        public ActionResult MaintenanceHistory(int id, int? i)
         {
             if (id == 0)
                 return RedirectToAction("Index");
@@ -67,14 +67,31 @@ namespace KJCFRubberRoller.Controllers
             //return View(rollerLocations.ToPagedList(i ?? 1, 20));
         }
 
-
-
         //FormCollection will store the submitted form data automatically when the form is submitted
         public void SavedData(FormCollection collection)
         {
             string rollID = collection["rollID"];
             RubberRoller rubber = _db.rubberRollers.FirstOrDefault(r => r.rollerID == rollID);
             //return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        // GET: Returns edit form with existing rubber roller data
+        public ActionResult Edit(int? id)
+        {
+            // Ensure ID is supplied
+            if (id == null)
+                return RedirectToAction("Index");
+
+            // Retrieve existing specific roller category from database
+            Maintenance maintenance = _db.maintenances.SingleOrDefault(c => c.maintenanceID == id);
+
+            // Ensure the retrieved value is not null
+            if (maintenance == null)
+                return RedirectToAction("Index");
+
+            LogAction.log(this._controllerName, "GET", string.Format("Requested RubberRoller-Edit {0} webpage", id), User.Identity.GetUserId());
+
+            return View("CreateEditMaintenanceRecord", maintenance);
         }
 
         //POST: Create new rubber roller Maintenance record
@@ -87,11 +104,11 @@ namespace KJCFRubberRoller.Controllers
                 if (ModelState.IsValid)
                 {
                     //Get reported person's ID
-                    var uID = User.Identity.GetUserId();
-                    ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == uID);
-                    maintenance.reportedBy = user;
+                    //var uID = User.Identity.GetUserId();
+                    //ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == uID);
+                    //maintenance.reportedBy = user;
                     //reportDate&time
-                    maintenance.reportDateTime = DateTime.Now;
+                    //maintenance.reportDateTime = DateTime.Now;
 
                     _db.maintenances.Add(maintenance);
                     int result = _db.SaveChanges();
