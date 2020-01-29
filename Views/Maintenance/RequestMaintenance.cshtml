@@ -10,42 +10,88 @@
 <div class="row mb-4">
     <div class="col-12">
         <div class="py-2 mt-4 bg-kjcf">
-            <h2 class="text-white text-center">Request for Maintenance</h2>
+            <h2 class="text-white text-center">Kian Joo Can Factory Berhad</h2>
         </div>
 
         <div class="bg-white container-fluid py-3">
-            @Html.Label("Maintenance ID :")
-            @Html.TextBox("maintenanceID", "", new { @readonly = "true" })
-            <br />
-            @Html.Label("Date Reported :")
-            @Html.TextBox("reportedDate", "", new { @readonly = "true" })
-            <br />
-            @Html.Label("Roller ID :")
-            @Html.TextBox("rollID", "", new { @readonly = "true" })
-            <br />
+            <table class="table table-bordered">
+                <tr>
+                    <td>@Html.Label("Maintenance ID")</td>
+                    <td>@Html.TextBox("maintenanceID", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Date Reported")</td>
+                    <td>@Html.TextBox("reportedDate", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+            </table>
+        </div>
 
-            <table class="table table-responsive table-hover table-striped sortable">
-                <thead>
-                    <tr class="text-center">
-                        <td>
-                            Rubber Roller
-                        </td>
-                        <td>
-                            Description
-                        </td>
-                        <td>
-                            Location
-                        </td>
-                        <td>
-                            Last Usage Date
-                        </td>
+        <div class="bg-white container-fluid py-3">
+            <table class="table table-bordered">
+                <tr>
+                    <td>@Html.Label("Title")</td>
+                    <td>@Html.TextBox("title", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+            </table>
+        </div>
 
+        <div class="bg-white container-fluid py-3">
 
-                </thead>
-
-
+            <table class="table table-bordered ">
+                <tr>
+                    <td>@Html.Label("Roller ID")</td>
+                    <td>@Html.TextBox("rollID", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Diameter Core")</td>
+                    <td>@Html.TextBox("diametercore", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Diameter Roller")</td>
+                    <td>@Html.TextBox("diameteroller", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Mielage")</td>
+                    <td>@Html.TextBox("mielage", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Opening Stock Date")</td>
+                    <td>@Html.TextBox("openingstockdate", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Last Production Line Used")</td>
+                    <td>@Html.TextBox("lastproductionline", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Reason")</td>
+                    <td>@Html.TextBox("reason", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Remarks")</td>
+                    <td>@Html.TextBox("Remarks", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("New Diameter")</td>
+                    <td>@Html.TextBox("newdiameter", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("New Shore Hardness")</td>
+                    <td>@Html.TextBox("newshorehardness", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Corrective Action")</td>
+                    <td>@Html.TextBox("correctiveaction", "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
             </table>
 
+            <div class="form-group row ">
+                <div class="col-md-6">
+                    <input type="reset" value="Back" class="btn btn-primary btn-block" />
+                </div>
+                <div class="col-md-6">
+                    <input type="submit" value="Request for Maintenance" class="btn btn-success btn-block" />
+                </div>
+            </div>
         </div>
     </div>
 </div>
