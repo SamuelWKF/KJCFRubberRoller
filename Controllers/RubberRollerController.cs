@@ -87,7 +87,7 @@ namespace KJCFRubberRoller.Controllers
         // POST: Create new rubber roller record
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(RubberRoller rubberRoller)
+        public ActionResult Create(RubberRoller rubberRoller, FormCollection collection)
         {
             // Check if roller ID exist from DB
             var dbRoller = _db.rubberRollers.Where(r => r.rollerID == rubberRoller.rollerID).FirstOrDefault();
@@ -101,6 +101,15 @@ namespace KJCFRubberRoller.Controllers
             }
 
             _db.rubberRollers.Add(rubberRoller);
+
+            // Create initial rubber roller location
+            RollerLocation rollerLocation = new RollerLocation();
+            rollerLocation.dateTimeIn = DateTime.Now;
+            rollerLocation.rollerID = rubberRoller.id;
+            rollerLocation.RubberRoller = rubberRoller;
+            rollerLocation.location = collection["rollLocat"];
+            _db.rollerLocations.Add(rollerLocation);
+
             int result = _db.SaveChanges();
 
             //if (rubberRoller.supplier.Equals("Canco"))
@@ -201,9 +210,6 @@ namespace KJCFRubberRoller.Controllers
                 rubberRoll.remark = rubberRoller.remark;
                 rubberRoll.status = rubberRoller.status;
 
-                // Update rubber roller location
-                UpdateRubberRollerLocation(rubberRoll);
-
                 int result = _db.SaveChanges();
 
                 //if (rubberRoller.supplier.Equals("Canco") && notCancoRoller)
@@ -225,12 +231,6 @@ namespace KJCFRubberRoller.Controllers
                 TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully updated.";
                 return Redirect(Request.UrlReferrer.ToString());
             }
-        }
-
-        // Private method to update rubber roller location
-        private void UpdateRubberRollerLocation(RubberRoller rubberRoller)
-        {
-
         }
 
         [HttpGet]

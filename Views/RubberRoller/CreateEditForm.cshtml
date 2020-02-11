@@ -82,36 +82,33 @@
 
     //Roller status dropdown
     List<SelectListItem> rollerStatus = new List<SelectListItem>();
-    rollerStatus.Add(new SelectListItem
+    var rollerStats = new String[] { "In store room", "Waiting for QA check", "In use", "Waiting for verification", "Sent to maintenance" };
+
+    if ((String)Url.RequestContext.RouteData.Values["id"] != null)
     {
-        Text = "In use",
-        Value = "In use"
-    });
-    rollerStatus.Add(new SelectListItem
+        foreach (var item in rollerStats)
+        {
+            rollerStatus.Add(new SelectListItem
+            {
+                Text = item,
+                Value = item
+            });
+        }
+
+    }
+    else
     {
-        Text = "In store room",
-        Value = "In store room"
-    });
-    rollerStatus.Add(new SelectListItem
-    {
-        Text = "Waiting for QA check",
-        Value = "Waiting for QA check"
-    });
-    rollerStatus.Add(new SelectListItem
-    {
-        Text = "Waiting for verification",
-        Value = "Waiting for verification"
-    });
-    rollerStatus.Add(new SelectListItem
-    {
-        Text = "Waiting to be sent for maintenance",
-        Value = "Waiting to be sent for maintenance"
-    });
-    rollerStatus.Add(new SelectListItem
-    {
-        Text = "Sent to maintenance",
-        Value = "Sent to maintenance"
-    });
+        rollerStatus.Add(new SelectListItem
+        {
+            Text = rollerStats[0],
+            Value = rollerStats[0]
+        });
+        rollerStatus.Add(new SelectListItem
+        {
+            Text = rollerStats[1],
+            Value = rollerStats[1]
+        });
+    }
 }
 
 <div class="container">
@@ -208,6 +205,15 @@
                         @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
                     </div>
 
+                    if ((String)Url.RequestContext.RouteData.Values["id"] == null)
+                    {
+                        //Roller Initial Store room
+                        <div class="form-group">
+                            @Html.Label("Roller Initial Rack Location")<span class="required">*</span>
+                            @Html.TextBox("rollLocat", "", new { @class = "form-control", required = "required", placeholder = "Enter roller initial rack location" })
+                        </div>
+                    }
+
                     if ((String)Url.RequestContext.RouteData.Values["id"] != null)
                     {
                         @Html.HiddenFor(m => m.id)
@@ -218,7 +224,7 @@
                             <input type="reset" value="Clear" class="btn btn-primary btn-block" />
                         </div>
                         <div class="col-md-6">
-                            <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller" : "Update Roller Detail")' class="btn btn-success btn-block" />
+                            <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Rubber Roller" : "Update Roller Details")' class="btn btn-success btn-block" />
                         </div>
                     </div>
                 }

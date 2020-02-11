@@ -99,8 +99,7 @@ namespace KJCFRubberRoller.Models
         public static int IN_STORE_ROOM = 2;
         public static int WAITING_FOR_QA_CHECK = 3;
         public static int WAITING_FOR_VERIFICATION = 4;
-        public static int WAITING_TO_BE_SENT_FOR_MAINTENANCE = 5;
-        public static int SENT_TO_MAINTENANCE = 6;
+        public static int SENT_TO_MAINTENANCE = 5;
 
         public static string getStatus(int stats)
         {
@@ -120,9 +119,6 @@ namespace KJCFRubberRoller.Models
                     status = "Waiting for verification";
                     break;
                 case 5:
-                    status = "Waiting to be sent for maintenance";
-                    break;
-                case 6:
                     status = "Sent to maintenance";
                     break;
                 default:

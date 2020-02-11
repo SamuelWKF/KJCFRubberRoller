@@ -1,4 +1,5 @@
-﻿using KJCFRubberRoller.Models;
+﻿using KJCFRubberRoller.Controllers.Classes;
+using KJCFRubberRoller.Models;
 using Microsoft.AspNet.Identity;
 using PagedList;
 using System;
@@ -212,8 +213,11 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.verfiedBy = user;
                 maintenance.RubberRoller.status = RollerStatus.getStatus(5);
 
+                // Update roller location record
+                bool updateLocatResult = CentralUtilities.UpdateRollerLocation(maintenance.RubberRoller, $"Sent to {maintenance.sendTo} for maintenance");
+
                 int result = _db.SaveChanges();
-                if (result > 0)
+                if (result > 0 && updateLocatResult)
                 {
                     TempData["formStatus"] = true;
                     TempData["formStatusMsg"] = $"Maintenance report #{ID} has been successfully approved.";

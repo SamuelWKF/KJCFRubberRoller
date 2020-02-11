@@ -71,14 +71,14 @@
                 <div class="row">
                     <div class="col-md-2 border">Title</div>
                     <div class="col-md-10 border font-weight-bold">
-                        @Html.TextBoxFor(model => model.title, new { @class = "form-control", placeholder = "Enter title here"})
+                        @Html.TextBoxFor(model => model.title, new { @class = "form-control", placeholder = "Enter title here" })
                         @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 border">Roller ID</div>
                     <div class="col-md-10 border font-weight-bold">@rubber.rollerID</div>
-                    @Html.HiddenFor(m => m.rollerID, new { Value = rubber.id})
+                    @Html.HiddenFor(m => m.rollerID, new { Value = rubber.id })
                 </div>
 
                 <div class="row">
@@ -89,7 +89,7 @@
                     <div class="col-md-8 border">
                         @*Diameter Core*@
                         <div class="row">
-                            <div class="col-md-3 border"><label>Diameter Core (ID)<br/>(Millimeter - mm)</label><span class="required">*</span></div>
+                            <div class="col-md-3 border"><label>Diameter Core (ID)<br />(Millimeter - mm)</label><span class="required">*</span></div>
                             <div class="col-md-9 border font-weight-bold">
                                 @Html.TextBoxFor(model => model.diameterCore, new { @class = "form-control", placeholder = "Enter roller diameter core here", type = "number", step = "0.01", min = "0" })
                                 @Html.ValidationMessageFor(model => model.diameterCore, "", new { @class = "text-danger" })
@@ -97,17 +97,23 @@
                         </div>
 
                         @*Diameter Roller*@
-                    <div class="row">
-                        <div class="col-md-3 border"><label>Diameter Roller (OD)<br />(Millimeter - mm)</label><span class="required">*</span></div>
-                        <div class="col-md-9 border font-weight-bold">@Html.TextBox("diameterRoller", rubber.diameter, new { @class = "form-control", @readonly = "true" })</div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-3 border"><label>Diameter Roller (OD)<br />(Millimeter - mm)</label><span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">@Html.TextBox("diameterRoller", rubber.diameter, new { @class = "form-control", @readonly = "true" })</div>
+                        </div>
 
+                        @*Total Mileage*@
                         <div class="row">
                             <div class="col-md-3 border">@Html.LabelFor(model => model.totalMileage)<span class="required">*</span></div>
-                            <div class="col-md-9 border font-weight-bold">
-                                @Html.TextBoxFor(model => model.totalMileage, new { @class = "form-control", placeholder = "Enter roller's total mileage here" })
-                                @Html.ValidationMessageFor(model => model.totalMileage, "", new { @class = "text-danger" })
-                            </div>
+                            @{
+                                var latestMileage = 0;
+                                var latestSched = rubber.Schedules.LastOrDefault();
+                                if (latestSched != null)
+                                {
+                                    latestMileage = latestSched.endMileage;
+                                }
+                            }
+                            <div class="col-md-9 border font-weight-bold">@Html.TextBox("totalMileage", latestMileage, new { @class = "form-control", @readonly = "true" })</div>
                         </div>
 
                         @*Opening Stock Date*@
@@ -171,7 +177,7 @@
 
                         @*New Roller Diameter*@
                         <div class="row">
-                        <div class="col-md-3 border"><label>New Diameter<br />(Millimeter - mm)</label><span class="required">*</span></div>
+                            <div class="col-md-3 border"><label>New Diameter<br />(Millimeter - mm)</label><span class="required">*</span></div>
                             <div class="col-md-9 border font-weight-bold">
                                 @Html.TextBoxFor(model => model.newDiameter, new { @class = "form-control", placeholder = "Enter roller new diameter here", type = "number", step = "0.01", min = "0" })
                                 @Html.ValidationMessageFor(model => model.newDiameter, "", new { @class = "text-danger" })

@@ -1,4 +1,5 @@
-﻿using KJCFRubberRoller.Models;
+﻿using KJCFRubberRoller.Controllers.Classes;
+using KJCFRubberRoller.Models;
 using Microsoft.AspNet.Identity;
 using PagedList;
 using System;
@@ -115,9 +116,17 @@ namespace KJCFRubberRoller.Controllers
             beforeRollerIssueChecklist.preparedBy = getCurrentUser();
             beforeRollerIssueChecklist.Schedule = schedule;
             _db.beforeRollerIssueChecklists.Add(beforeRollerIssueChecklist);
+            beforeRollerIssueChecklist.Schedule.RubberRoller.status = RollerStatus.getStatus(RollerStatus.IN_USE);
+
+            // Update roller location
+            bool updateLocatResult = CentralUtilities.UpdateRollerLocation(
+                beforeRollerIssueChecklist.Schedule.RubberRoller,
+                $"Operation Line {beforeRollerIssueChecklist.Schedule.operationLine}"
+                );
+
             int result = _db.SaveChanges();
 
-            if (result > 0)
+            if (result > 0 && updateLocatResult)
             {
                 // Success - redirect to active operation list page
                 TempData["formStatus"] = true;
@@ -151,6 +160,7 @@ namespace KJCFRubberRoller.Controllers
          * Add new after production checklist and updates
          * rubber roller status, schedules & location details
          */
+        [HttpPost]
         public ActionResult CompleteOperation(FormCollection collection)
         {
             try
@@ -175,27 +185,19 @@ namespace KJCFRubberRoller.Controllers
                 after.Schedule.endDateTime = DateTime.Parse(collection["endDT"]);
                 after.Schedule.status = ScheduleStatus.COMPLETED;
 
-                // Update roller status
+                // Update roller details
+                after.Schedule.RubberRoller.last_usage_date = DateTime.Now;
                 after.Schedule.RubberRoller.status = RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM);
 
                 // Update roller location
-                RollerLocation currentLocation = after.Schedule.RubberRoller.RollerLocations.LastOrDefault();
-                if (currentLocation != null)
-                    currentLocation.dateTimeOut = DateTime.Now;
-
-                RollerLocation rollerLocation = new RollerLocation();
-                rollerLocation.rollerID = after.Schedule.rollerID;
-                rollerLocation.location = (collection["rollerSendTo"] == "Roller Room" ? collection["roomLocation"] : "Waiting to be sent for maintenance after operation");
-                rollerLocation.operationLine = 0;
-                rollerLocation.RubberRoller = after.Schedule.RubberRoller;
-                rollerLocation.dateTimeIn = DateTime.Now;
+                bool updateLocatResult = CentralUtilities.UpdateRollerLocation(after.Schedule.RubberRoller,
+                    (collection["rollerSendTo"] == "Roller Room" ? collection["roomLocation"] : "Waiting to be sent for maintenance after operation"));
 
                 // Add new records
-                _db.rollerLocations.Add(rollerLocation);
                 _db.afterRollerProductionChecklists.Add(after);
                 int result = _db.SaveChanges();
 
-                if (result > 0)
+                if (result > 0 && updateLocatResult)
                 {
                     TempData["formStatus"] = true;
                     TempData["formStatusMsg"] = "Operation has been completed!";
