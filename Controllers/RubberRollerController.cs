@@ -253,8 +253,44 @@ namespace KJCFRubberRoller.Controllers
                 return RedirectToAction("Index");
 
             LogAction.log(this._controllerName, "GET", $"Requested webpage RubberRoller-LocationHistory for Roller: {id}", User.Identity.GetUserId());
-            List<RollerLocation> rollerLocations = _db.rollerLocations.Where(r => r.rollerID == id).ToList();
+            RubberRoller rubberRollers = _db.rubberRollers.FirstOrDefault(r => r.id == id);
+            ViewData["rollerID"] = rubberRollers.rollerID;
+            List<RollerLocation> rollerLocations = rubberRollers.RollerLocations.ToList();
             return View(rollerLocations.ToPagedList(i ?? 1, 20));
+        }
+
+        [HttpGet]
+        [Route("rubberroller/operation_history/{id}")]
+        public ActionResult OperationHistory(int id, int? i)
+        {
+            if (id == 0)
+                return RedirectToAction("Index");
+
+            LogAction.log(this._controllerName, "GET", $"Requested webpage RubberRoller-OperationHistory for Roller: {id}", User.Identity.GetUserId());
+            RubberRoller rubberRollers = _db.rubberRollers.FirstOrDefault(r => r.id == id);
+            ViewData["rollerID"] = rubberRollers.rollerID;
+            List<Schedule> schedules = rubberRollers.Schedules
+                .Where(o => o.status == ScheduleStatus.COMPLETED)
+                .OrderBy(o => o.startDateTime)
+                .ToList();
+            return View(schedules.ToPagedList(i ?? 1, 20));
+        }
+
+        [HttpGet]
+        [Route("rubberroller/maintenance_history/{id}")]
+        public ActionResult MaintenanceHistory(int id, int? i)
+        {
+            if (id == 0)
+                return RedirectToAction("Index");
+
+            LogAction.log(this._controllerName, "GET", $"Requested webpage RubberRoller-MaintenanceHistory for Roller: {id}", User.Identity.GetUserId());
+            RubberRoller rubberRollers = _db.rubberRollers.FirstOrDefault(r => r.id == id);
+            ViewData["rollerID"] = rubberRollers.rollerID; 
+            List<Maintenance> maintenances = rubberRollers.Maintenances
+                .Where(m => m.rollerID == id)
+                .Where(m => m.status == RollerMaintenance.APPROVED)
+                .ToList();
+            return View(maintenances.ToPagedList(i ?? 1, 20));
         }
 
         [HttpGet]

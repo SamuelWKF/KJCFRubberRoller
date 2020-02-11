@@ -85,6 +85,7 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.newDiameter = Double.Parse(collection["newDiameter"]);
                 maintenance.newShoreHardness = collection["newShoreHardness"];
                 maintenance.correctiveAction = collection["correctiveAction"];
+                maintenance.reportDateTime = DateTime.Now;
 
                 LogAction.log(this._controllerName, "GET", "Redirect Maintenance-CreateConfirm webpage", User.Identity.GetUserId());
                 return View(maintenance);

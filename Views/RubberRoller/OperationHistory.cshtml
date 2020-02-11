@@ -1,0 +1,103 @@
+﻿@model IPagedList<KJCFRubberRoller.Models.Schedule>
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = $"{ViewData["rollerID"]} Operation History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-md-8 mx-auto">
+        <div class="py-2 mt-4 bg-kjcf">
+            <h2 class="text-white text-center">Operation History for Roller @ViewData["rollerID"]</h2>
+        </div>
+        <div class="bg-white container-fluid py-3">
+            @Html.Label("Search:")
+            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control rr_operation_search", placeholder = "Search operation record here..." })
+            <br />
+            <table class="table table-hover table-striped sortable">
+                <thead>
+                    <tr class="text-center">
+                        <th>
+                            Start<br />Date Time
+                        </th>
+                        <th>
+                            End<br />Date Time
+                        </th>
+                        <th>Operation<br />Line No.</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Roller Mileage</th>
+                        <th>Remark</th>
+                        <th>View Details</th>
+                    </tr>
+                </thead>
+                @if (Model.FirstOrDefault() == null)
+                {
+                    <tr><td colspan="8" class="text-center">There are currently no operation history record.</td></tr>
+                }
+
+                @if (Model != null)
+                {
+                    foreach (var item in Model.Select((value, index) => new { value, index }))
+                    {
+                        <tr>
+                            <td class="text-center">
+                                @item.value.startDateTime.Value.ToString("dd-MMM-yyy HH:mm tt")
+                            </td>
+                            <td class="text-center">
+                                @item.value.endDateTime.Value.ToString("dd-MMM-yyy HH:mm tt")
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    var operationLine = $"L{item.value.operationLine}";
+                                }
+                                @operationLine
+                            </td>
+                            <td class="text-center">
+                                @item.value.product
+                            </td>
+                            <td class="text-center">
+                                @item.value.quantity
+                            </td>
+                            <td class="text-center">
+                                @item.value.endMileage
+                            </td>
+                            <td class="text-justify">
+                                @item.value.remark
+                            </td>
+                            <td>
+                                <a href="/schedule/@item.value.scheduleID/view" class="btn btn-block btn-success">
+                                    <i class="far fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+            @Html.PagedListPager(Model, i => Url.Action("Index", "RubberRoller", new { i }))
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // IIFE (Immediately Invoked Function Expression)
+    (function () {
+        // Select the search input box for each of the table list
+        const searchBox = document.querySelector('input.rr_operation_search');
+        // Add event listeners to each search box
+        searchBox.addEventListener('input', (e) => {
+            const table = document.querySelector('.table').children[1].children;
+            Array.from(table).forEach((v, i) => {
+                if (v.innerText.toLowerCase().indexOf(searchBox.value.toLowerCase()) !== -1) {
+                    v.style.removeProperty('display');
+                } else {
+                    v.style.display = 'none';
+                }
+            });
+        });
+    })();
+</script>
+

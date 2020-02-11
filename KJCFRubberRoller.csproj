@@ -192,93 +192,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912151744347_InitialModel.cs" />
-    <Compile Include="Migrations\201912151744347_InitialModel.designer.cs">
-      <DependentUpon>201912151744347_InitialModel.cs</DependentUpon>
+    <Compile Include="Migrations\202001311015042_InitialModel.cs" />
+    <Compile Include="Migrations\202001311015042_InitialModel.designer.cs">
+      <DependentUpon>202001311015042_InitialModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912151745296_SeedDatabase.cs" />
-    <Compile Include="Migrations\201912151745296_SeedDatabase.designer.cs">
-      <DependentUpon>201912151745296_SeedDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912221424518_Update.cs" />
-    <Compile Include="Migrations\201912221424518_Update.designer.cs">
-      <DependentUpon>201912221424518_Update.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912221438440_Update1.cs" />
-    <Compile Include="Migrations\201912221438440_Update1.designer.cs">
-      <DependentUpon>201912221438440_Update1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912270936304_Update2.cs" />
-    <Compile Include="Migrations\201912270936304_Update2.designer.cs">
-      <DependentUpon>201912270936304_Update2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912270939279_StaffModelUpdate.cs" />
-    <Compile Include="Migrations\201912270939279_StaffModelUpdate.designer.cs">
-      <DependentUpon>201912270939279_StaffModelUpdate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912271202319_IdentityUserModelUpdate.cs" />
-    <Compile Include="Migrations\201912271202319_IdentityUserModelUpdate.designer.cs">
-      <DependentUpon>201912271202319_IdentityUserModelUpdate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912271237176_IdentityUserModelUpdate1.cs" />
-    <Compile Include="Migrations\201912271237176_IdentityUserModelUpdate1.designer.cs">
-      <DependentUpon>201912271237176_IdentityUserModelUpdate1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001260558399_UpdateMaintenance.cs" />
-    <Compile Include="Migrations\202001260558399_UpdateMaintenance.designer.cs">
-      <DependentUpon>202001260558399_UpdateMaintenance.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001260603014_UpdateMaintenance1.cs" />
-    <Compile Include="Migrations\202001260603014_UpdateMaintenance1.designer.cs">
-      <DependentUpon>202001260603014_UpdateMaintenance1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001260628599_UpdateMaintenance2.cs" />
-    <Compile Include="Migrations\202001260628599_UpdateMaintenance2.designer.cs">
-      <DependentUpon>202001260628599_UpdateMaintenance2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001260834509_UpdateMaintenance3.cs" />
-    <Compile Include="Migrations\202001260834509_UpdateMaintenance3.designer.cs">
-      <DependentUpon>202001260834509_UpdateMaintenance3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001260931449_UpdateMaintenance4.cs" />
-    <Compile Include="Migrations\202001260931449_UpdateMaintenance4.designer.cs">
-      <DependentUpon>202001260931449_UpdateMaintenance4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001261757490_UpdateMaintenance5.cs" />
-    <Compile Include="Migrations\202001261757490_UpdateMaintenance5.designer.cs">
-      <DependentUpon>202001261757490_UpdateMaintenance5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001281119272_UpdateSchedule.cs" />
-    <Compile Include="Migrations\202001281119272_UpdateSchedule.designer.cs">
-      <DependentUpon>202001281119272_UpdateSchedule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001281120164_UpdateSchedule1.cs" />
-    <Compile Include="Migrations\202001281120164_UpdateSchedule1.designer.cs">
-      <DependentUpon>202001281120164_UpdateSchedule1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001281446169_UpdateSchedule2.cs" />
-    <Compile Include="Migrations\202001281446169_UpdateSchedule2.designer.cs">
-      <DependentUpon>202001281446169_UpdateSchedule2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001290745589_UpdateMaintenanceNSchedule.cs" />
-    <Compile Include="Migrations\202001290745589_UpdateMaintenanceNSchedule.designer.cs">
-      <DependentUpon>202001290745589_UpdateMaintenanceNSchedule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001290750585_UpdateMaintenanceNSchedule1.cs" />
-    <Compile Include="Migrations\202001290750585_UpdateMaintenanceNSchedule1.designer.cs">
-      <DependentUpon>202001290750585_UpdateMaintenanceNSchedule1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001290751584_UpdateMaintenanceNSchedule2.cs" />
-    <Compile Include="Migrations\202001290751584_UpdateMaintenanceNSchedule2.designer.cs">
-      <DependentUpon>202001290751584_UpdateMaintenanceNSchedule2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001291554266_UpdateAfterChklist.cs" />
-    <Compile Include="Migrations\202001291554266_UpdateAfterChklist.designer.cs">
-      <DependentUpon>202001291554266_UpdateAfterChklist.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001291626134_UpdateRollerLocation.cs" />
-    <Compile Include="Migrations\202001291626134_UpdateRollerLocation.designer.cs">
-      <DependentUpon>202001291626134_UpdateRollerLocation.cs</DependentUpon>
+    <Compile Include="Migrations\202001311020242_SeedASPRolesDatabase.cs" />
+    <Compile Include="Migrations\202001311020242_SeedASPRolesDatabase.designer.cs">
+      <DependentUpon>202001311020242_SeedASPRolesDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -491,6 +411,9 @@
     <Content Include="Views\Schedule\AfterChecklist.cshtml" />
     <Content Include="Views\Schedule\CompletedOperation.cshtml" />
     <Content Include="Views\Schedule\ViewOperationDetail.cshtml" />
+    <Content Include="Views\RubberRoller\MaintenanceHistory.cshtml" />
+    <Content Include="Views\RubberRoller\OperationHistory.cshtml" />
+    <Content Include="Views\RubberRoller\SummaryReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -498,78 +421,18 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201912151744347_InitialModel.resx">
-      <DependentUpon>201912151744347_InitialModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912151745296_SeedDatabase.resx">
-      <DependentUpon>201912151745296_SeedDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912221424518_Update.resx">
-      <DependentUpon>201912221424518_Update.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912221438440_Update1.resx">
-      <DependentUpon>201912221438440_Update1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912270936304_Update2.resx">
-      <DependentUpon>201912270936304_Update2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912270939279_StaffModelUpdate.resx">
-      <DependentUpon>201912270939279_StaffModelUpdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912271202319_IdentityUserModelUpdate.resx">
-      <DependentUpon>201912271202319_IdentityUserModelUpdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912271237176_IdentityUserModelUpdate1.resx">
-      <DependentUpon>201912271237176_IdentityUserModelUpdate1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001260558399_UpdateMaintenance.resx">
-      <DependentUpon>202001260558399_UpdateMaintenance.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001260603014_UpdateMaintenance1.resx">
-      <DependentUpon>202001260603014_UpdateMaintenance1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001260628599_UpdateMaintenance2.resx">
-      <DependentUpon>202001260628599_UpdateMaintenance2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001260834509_UpdateMaintenance3.resx">
-      <DependentUpon>202001260834509_UpdateMaintenance3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001260931449_UpdateMaintenance4.resx">
-      <DependentUpon>202001260931449_UpdateMaintenance4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001261757490_UpdateMaintenance5.resx">
-      <DependentUpon>202001261757490_UpdateMaintenance5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001281119272_UpdateSchedule.resx">
-      <DependentUpon>202001281119272_UpdateSchedule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001281120164_UpdateSchedule1.resx">
-      <DependentUpon>202001281120164_UpdateSchedule1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001281446169_UpdateSchedule2.resx">
-      <DependentUpon>202001281446169_UpdateSchedule2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001290745589_UpdateMaintenanceNSchedule.resx">
-      <DependentUpon>202001290745589_UpdateMaintenanceNSchedule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001290750585_UpdateMaintenanceNSchedule1.resx">
-      <DependentUpon>202001290750585_UpdateMaintenanceNSchedule1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001290751584_UpdateMaintenanceNSchedule2.resx">
-      <DependentUpon>202001290751584_UpdateMaintenanceNSchedule2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001291554266_UpdateAfterChklist.resx">
-      <DependentUpon>202001291554266_UpdateAfterChklist.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001291626134_UpdateRollerLocation.resx">
-      <DependentUpon>202001291626134_UpdateRollerLocation.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202001311015042_InitialModel.resx">
+      <DependentUpon>202001311015042_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001311020242_SeedASPRolesDatabase.resx">
+      <DependentUpon>202001311020242_SeedASPRolesDatabase.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

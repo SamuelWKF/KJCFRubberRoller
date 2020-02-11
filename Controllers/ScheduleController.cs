@@ -173,7 +173,7 @@ namespace KJCFRubberRoller.Controllers
                 // Update schedule details
                 after.Schedule.endMileage = after.Schedule.startMileage + Int32.Parse(collection["mileageRun"]);
                 after.Schedule.endDateTime = DateTime.Parse(collection["endDT"]);
-                after.Schedule.status = ScheduleStatus.ACTIVE;
+                after.Schedule.status = ScheduleStatus.COMPLETED;
 
                 // Update roller status
                 after.Schedule.RubberRoller.status = RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM);

@@ -3,19 +3,14 @@
 @using PagedList.Mvc;
 
 @{
-    string title = " ";
-    if (Model.FirstOrDefault() != null)
-    {
-        title = Model.FirstOrDefault().RubberRoller.rollerID;
-    }
-    ViewBag.Title = $"Location History {(title == " " ? "" : title)}";
+    ViewBag.Title = $"{ViewData["rollerID"]} Location History";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row mb-4">
     <div class="col-md-6 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
-            <h2 class="text-white text-center">Location History for Roller @title</h2>
+            <h2 class="text-white text-center">Location History for Roller @ViewData["rollerID"]</h2>
         </div>
         <div class="bg-white container-fluid py-3">
             @Html.Label("Search:")

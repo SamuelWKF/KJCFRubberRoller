@@ -49,7 +49,7 @@ namespace KJCFRubberRoller
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = false
+                RequireUniqueEmail = true
             };
 
             // Configure validation logic for passwords

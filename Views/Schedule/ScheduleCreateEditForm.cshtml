@@ -115,7 +115,7 @@
                     // Quantity
                     <div class="form-group">
                         @Html.LabelFor(model => model.quantity)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.quantity, new { @class = "form-control", placeholder = "Enter quantity here" })
+                        @Html.TextBoxFor(model => model.quantity, new { @class = "form-control", placeholder = "Enter quantity here", type = "number", min = "0", })
                         @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
                     </div>
 
