@@ -62,18 +62,18 @@
                             <td class="text-center">@Html.DisplayFor(modelItem => item.value.operationLine)</td>
                             <td class="text-center">@Html.DisplayFor(modelItem => item.value.product)</td>
                             <td class="text-center">@Html.DisplayFor(modelItem => item.value.quantity)</td>
-                            <td>
+                            <td class="text-center">
                                 @{
-                                    var startDateTime = item.value.startDateTime.Value.ToString("dd-MMM-yyy hh:mm: tt");
+                                    var startDateTime = item.value.startDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
                                 }
                                 @startDateTime
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @{
                                     var endDateTime = "-";
                                     if (item.value.endDateTime != null)
                                     {
-                                        endDateTime = item.value.endDateTime.Value.ToString("dd-MMM-yyy hh:mm: tt");
+                                        endDateTime = item.value.endDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
                                     }
                                 }
                                 @endDateTime

@@ -138,7 +138,7 @@
                     //Roller ID
                     <div class="form-group">
                         @Html.LabelFor(model => model.rollerID)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.rollerID, new { @class = "form-control rID", placeholder = "Enter roller ID" })
+                        @Html.TextBoxFor(model => model.rollerID, new { @class = "form-control rID", maxlength = "20", placeholder = "Enter roller ID. E.g - R-012, R-012 (P/S)" })
                         @Html.ValidationMessageFor(model => model.rollerID, "", new { @class = "text-danger" })
                     </div>
 
@@ -173,14 +173,14 @@
                     //Roller Shore Hardness
                     <div class="form-group">
                         @Html.LabelFor(model => model.shoreHardness)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.shoreHardness, new { @class = "form-control", placeholder = "Enter roller shore hardness here" })
+                        @Html.TextBoxFor(model => model.shoreHardness, new { @class = "form-control", maxlength = "10", placeholder = "Enter roller shore hardness here. E.g - 33-38" })
                         @Html.ValidationMessageFor(model => model.shoreHardness, "", new { @class = "text-danger" })
                     </div>
 
                     //Roller Depth of Groove
                     <div class="form-group">
                         @Html.LabelFor(model => model.depthOfGroove)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.depthOfGroove, new { @class = "form-control", placeholder = "Enter roller depth of groove here" })
+                        @Html.TextBoxFor(model => model.depthOfGroove, new { @class = "form-control", maxlength = "10", placeholder = "Enter roller depth of groove here. E.g - 33-38 " })
                         @Html.ValidationMessageFor(model => model.depthOfGroove, "", new { @class = "text-danger" })
                     </div>
 

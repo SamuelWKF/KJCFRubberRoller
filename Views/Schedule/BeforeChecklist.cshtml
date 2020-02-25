@@ -72,7 +72,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Roller Condition (Before Sending to the Line)</th>
-                                <th>Enter value</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,7 +81,7 @@
                                 <td>1</td>
                                 <td><p class="font-weight-bold">SH of roller is within 33 to 38 for stencil items.</p></td>
                                 <td>
-                                    @Html.TextBoxFor(Model => Model.rollerSH, new { @class = "form-control", placeholder = "Enter Roller Shore Hardness" })
+                                    @Html.TextBoxFor(Model => Model.rollerSH, new { @class = "form-control", maxlength = "15", placeholder = "E.g - 33 to 38" })
                                     @Html.ValidationMessageFor(model => model.rollerSH, "", new { @class = "text-danger" })
                                 </td>
                             </tr>
@@ -91,7 +91,7 @@
                                 <td>2</td>
                                 <td><p class="font-weight-bold">Roller Roundness < 0.30mm for the left and right hub.</p></td>
                                 <td>
-                                    @Html.TextBoxFor(Model => Model.rollerRoundness, new { @class = "form-control", placeholder = "Enter Roller Roundness" })
+                                    @Html.TextBoxFor(Model => Model.rollerRoundness, new { @class = "form-control", maxlength = "20", placeholder = "E.g - 0.11-0.25" })
                                     @Html.ValidationMessageFor(model => model.rollerRoundness, "", new { @class = "text-danger" })
                                 </td>
                             </tr>

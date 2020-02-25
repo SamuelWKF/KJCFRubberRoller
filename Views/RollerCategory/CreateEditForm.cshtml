@@ -58,7 +58,7 @@
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.size)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.size, new { @class = "form-control rSize", placeholder = "Enter roller size" })
+                        @Html.TextBoxFor(model => model.size, new { @class = "form-control rSize", maxlength = "15", placeholder = "Enter roller size. E.g - W105 X 205" })
                         @Html.ValidationMessageFor(model => model.size, "", new { @class = "text-danger" })
                     </div>
 
@@ -69,8 +69,8 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.minAmount)<span class="required">*</span>
-                        @Html.TextBoxFor(model => model.minAmount, new { @class = "form-control", min = 0, placeholder = "Enter minimum roller amount", type = "number" })
+                        @Html.LabelFor(model => model.minAmount)<span class="required">*</span> <b>Minimum: At least 1 roller</b>
+                        @Html.TextBoxFor(model => model.minAmount, new { @class = "form-control", min = 1, max = 1000, @Value = "1", placeholder = "Enter minimum roller amount", type = "number" })
                         @Html.ValidationMessageFor(model => model.minAmount, "", new { @class = "text-danger" })
                     </div>
 
