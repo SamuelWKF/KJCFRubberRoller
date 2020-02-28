@@ -555,3 +555,5 @@ C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.dll
 C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.pdb
 C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.SeedASPRolesDatabase.resources
 C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csprojAssemblyReference.cache
+C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.MaintenanceUpdate.resources
+C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.UpdateSchedule.resources
