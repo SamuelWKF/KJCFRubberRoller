@@ -32,6 +32,7 @@ namespace KJCFRubberRoller.Models
         [DisplayName("End Date Time")]
         public DateTime? endDateTime { get; set; }
 
+        [Required]
         [MaxLength(255)]
         [DisplayName("Product Name")]
         public string product { get; set; }

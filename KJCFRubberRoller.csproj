@@ -201,6 +201,14 @@
     <Compile Include="Migrations\202001311020242_SeedASPRolesDatabase.designer.cs">
       <DependentUpon>202001311020242_SeedASPRolesDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002251420269_MaintenanceUpdate.cs" />
+    <Compile Include="Migrations\202002251420269_MaintenanceUpdate.designer.cs">
+      <DependentUpon>202002251420269_MaintenanceUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002251929156_UpdateSchedule.cs" />
+    <Compile Include="Migrations\202002251929156_UpdateSchedule.designer.cs">
+      <DependentUpon>202002251929156_UpdateSchedule.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AfterRollerProductionChecklist.cs" />
@@ -434,6 +442,15 @@
     <EmbeddedResource Include="Migrations\202001311020242_SeedASPRolesDatabase.resx">
       <DependentUpon>202001311020242_SeedASPRolesDatabase.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002251420269_MaintenanceUpdate.resx">
+      <DependentUpon>202002251420269_MaintenanceUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002251929156_UpdateSchedule.resx">
+      <DependentUpon>202002251929156_UpdateSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MaintenanceImage\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

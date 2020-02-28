@@ -81,7 +81,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Roller Condition (After Production to verify)</th>
-                                <th>Enter value</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,7 +102,7 @@
                                 <td><p class="font-weight-bold">Roller send to:</p></td>
                                 <td>
                                     @Html.DropDownListFor(model => model.rollerSendTo, sendTo, "Select roller send to", new { @class = "form-control", id = "rollerSendTo" })<br />
-                                    @Html.TextBox("roomLocation", "", new { @class = "form-control", style = "display:none", id = "roomLocationInput", maxlength = "3", placeholder = "Enter roller room rack location" })
+                                    @Html.TextBox("roomLocation", "", new { @class = "form-control", style = "display:none", id = "roomLocationInput", maxlength = "5", placeholder = "Enter roller room rack location" })
                                     @Html.ValidationMessageFor(model => model.rollerSendTo, "", new { @class = "text-danger" })
                                 </td>
                             </tr>
@@ -121,7 +121,7 @@
                                 <td>4</td>
                                 <td><p class="font-weight-bold">End Date Time:</p></td>
                                 <td>
-                                    @Html.TextBox("endDT", "", new { @class = "form-control", id = "endDate", type = "datetime-local", placeholder = "Enter end date time here" })
+                                    @Html.TextBox("endDT", "", new { @class = "form-control", id = "endDate", type = "datetime-local" })
                                 </td>
                             </tr>
 
@@ -174,9 +174,15 @@
 
 <script>
     (function () {
-        document.querySelector('#endDate').setAttribute('min', new Date().toISOString().substring(0, 16));
-        let sendToDropdown = document.querySelector('#rollerSendTo');
+        var startTime = new Date();
+        startTime = new Date(startTime.getTime() + (startTime.getTimezoneOffset()));
+        let time = `${startTime.getFullYear()}-${(startTime.getMonth() + 1).toString().padStart(2, '0')}-${startTime.getDate().toString().padStart(2, '0')}T${startTime.toTimeString().substr(0, 8)}`;
+        let timeLess2Hr = `${startTime.getFullYear()}-${(startTime.getMonth() + 1).toString().padStart(2, '0')}-${startTime.getDate().toString().padStart(2, '0')}T${(startTime.getHours() - 2).toString().padStart(2, '0')}:${startTime.getMinutes().toString().padStart(2, '0')}:${startTime.getSeconds().toString().padStart(2, '0')}`;
 
+        document.querySelector('#endDate').setAttribute('min', timeLess2Hr);
+        document.querySelector('#endDate').setAttribute('value', time);
+
+        let sendToDropdown = document.querySelector('#rollerSendTo');
         sendToDropdown.addEventListener("change", (e) => {
             let input = document.querySelector('#roomLocationInput');
             if (e.target.value === "Roller Room") {
