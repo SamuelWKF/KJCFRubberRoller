@@ -61,23 +61,20 @@ namespace KJCFRubberRoller.Controllers
             return View("CreateEditMaintenance");
         }
 
-        //Upload image
-        public ActionResult Create(Maintenance maintenance, HttpPostedFileBase file)
+        public ActionResult FileUpload(HttpPostedFileBase file)
         {
-            if (ModelState.IsValid)
+            if (file != null)
             {
-                if (file != null)
-                {
-                    file.SaveAs(HttpContext.Server.MapPath("~/Images/") + file.FileName);
-                    maintenance.imagePath = file.FileName;
-                }
-                _db.maintenances.Add(maintenance);
-                int result = _db.SaveChanges();
-                return RedirectToAction("Index");
+                string pic = System.IO.Path.GetFileName(file.FileName);
+                string path = System.IO.Path.Combine(Server.MapPath("~/images/profile"), pic);
+                // file is uploaded
+                file.SaveAs(path);
             }
-            return View(maintenance);
+            // after successfully uploading redirect the user
+            return RedirectToAction("Index");
         }
 
+        //Confirm Create New Maintenance Report 
         [HttpPost]
         public ActionResult CreateConfirm(FormCollection collection)
         {
@@ -104,7 +101,7 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.newShoreHardness = collection["newShoreHardness"];
                 maintenance.correctiveAction = collection["correctiveAction"];
                 maintenance.reportDateTime = DateTime.Now;
-                
+              
 
                 LogAction.log(this._controllerName, "GET", "Redirect Maintenance-CreateConfirm webpage", User.Identity.GetUserId());
                 return View(maintenance);
@@ -156,6 +153,49 @@ namespace KJCFRubberRoller.Controllers
             }
         }
 
+        // POST: Update existing maintenance record
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(Maintenance maintenance)
+        {
+            try
+            {
+                // Retrieve existing maintenance report from database
+                Maintenance main = _db.maintenances.SingleOrDefault(m => m.maintenanceID == maintenance.maintenanceID);
+
+                if (main == null)
+                    return RedirectToAction("Index");
+
+                main.diameterCore = maintenance.diameterCore;
+                main.openingStockDate = maintenance.openingStockDate;
+                main.sendTo = maintenance.sendTo;
+                main.reason = maintenance.reason;
+                main.remark = maintenance.remark;
+                main.newDiameter = maintenance.newDiameter;
+                main.newShoreHardness = maintenance.newShoreHardness;
+                main.correctiveAction = maintenance.correctiveAction;
+
+                int result = _db.SaveChanges();
+
+                if (result > 0)
+                {
+                    LogAction.log(this._controllerName, "POST", $"Updated maintenance #{maintenance} record", User.Identity.GetUserId());
+                    TempData["formStatus"] = true;
+                    TempData["formStatusMsg"] = $"Maintenance Report #{maintenance.maintenanceID} has been successfully updated!";
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = $"Oops! Something went wrong. The maintenance report #{maintenance.maintenanceID} has not been successfully updated.";
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+        }
+
+        // Get: Retrieve Maintenance Report
         [HttpGet]
         [Route("maintenance/{id}/view")]
         public ActionResult ViewMaintenanceReport(int id)
@@ -170,6 +210,33 @@ namespace KJCFRubberRoller.Controllers
             return View(maintenance);
         }
 
+        //Final confiramtion
+        [Route("maintenance/{id}/edit")]
+        public ActionResult Edit(int? id)
+        {
+            // Ensure ID is supplied
+            if (id == null)
+                return RedirectToAction("Index");
+
+            // Retrieve existing specific maintenance record from database
+            Maintenance maintenance = _db.maintenances.SingleOrDefault(c => c.maintenanceID == id);
+
+            // Ensure the retrieved value is not null
+            if (maintenance == null)
+                return RedirectToAction("Index");
+
+            if (maintenance.status != 1)
+            {
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = $"Cannot edit a finalized maintenance report.";
+                return RedirectToAction("Index");
+            }
+
+            LogAction.log(this._controllerName, "GET", $"Requested Maintenance-Edit {id} webpage", User.Identity.GetUserId());
+            return View("CreateEditMaintenance", maintenance);
+        }
+
+        //Rreject report 
         [Authorize(Roles = "Executive,Manager")]
         public ActionResult RejectReport(FormCollection collection)
         {
@@ -212,6 +279,7 @@ namespace KJCFRubberRoller.Controllers
             }
         }
 
+        //Approve report
         [Authorize(Roles = "Executive,Manager")]
         public ActionResult ApproveReport(FormCollection collection)
         {
@@ -254,73 +322,6 @@ namespace KJCFRubberRoller.Controllers
                 TempData["formStatusMsg"] = $"Oops! Something went wrong.";
                 LogAction.log(this._controllerName, "POST", $"Error approving maintenance report: {ex.Message}", User.Identity.GetUserId());
                 return RedirectToAction("Index");
-            }
-        }
-
-        [Route("maintenance/{id}/edit")]
-        public ActionResult Edit(int? id)
-        {
-            // Ensure ID is supplied
-            if (id == null)
-                return RedirectToAction("Index");
-
-            // Retrieve existing specific maintenance record from database
-            Maintenance maintenance = _db.maintenances.SingleOrDefault(c => c.maintenanceID == id);
-
-            // Ensure the retrieved value is not null
-            if (maintenance == null)
-                return RedirectToAction("Index");
-
-            if (maintenance.status != 1)
-            {
-                TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = $"Cannot edit a finalized maintenance report.";
-                return RedirectToAction("Index");
-            }
-
-            LogAction.log(this._controllerName, "GET", $"Requested Maintenance-Edit {id} webpage", User.Identity.GetUserId());
-            return View("CreateEditMaintenance", maintenance);
-        }
-
-        // POST: Update existing maintenance record
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Update(Maintenance maintenance)
-        {
-            try
-            {
-                // Retrieve existing maintenance report from database
-                Maintenance main = _db.maintenances.SingleOrDefault(m => m.maintenanceID == maintenance.maintenanceID);
-
-                if (main == null)
-                    return RedirectToAction("Index");
-
-                main.diameterCore = maintenance.diameterCore;
-                main.openingStockDate = maintenance.openingStockDate;
-                main.sendTo = maintenance.sendTo;
-                main.reason = maintenance.reason;
-                main.remark = maintenance.remark;
-                main.newDiameter = maintenance.newDiameter;
-                main.newShoreHardness = maintenance.newShoreHardness;
-                main.correctiveAction = maintenance.correctiveAction;
-
-                int result = _db.SaveChanges();
-
-                if (result > 0)
-                {
-                    LogAction.log(this._controllerName, "POST", $"Updated maintenance #{maintenance} record", User.Identity.GetUserId());
-                    TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = $"Maintenance Report #{maintenance.maintenanceID} has been successfully updated!";
-                }
-
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
-                TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = $"Oops! Something went wrong. The maintenance report #{maintenance.maintenanceID} has not been successfully updated.";
-                return Redirect(Request.UrlReferrer.ToString());
             }
         }
     }
