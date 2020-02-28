@@ -61,23 +61,6 @@ namespace KJCFRubberRoller.Controllers
             return View("CreateEditMaintenance");
         }
 
-        //Upload image
-        public ActionResult Create(Maintenance maintenance, HttpPostedFileBase file)
-        {
-            if (ModelState.IsValid)
-            {
-                if (file != null)
-                {
-                    file.SaveAs(HttpContext.Server.MapPath("~/Images/") + file.FileName);
-                    maintenance.imagePath = file.FileName;
-                }
-                _db.maintenances.Add(maintenance);
-                int result = _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(maintenance);
-        }
-
         [HttpPost]
         public ActionResult CreateConfirm(FormCollection collection)
         {
@@ -104,7 +87,6 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.newShoreHardness = collection["newShoreHardness"];
                 maintenance.correctiveAction = collection["correctiveAction"];
                 maintenance.reportDateTime = DateTime.Now;
-                
 
                 LogAction.log(this._controllerName, "GET", "Redirect Maintenance-CreateConfirm webpage", User.Identity.GetUserId());
                 return View(maintenance);
