@@ -30,7 +30,7 @@
                             Last Usage Date
                         </th>
                         <th>
-                            Mileage
+                            Total Mileage
                         </th>
                         <th>
                             Condition
@@ -75,10 +75,24 @@
                                 @location
                             </td>
                             <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.value.last_usage_date)
+                                @{ 
+                                    var lastUsageDate = "-";
+                                    if (item.value.last_usage_date != null)
+                                    {
+                                        lastUsageDate = item.value.last_usage_date.ToString();
+                                    }
+                                }
+                                @lastUsageDate
                             </td>
                             <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.value.last_usage_date)
+                                @{ var lastSched = item.value.Schedules.LastOrDefault();
+                                    var totalMileage = 0;
+                                    if (lastSched != null)
+                                    {
+                                        totalMileage = lastSched.endMileage;
+                                    }
+                                }
+                                @totalMileage
                             </td>
                             <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.condition)

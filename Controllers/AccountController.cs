@@ -101,7 +101,7 @@ namespace KJCFRubberRoller.Controllers
                 ModelState.AddModelError("", "Invalid login attempt.");
                 return View(model);
             }
-            
+
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
@@ -176,6 +176,15 @@ namespace KJCFRubberRoller.Controllers
                     }).ToList();
 
             return new SelectList(rollerCatList, "ID", "name");
+        }
+
+        private void getStatusDropdown(){
+            ViewBag.accountStatusDropDown = new List<SelectListItem>()
+            {
+                new SelectListItem{Text="Inactive", Value="0"},
+                new SelectListItem{Text="Active", Value="1"},
+            };
+
         }
 
         // GET: /staff/list
@@ -281,7 +290,8 @@ namespace KJCFRubberRoller.Controllers
             // Ensure the retrieved value is not null
             if (staff == null || staff.Id == User.Identity.GetUserId())
                 return RedirectToAction("List");
-
+            
+            
             ViewData["userPosition"] = getUserRoles();
             LogAction.log(this._controllerName, "GET", string.Format("Requested Account-Edit {0} webpage", staff.staffID), User.Identity.GetUserId());
             return View("Edit", staff);
@@ -297,14 +307,35 @@ namespace KJCFRubberRoller.Controllers
             {
                 ApplicationDbContext _db = new ApplicationDbContext();
                 ApplicationUser staff = _db.Users.FirstOrDefault(u => u.Id == user.Id);
-
-                if (staff != null)
+                ApplicationUser ExStaff = _db.Users.FirstOrDefault(u => u.staffID == user.staffID);
+                if (ExStaff != null)
+                {
+                    if (user.Id != ExStaff.Id)
+                    {
+                        ViewData["userPosition"] = getUserRoles();
+                        TempData["formStatus"] = false;
+                        TempData["formStatusMsg"] = $"Staff ID ({user.staffID}) has been taken by another staff. Staff details has not been successfully updated.";
+                        return View("Edit", user);
+                    }
+                    else
+                    {
+                        staff.Email = user.Email;
+                        staff.staffID = user.staffID;
+                        staff.name = user.name;
+                        staff.IC = user.IC;
+                        staff.position = user.position;
+                        staff.status = user.status;
+                    }
+                }
+                else
                 {
                     staff.Email = user.Email;
                     staff.staffID = user.staffID;
                     staff.name = user.name;
                     staff.IC = user.IC;
                     staff.position = user.position;
+                    staff.status = user.status;
+
                 }
 
                 int result = _db.SaveChanges();
@@ -312,15 +343,15 @@ namespace KJCFRubberRoller.Controllers
                 if (result > 0)
                 {
                     TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = $"Staff ({staff.staffID}) details has been successfully updated!";
-                    LogAction.log(this._controllerName, "POST", $"Staff ({staff.staffID}) details updated", User.Identity.GetUserId());
+                    TempData["formStatusMsg"] = $"Staff ({user.staffID}) details has been successfully updated!";
+                    LogAction.log(this._controllerName, "POST", $"Staff ({user.staffID}) details updated", User.Identity.GetUserId());
                 }
                 return RedirectToAction("List");
             }
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. Staff details has not been successfully updated.";
+                TempData["formStatusMsg"] = $"{ ex.Message} Oops! Something went wrong. Staff details has not been successfully updated.";
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }

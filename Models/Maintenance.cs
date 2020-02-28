@@ -87,5 +87,7 @@ namespace KJCFRubberRoller.Models
 
         [DisplayName("Reject Status Remark")]
         public string statusRemark { get; set; }
+
+        public string imagePath { get; set; }
     }
 }
