@@ -98,20 +98,6 @@ namespace KJCFRubberRoller.Controllers
             }
         }
 
-        //Get image
-        public ActionResult FileUpload(HttpPostedFileBase file)
-        {
-            if (file != null)
-            {
-                string pic = System.IO.Path.GetFileName(file.FileName);
-                string path = System.IO.Path.Combine(Server.MapPath("~/images/profile"), pic);
-                // file is uploaded
-                file.SaveAs(path);
-            }
-            // after successfully uploading redirect the user
-            return RedirectToAction("Index");
-        }
-
         // POST: Create new rubber roller Maintenance record
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -194,6 +194,13 @@ C:\Users\User\Documents\GitHub\KJCFRubberRoller\KJCFRubberRoller\obj\Debug\KJCFR
 C:\Users\User\Documents\GitHub\KJCFRubberRoller\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.pdb
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csprojAssemblyReference.cache
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.InitialModel.resources
+C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.SeedDatabase.resources
+C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.Update.resources
+C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.Update1.resources
+C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.Update2.resources
+C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.StaffModelUpdate.resources
+C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.IdentityUserModelUpdate.resources
+C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.IdentityUserModelUpdate1.resources
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csproj.GenerateResource.cache
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csproj.CoreCompileInputs.cache
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.dll
@@ -574,6 +581,3 @@ C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csproj.G
 C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csproj.CopyComplete
 C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.dll
 C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.pdb
-C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.SeedASPRolesDatabase.resources
-C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.MaintenanceUpdate.resources
-C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.UpdateSchedule.resources
