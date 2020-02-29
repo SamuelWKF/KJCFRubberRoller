@@ -62,12 +62,13 @@ namespace KJCFRubberRoller.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Maintenance maintenance, HttpPostedFileBase file)
+        [ValidateAntiForgeryToken]
+        public ActionResult FileUpload(Maintenance maintenance, HttpPostedFileBase file)
         {
-            if (file != null)
+            if (ModelState.IsValid)
             {
-                
-                string ImageName = System.IO.Path.GetFileName(file.FileName); //file2 to store path and url
+                //file to store path and url
+                string ImageName = System.IO.Path.GetFileName(file.FileName);
                 string physicalPath = Server.MapPath("~/img/" + ImageName);
                 // save image in folder
                 file.SaveAs(physicalPath);
@@ -75,12 +76,12 @@ namespace KJCFRubberRoller.Controllers
                 _db.maintenances.Add(maintenance);
                 int result = _db.SaveChanges();
             }
-            else
+            /*else
             { //if both file are null then store others details without any image  
                 _db.maintenances.Add(maintenance);
                 int result = _db.SaveChanges();
                 return RedirectToAction("Index");
-            }
+            }*/
             // after successfully uploading redirect the user
             return RedirectToAction("Index");
         }
@@ -112,7 +113,7 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.newShoreHardness = collection["newShoreHardness"];
                 maintenance.correctiveAction = collection["correctiveAction"];
                 maintenance.reportDateTime = DateTime.Now;
-                maintenance.imagePath = collection.Get("imagePath");
+                maintenance.imagePath = collection.Get("ImagePath");
 
                 LogAction.log(this._controllerName, "GET", "Redirect Maintenance-CreateConfirm webpage", User.Identity.GetUserId());
                 return View(maintenance);
