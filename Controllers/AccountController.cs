@@ -165,35 +165,39 @@ namespace KJCFRubberRoller.Controllers
 
         private SelectList getUserRoles()
         {
+            int countId = 0;
+            //set priority for Role
+            int[] defaultRoleId = {2,1,3,4};
             ApplicationDbContext _db = new ApplicationDbContext();
             // Retrieve user roles
             var rollerCatList = _db.Roles
                     .AsEnumerable()
                     .Select((v, i) => new
                     {
-                        ID = i + 1,
+                        ID = defaultRoleId[i],
                         name = v.Name
                     }).ToList();
 
             return new SelectList(rollerCatList, "ID", "name");
         }
 
-        private void getStatusDropdown(){
-            ViewBag.accountStatusDropDown = new List<SelectListItem>()
-            {
-                new SelectListItem{Text="Inactive", Value="0"},
-                new SelectListItem{Text="Active", Value="1"},
-            };
-
-        }
-
+        
         // GET: /staff/list
         [Route("Staff/List")]
         public ActionResult List(int? i)
         {
             var currentUserID = User.Identity.GetUserId();
             ApplicationDbContext _db = new ApplicationDbContext();
-            List<ApplicationUser> users = _db.Users.Where(u => u.Id != currentUserID).ToList();
+            ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == currentUserID);
+            List<ApplicationUser> users=null;
+            if (user.position == 1)
+            {
+                users = _db.Users.Where(u => u.Id != currentUserID).ToList();
+            }
+            else
+            {
+                users = _db.Users.Where(u => u.Id != currentUserID && u.position > user.position).ToList();
+            }
 
             LogAction.log(this._controllerName, "GET", "Requested Account-List webpage", User.Identity.GetUserId());
             return View(users.ToPagedList(i ?? 1, 20));
@@ -319,22 +323,26 @@ namespace KJCFRubberRoller.Controllers
                     }
                     else
                     {
+                        UserManager.RemoveFromRole(staff.Id, UserRole.getRole(staff.position));
                         staff.Email = user.Email;
                         staff.staffID = user.staffID;
                         staff.name = user.name;
                         staff.IC = user.IC;
                         staff.position = user.position;
                         staff.status = user.status;
+                        UserManager.AddToRole(staff.Id, UserRole.getRole(staff.position));
                     }
                 }
                 else
                 {
+                    UserManager.RemoveFromRole(staff.Id, UserRole.getRole(staff.position));
                     staff.Email = user.Email;
                     staff.staffID = user.staffID;
                     staff.name = user.name;
                     staff.IC = user.IC;
                     staff.position = user.position;
                     staff.status = user.status;
+                    UserManager.AddToRole(staff.Id, UserRole.getRole(staff.position));
 
                 }
 
@@ -342,6 +350,7 @@ namespace KJCFRubberRoller.Controllers
 
                 if (result > 0)
                 {
+                    
                     TempData["formStatus"] = true;
                     TempData["formStatusMsg"] = $"Staff ({user.staffID}) details has been successfully updated!";
                     LogAction.log(this._controllerName, "POST", $"Staff ({user.staffID}) details updated", User.Identity.GetUserId());
@@ -351,7 +360,7 @@ namespace KJCFRubberRoller.Controllers
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = $"{ ex.Message} Oops! Something went wrong. Staff details has not been successfully updated.";
+                TempData["formStatusMsg"] = $" Oops! Something went wrong. Staff details has not been successfully updated.";
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }

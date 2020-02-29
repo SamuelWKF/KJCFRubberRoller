@@ -33,8 +33,8 @@ namespace KJCFRubberRoller.Models
     //User Role
     public class UserRole
     {
-        public static int EXECUTIVE = 1;
-        public static int MANAGER = 2;
+        public static int EXECUTIVE = 2;
+        public static int MANAGER = 1;
         public static int QA_STAFF = 3;
         public static int ROLLER_PIC = 4;
 
@@ -43,10 +43,10 @@ namespace KJCFRubberRoller.Models
             string role = "";
             switch (position)
             {
-                case 1:
+                case 2:
                     role = "Executive";
                     break;
-                case 2:
+                case 1:
                     role = "Manager";
                     break;
                 case 3:
