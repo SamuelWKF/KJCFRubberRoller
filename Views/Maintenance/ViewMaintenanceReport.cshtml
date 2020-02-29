@@ -64,7 +64,9 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 border">
-                        IMAGE HERE
+                        <fieldset>
+                            <img src='@Url.Action("show", "image", new { id = Model.imagePath})' />
+                        </fieldset>
                     </div>
                     <div class="col-md-8 border">
                         <div class="row">

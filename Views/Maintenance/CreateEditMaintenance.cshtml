@@ -85,18 +85,15 @@
                         <div class="col-md-4 border">
                             @*@Html.HiddenFor(m => m.rollerID);*@
 
-                                @Html.AntiForgeryToken()
-                                @Html.ValidationSummary(true)
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
 
-                                <fieldset>
-                                    <legend>Image</legend>
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.imagePath)
-                                    </div>
-                                    <div class="editor-field">
-                                        <input id="ImagePath" title="Upload a product image" type="file" name="file" />
-                                    </div>
-                                </fieldset>
+                            <fieldset>
+                                <legend>Upload Image Here</legend>
+                                <div class="editor-field">
+                                    <input type="file" name="ImagePath" id="ImagePath" />
+                                </div>
+                            </fieldset>
                         </div>
 
                         <div class="col-md-8 border">

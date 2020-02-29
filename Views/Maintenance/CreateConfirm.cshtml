@@ -31,8 +31,9 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4 border">
-                            
                             @*@Html.HiddenFor(m => m.rollerID);*@
+                            <img src='@Url.Action("show", "image", new { id = Model.imagePath})'/>
+
                         </div>
 
                         <div class="col-md-8 border">

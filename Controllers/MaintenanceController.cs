@@ -61,14 +61,25 @@ namespace KJCFRubberRoller.Controllers
             return View("CreateEditMaintenance");
         }
 
-        public ActionResult FileUpload(HttpPostedFileBase file)
+        [HttpPost]
+        public ActionResult Index(Maintenance maintenance, HttpPostedFileBase file)
         {
             if (file != null)
             {
-                string pic = System.IO.Path.GetFileName(file.FileName);
-                string path = System.IO.Path.Combine(Server.MapPath("~/images/profile"), pic);
-                // file is uploaded
-                file.SaveAs(path);
+                
+                string ImageName = System.IO.Path.GetFileName(file.FileName); //file2 to store path and url
+                string physicalPath = Server.MapPath("~/img/" + ImageName);
+                // save image in folder
+                file.SaveAs(physicalPath);
+                maintenance.imagePath = "img/" + ImageName;
+                _db.maintenances.Add(maintenance);
+                int result = _db.SaveChanges();
+            }
+            else
+            { //if both file are null then store others details without any image  
+                _db.maintenances.Add(maintenance);
+                int result = _db.SaveChanges();
+                return RedirectToAction("Index");
             }
             // after successfully uploading redirect the user
             return RedirectToAction("Index");
@@ -101,7 +112,7 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.newShoreHardness = collection["newShoreHardness"];
                 maintenance.correctiveAction = collection["correctiveAction"];
                 maintenance.reportDateTime = DateTime.Now;
-              
+                maintenance.imagePath = collection.Get("imagePath");
 
                 LogAction.log(this._controllerName, "GET", "Redirect Maintenance-CreateConfirm webpage", User.Identity.GetUserId());
                 return View(maintenance);
@@ -127,7 +138,7 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.reportedBy = user;
                 maintenance.RubberRoller.status = RollerStatus.getStatus(4);
                 maintenance.status = 1;
-
+                
                 _db.maintenances.Add(maintenance);
                 int result = _db.SaveChanges();
 
