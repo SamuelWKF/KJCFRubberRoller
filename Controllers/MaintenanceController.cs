@@ -69,12 +69,15 @@ namespace KJCFRubberRoller.Controllers
             {
                 //file to store path and url
                 string ImageName = System.IO.Path.GetFileName(file.FileName);
-                string physicalPath = Server.MapPath("~/img/" + ImageName);
+                //string physicalPath = System.IO.Path.Combine(Server.MapPath("~/img/" + ImageName));
                 // save image in folder
-                file.SaveAs(physicalPath);
-                 maintenance.imagePath = "img/" + ImageName;
+                //file.SaveAs(physicalPath);
+                file.SaveAs(HttpContext.Server.MapPath("~/Images/") + file.FileName);
+                maintenance.imagePath = file.FileName;
+                //maintenance.imagePath = "img/" + ImageName;
                 _db.maintenances.Add(maintenance);
                 int result = _db.SaveChanges();
+                return RedirectToAction("Index");
             }
             /*else
             { //if both file are null then store others details without any image  
@@ -85,7 +88,7 @@ namespace KJCFRubberRoller.Controllers
             return View(maintenance);
         }
 
-        //Confirm Create New Maintenance Report 
+        // POST: Create new rubber roller Maintenance record 
         [HttpPost]
         public ActionResult CreateConfirm(FormCollection collection)
         {
@@ -112,7 +115,8 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.newShoreHardness = collection["newShoreHardness"];
                 maintenance.correctiveAction = collection["correctiveAction"];
                 maintenance.reportDateTime = DateTime.Now;
-                maintenance.imagePath = collection["ImagePath"];
+                //maintenance.imagePath = collection["ImagePath"];
+                HttpPostedFileBase file = Request.Files["imagePath"];
 
                 LogAction.log(this._controllerName, "GET", "Redirect Maintenance-CreateConfirm webpage", User.Identity.GetUserId());
                 return View(maintenance);
@@ -124,7 +128,6 @@ namespace KJCFRubberRoller.Controllers
             }
         }
 
-        // POST: Create new rubber roller Maintenance record
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Maintenance maintenance)
@@ -138,7 +141,7 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.reportedBy = user;
                 maintenance.RubberRoller.status = RollerStatus.getStatus(4);
                 maintenance.status = 1;
-                
+
                 _db.maintenances.Add(maintenance);
                 int result = _db.SaveChanges();
 
@@ -221,7 +224,7 @@ namespace KJCFRubberRoller.Controllers
             return View(maintenance);
         }
 
-        //Final confiramtion
+        //Final confiramtion to edit maintenance report
         [Route("maintenance/{id}/edit")]
         public ActionResult Edit(int? id)
         {
