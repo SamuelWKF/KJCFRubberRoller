@@ -57,39 +57,39 @@ namespace KJCFRubberRoller.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("profile/edit")]
-        public ActionResult UpdateProfile(ApplicationUser user)
-        {
-            try
-            {
-                using (ApplicationDbContext _db = new ApplicationDbContext())
-                {
-                    ApplicationUser staff = _db.Users.FirstOrDefault(u => u.Id == user.Id);
-                    if (staff != null)
-                    {
-                        staff.name = user.name;
-                        staff.IC = user.IC;
-                    }
-                    int result = _db.SaveChanges();
-                    if (result > 0)
-                    {
-                        TempData["formStatus"] = true;
-                        TempData["formStatusMsg"] = $"Profile details has been successfully updated!";
-                        LogAction.log(this._controllerName, "POST", "Profile details updated", User.Identity.GetUserId());
-                    }
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. Profile details has not been successfully updated.";
-                LogAction.log(this._controllerName, "POST", $"Error: {ex.Message}", User.Identity.GetUserId());
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[Route("profile/edit")]
+        //public ActionResult UpdateProfile(ApplicationUser user)
+        //{
+        //    try
+        //    {
+        //        using (ApplicationDbContext _db = new ApplicationDbContext())
+        //        {
+        //            ApplicationUser staff = _db.Users.FirstOrDefault(u => u.Id == user.Id);
+        //            if (staff != null)
+        //            {
+        //                staff.name = user.name;
+        //                staff.IC = user.IC;
+        //            }
+        //            int result = _db.SaveChanges();
+        //            if (result > 0)
+        //            {
+        //                TempData["formStatus"] = true;
+        //                TempData["formStatusMsg"] = $"Profile details has been successfully updated!";
+        //                LogAction.log(this._controllerName, "POST", "Profile details updated", User.Identity.GetUserId());
+        //            }
+        //            return RedirectToAction("Index");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["formStatus"] = false;
+        //        TempData["formStatusMsg"] = "Oops! Something went wrong. Profile details has not been successfully updated.";
+        //        LogAction.log(this._controllerName, "POST", $"Error: {ex.Message}", User.Identity.GetUserId());
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
 
         //
         // POST: /Manage/RemoveLogin

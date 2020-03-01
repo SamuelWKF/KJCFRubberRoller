@@ -73,6 +73,7 @@ namespace KJCFRubberRoller.Controllers
 
             try
             {
+                
                 ApplicationDbContext _db = new ApplicationDbContext();
                 //var ToUpperStaffId = model.StaffId.ToUpper();
                 var user = _db.Users.Where(u => u.staffID == model.StaffId.ToUpper()).First();
