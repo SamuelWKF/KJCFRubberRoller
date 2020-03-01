@@ -77,23 +77,18 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4 border pt-5 font-weight-bold">
+                    <div class="col-md-4 border pt-5">
                         @if (Model != null && Model.imagePath != null)
                         {
                             <img src="~/Content/MaintenanceImages/@Model.imagePath" class="img-fluid" />
                             @:<br /><br />Click button below to change image<br />
                             @:<input type="file" name="file" id="file" />
                         }
-                        else if (Model == null && Model.imagePath == null)
-                        {
-                            @:Upload Image Here<br /><br />
-                            @:<input type="file" name="file" id="file" />
-                        }
                         else
                         {
-                            @:No Image Selected<br /><br />
+                            @:Select a Image to Upload<br /><br />
+                            @:<input type="file" name="file" id="file" />
                         }
-
                     </div>
 
                     <div class="col-md-8 border">
