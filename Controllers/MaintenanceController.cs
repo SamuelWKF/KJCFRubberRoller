@@ -17,6 +17,7 @@ namespace KJCFRubberRoller.Controllers
         private ApplicationDbContext _db;
         private string _controllerName = "Maintenance";
         private string[] imgFormats;
+       
         // Constructor
         public MaintenanceController()
         {
