@@ -22,7 +22,7 @@
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    @TempData["formStatusMsg"]
+                    @Html.Raw(TempData["formStatusMsg"])
                 </div>
             }
 
@@ -56,50 +56,50 @@
                 {
                     foreach (var item in Model.Select((value, index) => new { value, index }))
                     {
-                        <tr>
-                            <td class="text-center">@(item.index + 1)</td>
-                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.RubberRoller.rollerID)</td>
-                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.operationLine)</td>
-                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.product)</td>
-                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.quantity)</td>
-                            <td class="text-center">
-                                @{
-                                    var startDateTime = item.value.startDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
-                                }
-                                @startDateTime
-                            </td>
-                            <td class="text-center">
-                                @{
-                                    var endDateTime = "-";
-                                    if (item.value.endDateTime != null)
-                                    {
-                                        endDateTime = item.value.endDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
-                                    }
-                                }
-                                @endDateTime
-                            </td>
-                            <td>
-                                @{
-                                    var remark = "-";
-                                    if (item.value.remark != "")
-                                    {
-                                        remark = item.value.remark;
-                                    }
-                                }
-                                @remark
-                            </td>
-                            <td class="text-center">
-                                @{
-                                    var status = ScheduleStatus.getStatusString(item.value.status);
-                                }
-                                @status
-                            </td>
-                            <td>
-                                <a href="/schedule/@item.value.scheduleID/view" class="btn btn-block btn-success">
-                                    <i class="far fa-eye"></i>
-                                </a>
-                            </td>
-                        </tr>
+            <tr>
+                <td class="text-center">@(item.index + 1)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.value.RubberRoller.rollerID)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.value.operationLine)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.value.product)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.value.quantity)</td>
+                <td class="text-center">
+                    @{
+                        var startDateTime = item.value.startDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
+                    }
+                    @startDateTime
+                </td>
+                <td class="text-center">
+                    @{
+                        var endDateTime = "-";
+                        if (item.value.endDateTime != null)
+                        {
+                            endDateTime = item.value.endDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
+                        }
+                    }
+                    @endDateTime
+                </td>
+                <td>
+                    @{
+                        var remark = "-";
+                        if (item.value.remark != "")
+                        {
+                            remark = item.value.remark;
+                        }
+                    }
+                    @remark
+                </td>
+                <td class="text-center">
+                    @{
+                        var status = ScheduleStatus.getStatusString(item.value.status);
+                    }
+                    @status
+                </td>
+                <td class="text-center">
+                    <a href="/schedule/@item.value.scheduleID/view" class="btn btn-success">
+                        <i class="far fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
                     }
                 }
             </table>

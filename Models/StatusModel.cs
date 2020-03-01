@@ -43,11 +43,11 @@ namespace KJCFRubberRoller.Models
             string role = "";
             switch (position)
             {
-                case 2:
-                    role = "Executive";
-                    break;
                 case 1:
                     role = "Manager";
+                    break;
+                case 2:
+                    role = "Executive";
                     break;
                 case 3:
                     role = "QA Staff";
@@ -135,7 +135,7 @@ namespace KJCFRubberRoller.Models
         public static int PENDING_APPROVAL = 1;
         public static int APPROVED = 2;
         public static int REJECTED = 3;
-        
+
         public static string getStatus(int stats)
         {
             string status = "";
@@ -163,6 +163,7 @@ namespace KJCFRubberRoller.Models
     {
         public static int ACTIVE = 1;
         public static int COMPLETED = 2;
+        public static int PENDING_BEFORE_CHECKLIST = 3;
 
         public static string getStatusString(int stats)
         {
@@ -174,6 +175,9 @@ namespace KJCFRubberRoller.Models
                     break;
                 case 2:
                     status = "Completed";
+                    break;
+                case 3:
+                    status = "Pending Before Issue Checklist";
                     break;
                 default:
                     status = "";

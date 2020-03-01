@@ -48,7 +48,7 @@
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    @TempData["formStatusMsg"]
+                    @Html.Raw(TempData["formStatusMsg"])
                 </div>
             }
 
@@ -112,7 +112,17 @@
                                 <td>3</td>
                                 <td><p class="font-weight-bold">Mileage Run:</p></td>
                                 <td>
-                                    @Html.TextBox("mileageRun", "", new { @class = "form-control", placeholder = "Enter mileage run here", type = "number", min = "0", required = "required" })
+                                    @Html.TextBox("mileageRun", "", new
+                                    {
+                                        @class = "form-control",
+                                        placeholder = "Enter mileage run here",
+                                        type = "number",
+                                        min = "0",
+                                        max = "10000000",
+                                        step = "1",
+                                        onkeypress = "return event.charCode >= 48 && event.charCode <= 57",
+                                        required = "required"
+                                    })
                                 </td>
                             </tr>
 
@@ -138,11 +148,11 @@
                     </table>
 
                     <div class="form-group row">
-                        <div class="col-md-6">
-                            <input type="reset" value="Clear" class="btn btn-primary btn-block" />
+                        <div class="col-md-6 text-center">
+                            <input type="reset" value="Clear" class="btn btn-primary w-75" />
                         </div>
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#confirmCompleteOperationModal">Submit Checklist & Complete Operation</button>
+                        <div class="col-md-6 text-center">
+                            <button type="button" class="btn btn-success w-75" data-toggle="modal" data-target="#confirmCompleteOperationModal">Submit Checklist & Complete Operation</button>
                         </div>
                     </div>
 
@@ -161,7 +171,7 @@
                                     Please note any further changes to schedule details, before & after checklist is <b>not allowed</b> after operation is marked as completed.
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success btn-block">Confirm to Complete Operation</button>
+                                    <button type="submit" class="btn btn-success ">Confirm to Complete Operation</button>
                                 </div>
                             </div>
                         </div>
@@ -193,12 +203,6 @@
                 input.style.display = "none";
             }
         });
-
-        if (document.querySelector('.alert') !== null) {
-            setTimeout(() => {
-                document.querySelector('.alert').remove();
-            }, 5000);
-        }
     })();
 </script>
 

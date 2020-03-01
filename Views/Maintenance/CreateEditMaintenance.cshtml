@@ -33,11 +33,6 @@
         Text = "EIKOH",
         Value = "EIKOH"
     });
-    rollerSupplier.Add(new SelectListItem
-    {
-        Text = "Canco",
-        Value = "Canco"
-    });
 }
 
 <div class="row">
@@ -53,180 +48,182 @@
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
                 </button>
-                @TempData["formStatusMsg"]
+                @Html.Raw(TempData["formStatusMsg"])
             </div>
         }
 
-            <div class="bg-white container-fluid py-3">
-                <p class="required">* Require field</p>
-                @using (Html.BeginForm((String)Url.RequestContext.RouteData.Values["id"] == null ? "CreateConfirm" : "Update", "Maintenance", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    @Html.AntiForgeryToken()
+        <div class="bg-white container-fluid py-3">
+            <p class="required">* Require field</p>
+            @using (Html.BeginForm((String)Url.RequestContext.RouteData.Values["id"] == null ? "CreateConfirm" : "Update", "Maintenance", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
 
-                    <div class="row">
-                        <div class="col-md-2 border">Date</div>
-                        <div class="col-md-10 border font-weight-bold">@DateTime.Now.ToString("dd-MMM-yyy")</div>
-                        @Html.HiddenFor(m => m.reportDateTime, new { Value = DateTime.Now })
+                <div class="row">
+                    <div class="col-md-2 border">Date</div>
+                    <div class="col-md-10 border font-weight-bold">@DateTime.Now.ToString("dd-MMM-yyy")</div>
+                    @Html.HiddenFor(m => m.reportDateTime, new { Value = DateTime.Now })
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Title</div>
+                    <div class="col-md-10 border font-weight-bold">
+                        @Html.TextBoxFor(model => model.title, new { @class = "form-control", placeholder = "Enter title here" })
+                        @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
                     </div>
-                    <div class="row">
-                        <div class="col-md-2 border">Title</div>
-                        <div class="col-md-10 border font-weight-bold">
-                            @Html.TextBoxFor(model => model.title, new { @class = "form-control", placeholder = "Enter title here" })
-                            @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2 border">Roller ID</div>
-                        <div class="col-md-10 border font-weight-bold">@rubber.rollerID</div>
-                        @Html.HiddenFor(m => m.rollerID, new { Value = rubber.id })
+                </div>
+                <div class="row">
+                    <div class="col-md-2 border">Roller ID</div>
+                    <div class="col-md-10 border font-weight-bold">@rubber.rollerID</div>
+                    @Html.HiddenFor(m => m.rollerID, new { Value = rubber.id })
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 border text-center pt-5">
+                        @if (Model != null && Model.imagePath != null)
+                        {
+                            <img src="~/Content/MaintenanceImages/@Model.imagePath" class="img-fluid" />
+                            @:<br /><br />Click button below to change image<br />
+                            @:<input type="file" name="file" id="file" />
+                        }
+                        else
+                        {
+                            @:Upload Image Here<br /><br />
+                            @:<input type="file" name="file" id="file" />
+                        }
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4 border">
-                            @*@Html.HiddenFor(m => m.rollerID);*@
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true)
-                            <fieldset>
-                                <legend>Upload Image Here</legend>
-                                <div class="editor-field">
-                                    <input type="file" name="ImagePath" id="ImagePath" class="form-control-file" />
-                                </div>
-                            </fieldset>
-                        </div>
-
-                        <div class="col-md-8 border">
-                            @*Diameter Core*@
-                            <div class="row">
-                                <div class="col-md-3 border"><label>Diameter Core (ID)<br />(Millimeter - mm)</label><span class="required">*</span></div>
-                                <div class="col-md-9 border font-weight-bold">
-                                    @Html.TextBoxFor(model => model.diameterCore, new { @class = "form-control", placeholder = "Enter roller diameter core here", type = "number", step = "0.01", min = "0" })
-                                    @Html.ValidationMessageFor(model => model.diameterCore, "", new { @class = "text-danger" })
-                                </div>
+                    <div class="col-md-8 border">
+                        @*Diameter Core*@
+                        <div class="row">
+                            <div class="col-md-3 border"><label>Diameter Core (ID)<br />(Millimeter - mm)</label><span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.diameterCore, new { @class = "form-control", placeholder = "Enter roller diameter core here", type = "number", step = "0.01", min = "0" })
+                                @Html.ValidationMessageFor(model => model.diameterCore, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                            @*Diameter Roller*@
-                            <div class="row">
-                                <div class="col-md-3 border"><label>Diameter Roller (OD)<br />(Millimeter - mm)</label><span class="required">*</span></div>
-                                <div class="col-md-9 border font-weight-bold">@Html.TextBox("diameterRoller", rubber.diameter, new { @class = "form-control", @readonly = "true" })</div>
+                        @*Diameter Roller*@
+                        <div class="row">
+                            <div class="col-md-3 border"><label>Diameter Roller (OD)<br />(Millimeter - mm)</label><span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">@Html.TextBox("diameterRoller", rubber.diameter, new { @class = "form-control", @readonly = "true" })</div>
+                        </div>
+
+                        @*Total Mileage*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.totalMileage)<span class="required">*</span></div>
+                            @{
+                                var latestMileage = 0;
+                                var latestSched = rubber.Schedules.LastOrDefault();
+                                if (latestSched != null)
+                                {
+                                    latestMileage = latestSched.endMileage;
+                                }
+                            }
+                            <div class="col-md-9 border font-weight-bold">@Html.TextBox("totalMileage", latestMileage, new { @class = "form-control", @readonly = "true" })</div>
+                        </div>
+
+                        @*Opening Stock Date*@
+                        <div class="row">
+                            <div class="col-md-3 border">
+                                @Html.LabelFor(model => model.openingStockDate)<span class="required">*</span>
                             </div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.openingStockDate, new { @class = "form-control openingDateInput", @type = "date", placeholder = "Enter opening stock date" })
+                                @Html.ValidationMessageFor(model => model.openingStockDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-                            @*Total Mileage*@
-                            <div class="row">
-                                <div class="col-md-3 border">@Html.LabelFor(model => model.totalMileage)<span class="required">*</span></div>
+                        @*Last production line used*@
+                        <div class="row">
+                            <div class="col-md-3 border">Last Production Line Used</div>
+                            <div class="col-md-9 border font-weight-bold">
                                 @{
-                                    var latestMileage = 0;
-                                    var latestSched = rubber.Schedules.LastOrDefault();
-                                    if (latestSched != null)
+                                    var sched = rubber.Schedules.LastOrDefault();
+                                    var lastProdLine = "";
+                                    if (sched == null)
                                     {
-                                        latestMileage = latestSched.endMileage;
+                                        lastProdLine = "-";
+
+                                    }
+                                    else
+                                    {
+                                        lastProdLine = $"L{sched.operationLine.ToString()}";
                                     }
                                 }
-                                <div class="col-md-9 border font-weight-bold">@Html.TextBox("totalMileage", latestMileage, new { @class = "form-control", @readonly = "true" })</div>
+                                @Html.TextBox("lastProdLine", lastProdLine, new { @class = "form-control", @readonly = "true" })
                             </div>
+                        </div>
 
-                            @*Opening Stock Date*@
-                            <div class="row">
-                                <div class="col-md-3 border">
-                                    @Html.LabelFor(model => model.openingStockDate)<span class="required">*</span>
-                                </div>
-                                <div class="col-md-9 border font-weight-bold">
-                                    @Html.TextBoxFor(model => model.openingStockDate, new { @class = "form-control openingDateInput", @type = "date", placeholder = "Enter opening stock date" })
-                                    @Html.ValidationMessageFor(model => model.openingStockDate, "", new { @class = "text-danger" })
-                                </div>
+                        @*Send To*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.sendTo)<span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.DropDownListFor(model => model.sendTo, rollerSupplier, "Select send to supplier", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.sendTo, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                            @*Last production line used*@
-                            <div class="row">
-                                <div class="col-md-3 border">Last Production Line Used</div>
-                                <div class="col-md-9 border font-weight-bold">
-                                    @{
-                                        var sched = rubber.Schedules.LastOrDefault();
-                                        var lastProdLine = "";
-                                        if (sched == null)
-                                        {
-                                            lastProdLine = "-";
-
-                                        }
-                                        else
-                                        {
-                                            lastProdLine = $"L{sched.operationLine.ToString()}";
-                                        }
-                                    }
-                                    @Html.TextBox("lastProdLine", lastProdLine, new { @class = "form-control", @readonly = "true" })
-                                </div>
+                        @*Reason*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.reason)<span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextAreaFor(model => model.reason, new { @class = "form-control", placeholder = "Enter reason here" })
+                                @Html.ValidationMessageFor(model => model.reason, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                            @*Send To*@
-                            <div class="row">
-                                <div class="col-md-3 border">@Html.LabelFor(model => model.sendTo)<span class="required">*</span></div>
-                                <div class="col-md-9 border font-weight-bold">
-                                    @Html.DropDownListFor(model => model.sendTo, rollerSupplier, "Select send to supplier", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.sendTo, "", new { @class = "text-danger" })
-                                </div>
+                        @*Roller Remark*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.remark)</div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextAreaFor(model => model.remark, new { @class = "form-control", placeholder = "Enter any remarks here" })
+                                @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                            @*Reason*@
-                            <div class="row">
-                                <div class="col-md-3 border">@Html.LabelFor(model => model.reason)<span class="required">*</span></div>
-                                <div class="col-md-9 border font-weight-bold">
-                                    @Html.TextAreaFor(model => model.reason, new { @class = "form-control", placeholder = "Enter reason here" })
-                                    @Html.ValidationMessageFor(model => model.reason, "", new { @class = "text-danger" })
-                                </div>
+                        @*New Roller Diameter*@
+                        <div class="row">
+                            <div class="col-md-3 border"><label>New Diameter<br />(Millimeter - mm)</label><span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.newDiameter, new { @class = "form-control", placeholder = "Enter roller new diameter here", type = "number", step = "0.01", min = "0" })
+                                @Html.ValidationMessageFor(model => model.newDiameter, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                            @*Roller Remark*@
-                            <div class="row">
-                                <div class="col-md-3 border">@Html.LabelFor(model => model.remark)</div>
-                                <div class="col-md-9 border font-weight-bold">
-                                    @Html.TextAreaFor(model => model.remark, new { @class = "form-control", placeholder = "Enter any remarks here" })
-                                    @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
-                                </div>
+                        @*New Roller Shore Hardness*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.newShoreHardness)<span class="required">*</span></div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.newShoreHardness, new { @class = "form-control", placeholder = "Enter roller new shore hardness here" })
+                                @Html.ValidationMessageFor(model => model.newShoreHardness, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                            @*New Roller Diameter*@
-                            <div class="row">
-                                <div class="col-md-3 border"><label>New Diameter<br />(Millimeter - mm)</label><span class="required">*</span></div>
-                                <div class="col-md-9 border font-weight-bold">
-                                    @Html.TextBoxFor(model => model.newDiameter, new { @class = "form-control", placeholder = "Enter roller new diameter here", type = "number", step = "0.01", min = "0" })
-                                    @Html.ValidationMessageFor(model => model.newDiameter, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            @*New Roller Shore Hardness*@
-                            <div class="row">
-                                <div class="col-md-3 border">@Html.LabelFor(model => model.newShoreHardness)<span class="required">*</span></div>
-                                <div class="col-md-9 border font-weight-bold">
-                                    @Html.TextBoxFor(model => model.newShoreHardness, new { @class = "form-control", placeholder = "Enter roller new shore hardness here" })
-                                    @Html.ValidationMessageFor(model => model.newShoreHardness, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            @*Corrective Action*@
-                            <div class="row">
-                                <div class="col-md-3 border">@Html.LabelFor(model => model.correctiveAction)</div>
-                                <div class="col-md-9 border font-weight-bold">
-                                    @Html.TextBoxFor(model => model.correctiveAction, new { @class = "form-control", placeholder = "Enter roller corrective action here" })
-                                    @Html.ValidationMessageFor(model => model.correctiveAction, "", new { @class = "text-danger" })
-                                </div>
+                        @*Corrective Action*@
+                        <div class="row">
+                            <div class="col-md-3 border">@Html.LabelFor(model => model.correctiveAction)</div>
+                            <div class="col-md-9 border font-weight-bold">
+                                @Html.TextBoxFor(model => model.correctiveAction, new { @class = "form-control", placeholder = "Enter roller corrective action here" })
+                                @Html.ValidationMessageFor(model => model.correctiveAction, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    if ((String)Url.RequestContext.RouteData.Values["id"] != null)
-                    {
-                        @Html.HiddenFor(m => m.maintenanceID)
-                    }
-
-                    <div class="form-group mt-3 row">
-                        <div class="col-md-6">
-                            <input type="reset" value="Clear" class="btn btn-primary btn-block" />
-                        </div>
-                        <div class="col-md-6">
-                            <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Maintenance Record" : "Update Maintenance Report")' class="btn btn-success btn-block" />
-                        </div>
-                    </div>
+                if ((String)Url.RequestContext.RouteData.Values["id"] != null)
+                {
+                    @Html.HiddenFor(m => m.maintenanceID)
                 }
-            </div>
+
+                <div class="form-group mt-3 row">
+                    <div class="col-md-6 text-center">
+                        <input type="reset" value="Clear" class="btn btn-primary w-50" />
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Roller Maintenance Record" : "Update Maintenance Report")' class="btn btn-success w-50" />
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>
 

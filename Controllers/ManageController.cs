@@ -46,7 +46,7 @@ namespace KJCFRubberRoller.Controllers
         }
 
         //
-        // GET: /Manage/Index
+        // GET: /profile/edit
         [Route("profile/edit")]
         public async Task<ActionResult> Index()
         {
@@ -268,6 +268,7 @@ namespace KJCFRubberRoller.Controllers
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
         {
+            LogAction.log(this._controllerName, "GET", "Requested Manage-SetPassword webpage", User.Identity.GetUserId());
             return View();
         }
 
@@ -285,6 +286,7 @@ namespace KJCFRubberRoller.Controllers
                     var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                     if (user != null)
                     {
+                        LogAction.log(this._controllerName, "POST", "Set password successful", User.Identity.GetUserId());
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     }
                     return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });

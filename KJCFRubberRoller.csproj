@@ -229,6 +229,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include="404.html" />
     <Content Include="App_Data\aspnet-KJCFRubberRoller-20191212105716.mdf" />
     <Content Include="App_Data\aspnet-KJCFRubberRoller-20191212105716_log.ldf">
       <DependentUpon>aspnet-KJCFRubberRoller-20191212105716.mdf</DependentUpon>
@@ -400,16 +401,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\List.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
-    <Content Include="Views\Checklist\AfterChecklistCreate.cshtml" />
-    <Content Include="Views\Checklist\BeforeChecklistCreate.cshtml" />
-    <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\RubberRoller\StockDetails.cshtml" />
     <Content Include="Views\Maintenance\CreateEditMaintenance.cshtml" />
     <Content Include="Views\Maintenance\Index.cshtml" />
     <Content Include="Views\RubberRoller\LocationHistory.cshtml" />
     <Content Include="Views\RubberRoller\Location.cshtml" />
-    <Content Include="Views\Schedule\View.cshtml" />
-    <Content Include="Views\Checklist\CombineChecklistView.cshtml" />
     <Content Include="Views\Maintenance\CreateSearch.cshtml" />
     <Content Include="Views\Maintenance\CreateConfirm.cshtml" />
     <Content Include="Views\Maintenance\ViewMaintenanceReport.cshtml" />
@@ -423,6 +419,7 @@
     <Content Include="Views\RubberRoller\MaintenanceHistory.cshtml" />
     <Content Include="Views\RubberRoller\OperationHistory.cshtml" />
     <Content Include="Views\RubberRoller\SummaryReport.cshtml" />
+    <Content Include="Views\Schedule\EditOperationDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -450,7 +447,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MaintenanceImage\" />
+    <Folder Include="Content\MaintenanceImages\" />
+    <Folder Include="Views\Error\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

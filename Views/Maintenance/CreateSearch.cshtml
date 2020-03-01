@@ -15,7 +15,7 @@
 
             <div class="bg-white container py-3">
                 <p class="required">* Require field</p>
-
+                <p>* Only roller with status <span class="font-weight-bold">"In Store Room"</span> available for use</p>
                 @using (Html.BeginForm("Create", "Maintenance", FormMethod.Get))
                 {
                     //Roller ID
@@ -26,8 +26,8 @@
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-md-12">
-                            <input type="submit" value="Select Roller" class="btn btn-success btn-block" />
+                        <div class="col-md-12 text-center">
+                            <input type="submit" value="Select Roller" class="btn btn-success w-25" />
                         </div>
                     </div>
                 }

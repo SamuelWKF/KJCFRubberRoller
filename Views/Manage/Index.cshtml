@@ -15,7 +15,7 @@
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    @TempData["formStatusMsg"]
+                    @Html.Raw(TempData["formStatusMsg"])
                 </div>
             }
 
@@ -93,11 +93,6 @@
 
 <script>
     (function () {
-        if (document.querySelector('.alert') !== null) {
-            setTimeout(() => {
-                document.querySelector('.alert').remove();
-            }, 5000);
-        }
         document.querySelector('.staffID').addEventListener('keyup', (e) => {
             e.target.value = e.target.value.toUpperCase();
         });

@@ -86,12 +86,10 @@ namespace KJCFRubberRoller.Controllers
                     return View(model);
                 }
 
-                try
-                {
-
-                    ApplicationDbContext _db = new ApplicationDbContext();
-                    //var ToUpperStaffId = model.StaffId.ToUpper();
-                    var user = _db.Users.Where(u => u.staffID == model.StaffId.ToUpper()).First();
+            try
+            {
+                ApplicationDbContext _db = new ApplicationDbContext();
+                var user = _db.Users.Where(u => u.staffID == model.StaffId.ToUpper()).First();
 
                     if (user != null && user.status != 0)
                     {
@@ -188,7 +186,7 @@ namespace KJCFRubberRoller.Controllers
         {
             int countId = 0;
             //set priority for Role
-            int[] defaultRoleId = {2,1,3,4};
+            int[] defaultRoleId = { 2, 1, 3, 4 };
             ApplicationDbContext _db = new ApplicationDbContext();
             // Retrieve user roles
             var rollerCatList = _db.Roles
@@ -202,7 +200,6 @@ namespace KJCFRubberRoller.Controllers
             return new SelectList(rollerCatList, "ID", "name");
         }
 
-        
         // GET: /staff/list
         [Route("Staff/List")]
         [Authorize(Roles = "Executive,Manager")]
@@ -211,7 +208,7 @@ namespace KJCFRubberRoller.Controllers
             var currentUserID = User.Identity.GetUserId();
             ApplicationDbContext _db = new ApplicationDbContext();
             ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == currentUserID);
-            List<ApplicationUser> users=null;
+            List<ApplicationUser> users = null;
             if (user.position == 1)
             {
                 users = _db.Users.Where(u => u.Id != currentUserID).ToList();
@@ -220,6 +217,7 @@ namespace KJCFRubberRoller.Controllers
             {
                 users = _db.Users.Where(u => u.Id != currentUserID && u.position > user.position).ToList();
             }
+
 
             LogAction.log(this._controllerName, "GET", "Requested Account-List webpage", User.Identity.GetUserId());
             return View(users.ToPagedList(i ?? 1, 20));
@@ -242,6 +240,7 @@ namespace KJCFRubberRoller.Controllers
         [Authorize(Roles = "Executive,Manager")]
         [Route("Staff/Register")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Executive,Manager")]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             ApplicationDbContext _db = new ApplicationDbContext();
@@ -256,7 +255,7 @@ namespace KJCFRubberRoller.Controllers
             // Generate random password
             ModelState.Remove("Password");
             model.Password = Membership.GeneratePassword(20, 8);
-            LogAction.log(this._controllerName, "SYS", $"Password generated for new user. New User: {model.staffID}", User.Identity.GetUserId());
+            LogAction.log(this._controllerName, "POST", $"Password generated for new user. New User: {model.staffID}", User.Identity.GetUserId());
 
             if (ModelState.IsValid)
             {
@@ -274,10 +273,10 @@ namespace KJCFRubberRoller.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    LogAction.log(this._controllerName, "SYS", $"User account successfully created. New User: {model.staffID}", User.Identity.GetUserId());
+                    LogAction.log(this._controllerName, "POST", $"User account successfully created. New User: {model.staffID}", User.Identity.GetUserId());
 
                     await UserManager.AddToRoleAsync(user.Id, UserRole.getRole(user.position));
-                    LogAction.log(this._controllerName, "SYS", $"User role added for new user: {model.staffID} - {UserRole.getRole(user.position)}", User.Identity.GetUserId());
+                    LogAction.log(this._controllerName, "POST", $"User role added for new user: {model.staffID} - {UserRole.getRole(user.position)}", User.Identity.GetUserId());
 
                     // Sent account creation email
                     SendMail.sendMail(model.Email,
@@ -286,10 +285,10 @@ namespace KJCFRubberRoller.Controllers
                         "<br/><br/>Your credentials are as follow:" +
                         "<br/>Email: " + model.Email +
                         "<br/>Password: " + model.Password);
-                    LogAction.log(this._controllerName, "SYS", $"Account creation email sent to new user: {model.staffID}", User.Identity.GetUserId());
+                    LogAction.log(this._controllerName, "POST", $"Account creation email sent to new user: {model.staffID}", User.Identity.GetUserId());
 
                     TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = "Staff details has been successfully added!";
+                    TempData["formStatusMsg"] = "<b>STATUS</b>: Staff details has been successfully added!";
                     return Redirect(Request.UrlReferrer.ToString());
                 }
                 ModelState.AddModelError("Email", result.Errors.Last());
@@ -298,7 +297,7 @@ namespace KJCFRubberRoller.Controllers
             // If we got this far, something failed, redisplay form
             ViewData["userPosition"] = getUserRoles();
             TempData["formStatus"] = false;
-            TempData["formStatusMsg"] = "Oops! Staff details has not been successfully added.";
+            TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Staff details has not been successfully added.";
             return View(model);
         }
 
@@ -319,8 +318,8 @@ namespace KJCFRubberRoller.Controllers
             // Ensure the retrieved value is not null
             if (staff == null || staff.Id == User.Identity.GetUserId())
                 return RedirectToAction("List");
-            
-            
+
+
             ViewData["userPosition"] = getUserRoles();
             LogAction.log(this._controllerName, "GET", string.Format("Requested Account-Edit {0} webpage", staff.staffID), User.Identity.GetUserId());
             return View("Edit", staff);
@@ -331,6 +330,7 @@ namespace KJCFRubberRoller.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Executive,Manager")]
         [Route("staff/update")]
+        [Authorize(Roles = "Executive,Manager")]
         public ActionResult Update(ApplicationUser user)
         {
             try
@@ -344,7 +344,7 @@ namespace KJCFRubberRoller.Controllers
                     {
                         ViewData["userPosition"] = getUserRoles();
                         TempData["formStatus"] = false;
-                        TempData["formStatusMsg"] = $"Staff ID ({user.staffID}) has been taken by another staff. Staff details has not been successfully updated.";
+                        TempData["formStatusMsg"] = $"<b>ALERT</b>: Staff ID ({user.staffID}) has been taken by another staff.";
                         return View("Edit", user);
                     }
                     else
@@ -369,16 +369,14 @@ namespace KJCFRubberRoller.Controllers
                     staff.position = user.position;
                     staff.status = user.status;
                     UserManager.AddToRole(staff.Id, UserRole.getRole(staff.position));
-
                 }
 
                 int result = _db.SaveChanges();
 
                 if (result > 0)
                 {
-                    
                     TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = $"Staff ({user.staffID}) details has been successfully updated!";
+                    TempData["formStatusMsg"] = $"<b>STATUS</b>: Staff ({user.staffID}) details has been successfully updated!";
                     LogAction.log(this._controllerName, "POST", $"Staff ({user.staffID}) details updated", User.Identity.GetUserId());
                 }
                 return RedirectToAction("List");
@@ -386,7 +384,7 @@ namespace KJCFRubberRoller.Controllers
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = $" Oops! Something went wrong. Staff details has not been successfully updated.";
+                TempData["formStatusMsg"] = $"<b>ALERT</b>: Oops! Something went wrong. Staff details has not been successfully updated.";
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }
