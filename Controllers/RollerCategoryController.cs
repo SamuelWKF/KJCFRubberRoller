@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace KJCFRubberRoller.Controllers
 {
+    [Authorize]
     public class RollerCategoryController : Controller
     {
         private ApplicationDbContext _db;
@@ -74,7 +75,7 @@ namespace KJCFRubberRoller.Controllers
                     if (result > 0)
                     {
                         TempData["formStatus"] = true;
-                        TempData["formStatusMsg"] = "New rubber roller category has been successfully added!";
+                        TempData["formStatusMsg"] = "<b>STATUS</b>: New rubber roller category has been successfully added!";
                         LogAction.log(this._controllerName, "POST", "Added new roller category record", User.Identity.GetUserId());
                     }
                 }
@@ -83,7 +84,7 @@ namespace KJCFRubberRoller.Controllers
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller category has not been successfully added.";
+                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The rubber roller category has not been successfully added.";
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }
@@ -113,15 +114,20 @@ namespace KJCFRubberRoller.Controllers
                 if (result > 0)
                 {
                     TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = "Rubber roller category has been successfully updated!";
+                    TempData["formStatusMsg"] = "<b>STATUS</b>: Rubber roller category has been successfully updated!";
                     LogAction.log(this._controllerName, "POST", "Roller category details updated", User.Identity.GetUserId());
+                } else
+                {
+                    TempData["formStatus"] = false;
+                    TempData["formStatusMsg"] = "<b>ALERT</b>: Roller category details has not been successfully updated.";
+                    LogAction.log(this._controllerName, "POST", $"Error updating roller category ID:{rollerCat.rollerCategoryID} details", User.Identity.GetUserId());
                 }
                 return Redirect(Request.UrlReferrer.ToString());
             }
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller category has not been successfully updated.";
+                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The rubber roller category has not been successfully updated.";
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }

@@ -12,8 +12,6 @@
             <h2 class="text-white text-center">Rubber Roller List</h2>
         </div>
         <div class="bg-white container-fluid py-3">
-            @Html.ActionLink("Add New Rubber Roller", "Create", null, new { @class = "btn btn-block btn-primary" })
-            <br />
             @Html.Label("Search:")
             @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control rr_list_search", placeholder = "Search rubber roller here..." })
             <br />

@@ -22,12 +22,10 @@
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    @TempData["formStatusMsg"]
+                    @Html.Raw(TempData["formStatusMsg"])
                 </div>
             }
 
-            @Html.ActionLink("File New Maintenance Report", "CreateSearch", null, new { @class = "btn btn-block btn-primary" })
-            <br />
             @Html.Label("Search:")
             @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control maintenance_list_search", placeholder = "Search rubber roller here..." })
             <br />
@@ -74,7 +72,7 @@
 
                 @if (Model != null)
                 {
-                    foreach (var item in Model.Select((value, index) => new { value, index } ))
+                    foreach (var item in Model.Select((value, index) => new { value, index }))
                     {
                         <tr class="text-center">
                             <td>
@@ -96,16 +94,27 @@
                             @{
                                 var status = RollerMaintenance.getStatus(item.value.status);
                             }
-                            <td>@status</td>
+                            @if (item.value.status == RollerMaintenance.APPROVED)
+                            {
+                                <td class="font-weight-bold text-success">@status</td>
+                            }
+                            else if (item.value.status == RollerMaintenance.PENDING_APPROVAL)
+                            {
+                                <td class="text-warning font-weight-bold">@status</td>
+                            }
+                            else
+                            {
+                                <td class="font-weight-bold text-danger">@status</td>
+                            }
                             <td>
-                                <a href="/maintenance/@item.value.maintenanceID/view" class="btn btn-block btn-success">
+                                <a href="/maintenance/@item.value.maintenanceID/view" class="btn btn-success">
                                     <i class="far fa-eye"></i>
                                 </a>
                             </td>
                             <td>
                                 @if (item.value.status == 1)
                                 {
-                                    <a href="/maintenance/@item.value.maintenanceID/edit" class="btn btn-block btn-success">
+                                    <a href="/maintenance/@item.value.maintenanceID/edit" class="btn btn-success">
                                         <i class='far fa-edit'></i>
                                     </a>
                                 }
@@ -123,11 +132,6 @@
 <script>
     // IIFE (Immediately Invoked Function Expression)
     (function () {
-        if (document.querySelector('.alert') !== null) {
-            setTimeout(() => {
-                document.querySelector('.alert').remove();
-            }, 5000);
-        }
         document.querySelector('.rSize').addEventListener('keyup', (e) => {
             e.target.value = e.target.value.toUpperCase();
         });

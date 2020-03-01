@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace KJCFRubberRoller.Controllers
 {
+    [Authorize]
     public class RubberRollerController : Controller
     {
         private ApplicationDbContext _db;
@@ -119,13 +120,15 @@ namespace KJCFRubberRoller.Controllers
 
             if (result > 0)
             {
+                LogAction.log(this._controllerName, "POST", "Added new rubber roller", User.Identity.GetUserId());
                 TempData["formStatus"] = true;
-                TempData["formStatusMsg"] = "New rubber roller has been successfully added!";
+                TempData["formStatusMsg"] = "<b>STATUS</b>: New rubber roller has been successfully added!";
             }
             else
             {
+                LogAction.log(this._controllerName, "POST", "Error adding new rubber roller", User.Identity.GetUserId());
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully added.";
+                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The rubber roller has not been successfully added.";
             }
             return Redirect(Request.UrlReferrer.ToString());
         }
@@ -171,14 +174,14 @@ namespace KJCFRubberRoller.Controllers
                 {
                     LogAction.log(this._controllerName, "POST", "Added new canco record", User.Identity.GetUserId());
                     TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = "New rubber roller has been successfully added!";
+                    TempData["formStatusMsg"] = "<b>STATUS</b>: New rubber roller has been successfully added!";
                 }
                 return RedirectToAction("Create");
             }
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully added.";
+                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The rubber roller has not been successfully added.";
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return RedirectToAction("Create");
             }
@@ -219,7 +222,13 @@ namespace KJCFRubberRoller.Controllers
                 {
                     LogAction.log(this._controllerName, "POST", "Updated roller record", User.Identity.GetUserId());
                     TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = "Rubber roller details has been successfully updated!";
+                    TempData["formStatusMsg"] = "<b>STATUS</b>: Rubber roller details has been successfully updated!";
+                }
+                else
+                {
+                    LogAction.log(this._controllerName, "POST", $"Error updating rubber roller ID:{rubberRoll.id} detail", User.Identity.GetUserId());
+                    TempData["formStatus"] = false;
+                    TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The rubber roller details has not been successfully updated.";
                 }
 
                 return Redirect(Request.UrlReferrer.ToString());
@@ -228,7 +237,7 @@ namespace KJCFRubberRoller.Controllers
             {
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. The rubber roller has not been successfully updated.";
+                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The rubber roller has not been successfully updated.";
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }

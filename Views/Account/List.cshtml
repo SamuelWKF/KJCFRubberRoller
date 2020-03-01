@@ -14,8 +14,6 @@
                 <h2 class="text-white text-center">Staff List</h2>
             </div>
             <div class="bg-white container py-3">
-                @Html.ActionLink("Add New Staff Account", "Register", null, new { @class = "btn btn-block btn-primary" })
-                <br />
                 @if (TempData["formStatus"] != null)
                 {
                     <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
@@ -23,7 +21,7 @@
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only">Close</span>
                         </button>
-                        @TempData["formStatusMsg"]
+                        @Html.Raw(TempData["formStatusMsg"])
                     </div>
                 }
                 @Html.Label("Search:")
@@ -81,7 +79,7 @@
                                     @status
                                 </td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Edit", "Staff", new { id = item.value.staffID })" class="btn btn-block btn-success">
+                                    <a href="@Url.Action("Edit", "Staff", new { id = item.value.staffID })" class="btn btn-success">
                                         <i class='far fa-edit'></i>
                                     </a>
                                 </td>
@@ -111,12 +109,6 @@
                 }
             });
         });
-
-        if (document.querySelector('.alert') !== null) {
-            setTimeout(() => {
-                document.querySelector('.alert').remove();
-            }, 5000);
-        }
     })();
 </script>
 

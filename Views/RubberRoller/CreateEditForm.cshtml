@@ -122,7 +122,7 @@
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    @TempData["formStatusMsg"]
+                    @Html.Raw(TempData["formStatusMsg"])
                 </div>
             }
 
@@ -220,11 +220,11 @@
                     }
 
                     <div class="form-group row">
-                        <div class="col-md-6">
-                            <input type="reset" value="Clear" class="btn btn-primary btn-block" />
+                        <div class="col-md-6 text-center">
+                            <input type="reset" value="Clear" class="btn btn-primary w-75" />
                         </div>
-                        <div class="col-md-6">
-                            <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Rubber Roller" : "Update Roller Details")' class="btn btn-success btn-block" />
+                        <div class="col-md-6 text-center">
+                            <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Rubber Roller" : "Update Roller Details")' class="btn btn-success w-75" />
                         </div>
                     </div>
                 }
@@ -235,11 +235,6 @@
 
 <script>
     (function () {
-        if (document.querySelector('.alert') !== null) {
-            setTimeout(() => {
-                document.querySelector('.alert').remove();
-            }, 5000);
-        }
         document.querySelector('.rID').addEventListener('keyup', (e) => {
             e.target.value = e.target.value.toUpperCase();
         });

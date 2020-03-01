@@ -22,7 +22,7 @@
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    @TempData["formStatusMsg"]
+                    @Html.Raw(TempData["formStatusMsg"])
                 </div>
             }
 
@@ -90,32 +90,37 @@
                                 }
                                 @remark
                             </td>
+                            @if (item.value.status == ScheduleStatus.ACTIVE)
+                            {
+                                <td class="text-center text-success font-weight-bold">@ScheduleStatus.getStatusString(item.value.status)</td>
+                            }
+                            else if (item.value.status == ScheduleStatus.PENDING_BEFORE_CHECKLIST)
+                            {
+                                <td class="text-center text-warning font-weight-bold">@ScheduleStatus.getStatusString(item.value.status)</td>
+                            }
                             <td class="text-center">
-                                @{
-                                    var status = ScheduleStatus.getStatusString(item.value.status);
-                                }
-                                @status
-                            </td>
-                            <td>
-                                <a href="/schedule/@item.value.scheduleID/view" class="btn btn-block btn-success">
+                                <a href="/schedule/@item.value.scheduleID/view" class="btn btn-success">
                                     <i class="far fa-eye"></i>
                                 </a>
                             </td>
-                            <td>
-                                <a href="/schedule/@item.value.scheduleID/view" class="btn btn-block btn-success">
+                            <td class="text-center">
+                                <a href="/schedule/@item.value.scheduleID/edit" class="btn btn-success">
                                     <i class='far fa-edit'></i>
                                 </a>
                             </td>
-                            <td>
-                                <a href="/schedule/@item.value.scheduleID/mark_complete" class="btn btn-block btn-success">
-                                    <i class="fas fa-clipboard-check"></i>
-                                </a>
+                            <td class="text-center">
+                                @if (item.value.status == ScheduleStatus.ACTIVE)
+                                {
+                                    <a href="/schedule/@item.value.scheduleID/mark_complete" class="btn w-50 btn-success">
+                                        <i class="fas fa-clipboard-check"></i>
+                                    </a>
+                                }
                             </td>
                         </tr>
                     }
                 }
             </table>
-            @Html.PagedListPager(Model, i => Url.Action("Index", "RubberRoller", new { i }))
+            @Html.PagedListPager(Model, i => Url.Action("ActiveOperation", "Schedule", new { i }))
         </div>
     </div>
 </div>

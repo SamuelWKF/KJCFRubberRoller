@@ -24,7 +24,14 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2 border">Prepared By</div>
-                    <div class="col-md-10 border font-weight-bold">@Model.AfterRollerProductionChecklists.First().preparedBy.name</div>
+                    @{
+                        var name = "";
+                        if (Model.AfterRollerProductionChecklists.Count != 0)
+                        {
+                            name = Model.AfterRollerProductionChecklists.First().preparedBy.name;
+                        }
+                    }
+                    <div class="col-md-10 border font-weight-bold">@name</div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 border">Status</div>
@@ -36,7 +43,14 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2 border">Operation End Time</div>
-                    <div class="col-md-10 border font-weight-bold">@Model.endDateTime.Value.ToString("hh:mm tt")</div>
+                    @{
+                        var endTime = "-";
+                        if (Model.endDateTime != null)
+                        {
+                            endTime = Model.endDateTime.Value.ToString("hh:mm tt");
+                        }
+                    }
+                    <div class="col-md-10 border font-weight-bold">@endTime</div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 border">Operation Line</div>
@@ -105,7 +119,14 @@
                             <td>1</td>
                             <td><p class="font-weight-bold">SH of roller is within 33 to 38 for stencil items.</p></td>
                             <td>
-                                @Model.BeforeRollerIssueChecklists.First().rollerSH
+                                @{
+                                    var rollerSH = "";
+                                    if (Model.BeforeRollerIssueChecklists.Count != 0)
+                                    {
+                                        rollerSH = Model.BeforeRollerIssueChecklists.First().rollerSH;
+                                    }
+                                }
+                                @rollerSH
                             </td>
                         </tr>
 
@@ -114,7 +135,14 @@
                             <td>2</td>
                             <td><p class="font-weight-bold">Roller Roundness < 0.30mm for the left and right hub.</p></td>
                             <td>
-                                @Model.BeforeRollerIssueChecklists.First().rollerRoundness
+                                @{
+                                    var rollerRoundness = "";
+                                    if (Model.BeforeRollerIssueChecklists.Count != 0)
+                                    {
+                                        rollerRoundness = Model.BeforeRollerIssueChecklists.First().rollerRoundness;
+                                    }
+                                }
+                                @rollerRoundness
                             </td>
                         </tr>
 
@@ -123,7 +151,14 @@
                             <td>3</td>
                             <td><p class="font-weight-bold">Hubs in good condition. Please use gauge to confirm.</p></td>
                             <td>
-                                @Model.BeforeRollerIssueChecklists.First().hubsCondition
+                                @{
+                                    var hubsCondition = "";
+                                    if (Model.BeforeRollerIssueChecklists.Count != 0)
+                                    {
+                                        hubsCondition = Model.BeforeRollerIssueChecklists.First().hubsCondition;
+                                    }
+                                }
+                                @hubsCondition
                             </td>
                         </tr>
 
@@ -132,7 +167,14 @@
                             <td>4</td>
                             <td><p class="font-weight-bold">Nut used are 8.00mm and NOT 6.00mm.</p></td>
                             <td>
-                                @Model.BeforeRollerIssueChecklists.First().nutUsed
+                                @{
+                                    var nutUsed = "";
+                                    if (Model.BeforeRollerIssueChecklists.Count != 0)
+                                    {
+                                        nutUsed = Model.BeforeRollerIssueChecklists.First().nutUsed;
+                                    }
+                                }
+                                @nutUsed
                             </td>
                         </tr>
                     </tbody>
@@ -156,7 +198,14 @@
                             <td>1</td>
                             <td><p class="font-weight-bold">Roller appearance, have any marking, dent mark?</p></td>
                             <td>
-                                @Model.AfterRollerProductionChecklists.First().rollerAppearance
+                                @{
+                                    var rollerAppearance = "";
+                                    if (Model.AfterRollerProductionChecklists.Count != 0)
+                                    {
+                                        rollerAppearance = Model.AfterRollerProductionChecklists.First().rollerAppearance;
+                                    }
+                                }
+                                @rollerAppearance
                             </td>
                         </tr>
 
@@ -165,7 +214,14 @@
                             <td>2</td>
                             <td><p class="font-weight-bold">Roller send to:</p></td>
                             <td>
-                                @Model.AfterRollerProductionChecklists.First().rollerSendTo
+                                @{
+                                    var rollerSendTo = "";
+                                    if (Model.AfterRollerProductionChecklists.Count != 0)
+                                    {
+                                        rollerSendTo = Model.AfterRollerProductionChecklists.First().rollerSendTo;
+                                    }
+                                }
+                                @rollerSendTo
                             </td>
                         </tr>
 
@@ -175,7 +231,11 @@
                             <td><p class="font-weight-bold">Other remark.</p></td>
                             <td>
                                 @{
-                                    var rmk = Model.AfterRollerProductionChecklists.First().remarks == "" ? "-" : Model.AfterRollerProductionChecklists.First().remarks;
+                                    var rmk = "";
+                                    if (Model.AfterRollerProductionChecklists.Count != 0)
+                                    {
+                                        rmk = Model.AfterRollerProductionChecklists.First().remarks == "" ? "-" : Model.AfterRollerProductionChecklists.First().remarks;
+                                    }
                                 }
                                 @rmk
                             </td>
@@ -184,8 +244,8 @@
                 </table>
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <a href="@Request.UrlReferrer.ToString()" class="btn btn-block btn-primary">Back</a>
+                    <div class="col-md-12 text-center">
+                        <a href="@Request.UrlReferrer.ToString()" class="btn w-25 btn-primary">Back</a>
                     </div>
                 </div>
             </div>

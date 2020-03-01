@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace KJCFRubberRoller.Controllers
 {
+    [Authorize(Roles = "Executive,Manager,Roller PIC")]
     public class ScheduleController : Controller
     {
         private ApplicationDbContext _db;
@@ -32,7 +33,7 @@ namespace KJCFRubberRoller.Controllers
         public ActionResult ActiveOperation(int? i)
         {
             LogAction.log(this._controllerName, "GET", "Requested Schedule-ActiveOperation webpage", User.Identity.GetUserId());
-            List<Schedule> schedules = _db.schedules.Where(s => s.status == ScheduleStatus.ACTIVE).ToList();
+            List<Schedule> schedules = _db.schedules.Where(s => s.status != ScheduleStatus.COMPLETED).ToList();
             return View(schedules.ToPagedList(i ?? 1, 20));
         }
 
@@ -50,11 +51,12 @@ namespace KJCFRubberRoller.Controllers
             // Retrieve rollers
             var rubberRollers = _db.rubberRollers
                 .AsEnumerable()
-                .Select(s => new
+                .Select(r => new
                 {
-                    ID = s.id,
-                    s.rollerID
-                }).ToList();
+                    ID = r.id,
+                    r.rollerID,
+                    r.status
+                }).Where(r => r.status == RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM)).ToList();
 
             ViewData["rollerList"] = new SelectList(rubberRollers, "ID", "rollerID");
             LogAction.log(this._controllerName, "GET", "Requested Schedule-CreateSearch webpage", User.Identity.GetUserId());
@@ -66,7 +68,7 @@ namespace KJCFRubberRoller.Controllers
         public ActionResult CreateSchedule(int? id)
         {
             RubberRoller rubberRoller = _db.rubberRollers.FirstOrDefault(r => r.id == id);
-            if (rubberRoller == null) return RedirectToAction("CreateSearch");
+            if (rubberRoller == null || rubberRoller.status != RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM)) return RedirectToAction("CreateSearch");
             ViewData["roller"] = rubberRoller;
             LogAction.log(this._controllerName, "GET", "Requested Schedule-CreateSchedule webpage", User.Identity.GetUserId());
             return View("ScheduleCreateEditForm");
@@ -77,9 +79,17 @@ namespace KJCFRubberRoller.Controllers
         [Route("schedule/create")]
         public ActionResult CreateSchedule(Schedule schedule, FormCollection collection)
         {
+            Schedule existingSched = _db.schedules.FirstOrDefault(s => s.rollerID == schedule.rollerID && s.startDateTime == schedule.startDateTime && s.operationLine == schedule.operationLine);
+            if (existingSched != null)
+            {
+                ViewData["schedule"] = existingSched;
+                return View("BeforeChecklist");
+            }
+
             schedule.RubberRoller = _db.rubberRollers.FirstOrDefault(r => r.id == schedule.rollerID);
             schedule.tinplateSize = $"{collection["thickness"]}x{collection["width"]}x{collection["length"]}";
-            schedule.status = ScheduleStatus.ACTIVE;
+            schedule.status = ScheduleStatus.PENDING_BEFORE_CHECKLIST;
+            schedule.RubberRoller.status = RollerStatus.getStatus(RollerStatus.IN_USE);
 
             _db.schedules.Add(schedule);
 
@@ -88,15 +98,16 @@ namespace KJCFRubberRoller.Controllers
             if (result > 0)
             {
                 TempData["formStatus"] = true;
-                TempData["formStatusMsg"] = "New schedule record has been successfully added.";
+                TempData["formStatusMsg"] = "<b>STATUS</b>: New schedule record has been successfully added.";
                 ViewData["schedule"] = schedule;
-                LogAction.log(this._controllerName, "GET", "Requested Schedule-BeforeChecklist form webpage", User.Identity.GetUserId());
+                LogAction.log(this._controllerName, "POST", "New schedule details successfully added", User.Identity.GetUserId());
                 return View("BeforeChecklist");
             }
             else
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. The schedule record has not been successfully added.";
+                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The schedule record has not been successfully added.";
+                LogAction.log(this._controllerName, "POST", "Errpr adding wew schedule detail.", User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
@@ -116,7 +127,7 @@ namespace KJCFRubberRoller.Controllers
             beforeRollerIssueChecklist.preparedBy = getCurrentUser();
             beforeRollerIssueChecklist.Schedule = schedule;
             _db.beforeRollerIssueChecklists.Add(beforeRollerIssueChecklist);
-            beforeRollerIssueChecklist.Schedule.RubberRoller.status = RollerStatus.getStatus(RollerStatus.IN_USE);
+            schedule.status = ScheduleStatus.ACTIVE;
 
             // Update roller location
             bool updateLocatResult = CentralUtilities.UpdateRollerLocation(
@@ -130,13 +141,15 @@ namespace KJCFRubberRoller.Controllers
             {
                 // Success - redirect to active operation list page
                 TempData["formStatus"] = true;
-                TempData["formStatusMsg"] = "New operation record has been successfully added.";
+                TempData["formStatusMsg"] = "<b>STATUS</b>: New operation record has been successfully added.";
+                LogAction.log(this._controllerName, "POST", "Added new before roller issue checklist", User.Identity.GetUserId());
                 return RedirectToAction("ActiveOperation");
             }
             else
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. The before issue checklist has not been successfully added.";
+                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The before issue checklist has not been successfully added.";
+                LogAction.log(this._controllerName, "POST", "Error adding new before roller issue checklist", User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
@@ -200,20 +213,23 @@ namespace KJCFRubberRoller.Controllers
                 if (result > 0 && updateLocatResult)
                 {
                     TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = "Operation has been completed!";
+                    TempData["formStatusMsg"] = "<b>STATUS</b>: Operation has been completed!";
+                    LogAction.log(this._controllerName, "POST", "Added new after roller operation checklist", User.Identity.GetUserId());
                     return RedirectToAction("ActiveOperation");
                 }
                 else
                 {
                     TempData["formStatus"] = false;
-                    TempData["formStatusMsg"] = "Oops! Something went wrong. The after production checklist has not been successfully added.";
+                    TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The after production checklist has not been successfully added.";
+                    LogAction.log(this._controllerName, "POST", "Error adding new after roller operation checklist", User.Identity.GetUserId());
                     return Redirect(Request.UrlReferrer.ToString());
                 }
             }
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "Oops! Something went wrong. The operation were unable to successfully marked as completed.";
+                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The operation were unable to successfully marked as completed.";
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return RedirectToAction("ActiveOperation");
             }
         }
@@ -224,12 +240,91 @@ namespace KJCFRubberRoller.Controllers
         {
             Schedule schedule = _db.schedules.FirstOrDefault(s => s.scheduleID == id);
             if (id == 0 || schedule == null) return Redirect(Request.UrlReferrer.ToString());
+            LogAction.log(this._controllerName, "GET", "Requested Schedule-ViewOperationDetail webpage", User.Identity.GetUserId());
             return View(schedule);
         }
 
-        public ActionResult UpdateOperationDetail(int? id)
+        // Display edit page
+        [Route("schedule/{id}/edit")]
+        public ActionResult EditOperationDetail(int? id)
         {
-            return View();
+            if (id == 0)
+                return Redirect(Request.UrlReferrer.ToString());
+            Schedule schedule = _db.schedules.FirstOrDefault(s => s.scheduleID == id);
+            if (schedule != null)
+            {
+                LogAction.log(this._controllerName, "GET", "Requested Schedule-EditOperationDetail webpage", User.Identity.GetUserId());
+                return View(schedule);
+            }
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        // Update the operation detail
+        [HttpPost]
+        public ActionResult UpdateOperationDetail(FormCollection collection)
+        {
+            try
+            {
+                int schedID = Int32.Parse(collection["scheduleID"]);
+                Schedule schedule = _db.schedules.FirstOrDefault(s => s.scheduleID == schedID);
+                if (schedule == null)
+                    return Redirect(Request.UrlReferrer.ToString());
+
+                // Update schedule detail
+                schedule.startDateTime = DateTime.Parse(collection["startDateTime"]);
+                schedule.operationLine = Int32.Parse(collection["operationLine"]);
+                schedule.product = collection["product"];
+                schedule.tinplateSize = collection["tinplateSize"];
+                schedule.quantity = Int32.Parse(collection["quantity"]);
+                schedule.remark = collection["startDateTime"];
+
+                // Update Before checklist
+                BeforeRollerIssueChecklist beforeRollerIssueChecklist;
+                if (schedule.BeforeRollerIssueChecklists.Count == 0)
+                {
+                    beforeRollerIssueChecklist = new BeforeRollerIssueChecklist();
+                    beforeRollerIssueChecklist.preparedBy = getCurrentUser();
+                    beforeRollerIssueChecklist.dateTime = DateTime.Now;
+                    beforeRollerIssueChecklist.Schedule = schedule;
+                    beforeRollerIssueChecklist.scheduleID = schedule.scheduleID;
+                    beforeRollerIssueChecklist.hubsCondition = collection["hubsCondition"];
+                    beforeRollerIssueChecklist.nutUsed = collection["nutUsed"];
+                    beforeRollerIssueChecklist.rollerRoundness = collection["rollerRoundness"];
+                    beforeRollerIssueChecklist.rollerSH = collection["rollerSH"];
+                    _db.beforeRollerIssueChecklists.Add(beforeRollerIssueChecklist);
+                }
+                else
+                {
+                    beforeRollerIssueChecklist = schedule.BeforeRollerIssueChecklists.First();
+                    beforeRollerIssueChecklist.hubsCondition = collection["hubsCondition"];
+                    beforeRollerIssueChecklist.nutUsed = collection["nutUsed"];
+                    beforeRollerIssueChecklist.rollerRoundness = collection["rollerRoundness"];
+                    beforeRollerIssueChecklist.rollerSH = collection["rollerSH"];
+                }
+
+                int result = _db.SaveChanges();
+                if (result > 0)
+                {
+                    TempData["formStatus"] = true;
+                    TempData["formStatusMsg"] = "<b>STATUS</b>: Operation details has been successfully updated!";
+                    LogAction.log(this._controllerName, "POST", "Successfully updated operation detail", User.Identity.GetUserId());
+                    return RedirectToAction("ActiveOperation");
+                }
+                else
+                {
+                    TempData["formStatus"] = false;
+                    TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The operation details has not been successfully updated.";
+                    LogAction.log(this._controllerName, "POST", "Error updating operation detail", User.Identity.GetUserId());
+                    return Redirect(Request.UrlReferrer.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong.";
+                return Redirect(Request.UrlReferrer.ToString());
+            }
         }
 
         // Convenience method to get current user

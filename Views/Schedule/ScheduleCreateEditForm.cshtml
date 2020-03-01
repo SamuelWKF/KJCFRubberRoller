@@ -52,7 +52,7 @@
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    @TempData["formStatusMsg"]
+                    @Html.Raw(TempData["formStatusMsg"])
                 </div>
             }
 
@@ -72,7 +72,7 @@
 
                     // Operation Line
                     <div class="form-group">
-                        @Html.LabelFor(Model => Model.operationLine)
+                        @Html.LabelFor(Model => Model.operationLine)<span class="required">*</span>
                         @Html.DropDownListFor(Model => Model.operationLine, operationLineList, "Select operation line", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.operationLine, "", new { @class = "text-danger" })
                     </div>
@@ -122,7 +122,7 @@
                             type = "number",
                             min = "1",
                             step = "1",
-                            max="5000000",
+                            max = "5000000",
                           onkeypress = "return event.charCode >= 48 && event.charCode <= 57"
                         })
                         @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
@@ -146,33 +146,19 @@
                         @Html.HiddenFor(Model => Model.startMileage, new { @Value = mileage })
                     </div>
 
-                    if ((String)Url.RequestContext.RouteData.Values["id"] != null)
-                    {
-                        // End Mileage
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.endMileage)
-                            @{
-                                var lastSched = rubberRoller.Schedules.LastOrDefault();
-                                var minMileage = (lastSchedule == null) ? 0 : lastSched.endMileage + 1;
-                            }
-                            @Html.TextBoxFor(model => model.endMileage, new { Value = 0, @class = "form-control", placeholder = "Enter end mileage here", min = minMileage })
-                            @Html.ValidationMessageFor(model => model.endMileage, "", new { @class = "text-danger" })
-                        </div>
-                    }
-
                     //Remark
                     <div class="form-group">
                         @Html.LabelFor(model => model.remark)
-                        @Html.TextBoxFor(model => model.remark, new { @class = "form-control", placeholder = "Enter remark here" })
+                        @Html.TextAreaFor(model => model.remark, new { @class = "form-control", placeholder = "Enter remark here" })
                         @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-md-6">
-                            <input type="reset" value="Clear" class="btn btn-primary btn-block" />
+                        <div class="col-md-6 text-center">
+                            <input type="reset" value="Clear" class="btn btn-primary w-75" />
                         </div>
-                        <div class="col-md-6">
-                            <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Schedule Record" : "Update Schedule Record")' class="btn btn-success btn-block" />
+                        <div class="col-md-6 text-center">
+                            <input type="submit" value='@((String)Url.RequestContext.RouteData.Values["id"] == null ? "Add New Schedule Record" : "Update Schedule Record")' class="btn btn-success w-75" />
                         </div>
                     </div>
                 }
@@ -195,13 +181,5 @@
 
         document.querySelector('#startDate').setAttribute('min', time);
         document.querySelector('#startDate').setAttribute('value', time);
-
-        (function () {
-            if (document.querySelector('.alert') !== null) {
-                setTimeout(() => {
-                    document.querySelector('.alert').remove();
-                }, 5000);
-            }
-        })();
     </script>
 }

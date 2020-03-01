@@ -15,7 +15,7 @@
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    @TempData["formStatusMsg"]
+                    @Html.Raw(TempData["formStatusMsg"])
                 </div>
             }
 
@@ -76,11 +76,11 @@
                             <div class="col-md-offset-2 col-md-10">
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn btn-block btn-primary" })
+                                <div class="col-md-6 text-center">
+                                    @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn w-75 btn-primary" })
                                 </div>
-                                <div class="col-md-6">
-                                    <input type="submit" class="btn btn-success btn-block" value="Update Profile" />
+                                <div class="col-md-6 text-center">
+                                    <input type="submit" class="btn btn-success w-75" value="Update Profile" />
                                 </div>
                             </div>
                         </div>
@@ -93,11 +93,6 @@
 
 <script>
     (function () {
-        if (document.querySelector('.alert') !== null) {
-            setTimeout(() => {
-                document.querySelector('.alert').remove();
-            }, 5000);
-        }
         document.querySelector('.staffID').addEventListener('keyup', (e) => {
             e.target.value = e.target.value.toUpperCase();
         });
