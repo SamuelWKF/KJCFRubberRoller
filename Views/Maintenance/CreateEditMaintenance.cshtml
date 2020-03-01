@@ -83,15 +83,14 @@
 
                     <div class="row">
                         <div class="col-md-4 border">
-                            @*@Html.HiddenFor(m => m.rollerID);*@
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true)
-                            <fieldset>
-                                <legend>Upload Image Here</legend>
-                                <div class="editor-field">
-                                    <input type="file" name="ImagePath" id="ImagePath" class="form-control-file" />
-                                </div>
-                            </fieldset>
+                         @*@Html.HiddenFor(m => m.rollerID);*@
+                        <div class="form-group">
+                            @Html.Label("Select a Image to Upload", new { @class = "control-label col-md-11" })
+                            <div class="col-md-11">
+                                <input type="file" name="ImagePath" id="ImagePath"/>
+                            </div>
+                        </div>
+                           
                         </div>
 
                         <div class="col-md-8 border">

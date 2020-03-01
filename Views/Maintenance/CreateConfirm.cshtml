@@ -29,11 +29,10 @@
                         <div class="col-md-10 border font-weight-bold">@Model.RubberRoller.rollerID</div>
                         @Html.HiddenFor(m => m.rollerID)
                     </div>
+
                     <div class="row">
                         <div class="col-md-4 border">
-                            @*@Html.HiddenFor(m => m.rollerID);*@
-                            <img src='@Url.Action("show", "image", new { id = Model.imagePath})'/>
-
+                            <img src="@Url.Action(Model.imagePath)" width="250" height="250"/>
                         </div>
 
                         <div class="col-md-8 border">

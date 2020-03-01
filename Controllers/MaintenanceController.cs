@@ -72,7 +72,7 @@ namespace KJCFRubberRoller.Controllers
                 string physicalPath = Server.MapPath("~/img/" + ImageName);
                 // save image in folder
                 file.SaveAs(physicalPath);
-                maintenance.imagePath = "img/" + ImageName;
+                 maintenance.imagePath = "img/" + ImageName;
                 _db.maintenances.Add(maintenance);
                 int result = _db.SaveChanges();
             }
@@ -82,8 +82,7 @@ namespace KJCFRubberRoller.Controllers
                 int result = _db.SaveChanges();
                 return RedirectToAction("Index");
             }*/
-            // after successfully uploading redirect the user
-            return RedirectToAction("Index");
+            return View(maintenance);
         }
 
         //Confirm Create New Maintenance Report 
@@ -113,7 +112,7 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.newShoreHardness = collection["newShoreHardness"];
                 maintenance.correctiveAction = collection["correctiveAction"];
                 maintenance.reportDateTime = DateTime.Now;
-                maintenance.imagePath = collection.Get("ImagePath");
+                maintenance.imagePath = collection["ImagePath"];
 
                 LogAction.log(this._controllerName, "GET", "Redirect Maintenance-CreateConfirm webpage", User.Identity.GetUserId());
                 return View(maintenance);
