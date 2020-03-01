@@ -55,53 +55,73 @@ namespace KJCFRubberRoller.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                
+                ViewBag.ReturnUrl = returnUrl;
+                return View();
+            }
+            
         }
 
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                return View(model);
+                return RedirectToAction("Index", "Home");
             }
-
-            try
+            else
             {
-                
-                ApplicationDbContext _db = new ApplicationDbContext();
-                //var ToUpperStaffId = model.StaffId.ToUpper();
-                var user = _db.Users.Where(u => u.staffID == model.StaffId.ToUpper()).First();
-
-                if (user != null && user.status != 0)
+                if (!ModelState.IsValid)
                 {
-                    var result = await SignInManager.PasswordSignInAsync(user.Email, model.Password, false, shouldLockout: false);
-                    switch (result)
-                    {
-                        case SignInStatus.Success:
-                            return RedirectToLocal(returnUrl);
-                        case SignInStatus.LockedOut:
-                            return View("Lockout");
-
-                        case SignInStatus.Failure:
-                        default:
-                            ModelState.AddModelError("", "Invalid login attempt.");
-                            return View(model);
-                    }
-
+                    return View(model);
                 }
-                else { ModelState.AddModelError("", "Invalid login attempt."); return View(model); }
+
+                try
+                {
+
+                    ApplicationDbContext _db = new ApplicationDbContext();
+                    //var ToUpperStaffId = model.StaffId.ToUpper();
+                    var user = _db.Users.Where(u => u.staffID == model.StaffId.ToUpper()).First();
+
+                    if (user != null && user.status != 0)
+                    {
+                        var result = await SignInManager.PasswordSignInAsync(user.Email, model.Password, false, shouldLockout: false);
+                        switch (result)
+                        {
+                            case SignInStatus.Success:
+                                return RedirectToLocal(returnUrl);
+                            case SignInStatus.LockedOut:
+                                return View("Lockout");
+
+                            case SignInStatus.Failure:
+                            default:
+                                ModelState.AddModelError("", "Invalid login attempt.");
+                                return View(model);
+                        }
+
+                    }
+                    else { ModelState.AddModelError("", "Invalid login attempt."); return View(model); }
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+                }
+
             }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("", "Invalid login attempt.");
-                return View(model);
-            }
+
+        
+            
 
 
             // This doesn't count login failures towards account lockout
@@ -185,6 +205,7 @@ namespace KJCFRubberRoller.Controllers
         
         // GET: /staff/list
         [Route("Staff/List")]
+        [Authorize(Roles = "Executive,Manager")]
         public ActionResult List(int? i)
         {
             var currentUserID = User.Identity.GetUserId();
@@ -207,6 +228,7 @@ namespace KJCFRubberRoller.Controllers
         //
         // GET: /staff/register
         [Route("Staff/Register")]
+        [Authorize(Roles = "Executive,Manager")]
         public ActionResult Register()
         {
             ViewData["userPosition"] = getUserRoles();
@@ -217,6 +239,7 @@ namespace KJCFRubberRoller.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
+        [Authorize(Roles = "Executive,Manager")]
         [Route("Staff/Register")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
@@ -282,6 +305,7 @@ namespace KJCFRubberRoller.Controllers
         // GET
         [HttpGet]
         [Route("staff/edit/{staffID}")]
+        [Authorize(Roles = "Executive,Manager")]
         public ActionResult Edit(string staffID)
         {
             // If ID is not supplied redirect back to list
@@ -305,6 +329,7 @@ namespace KJCFRubberRoller.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Executive,Manager")]
         [Route("staff/update")]
         public ActionResult Update(ApplicationUser user)
         {
