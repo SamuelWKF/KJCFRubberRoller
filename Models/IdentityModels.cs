@@ -26,7 +26,7 @@ namespace KJCFRubberRoller.Models
         [MaxLength(5)]
         [StringLength(5)]
         [DisplayName("Staff ID")]
-        [RegularExpression(@"^K\d{4}$", ErrorMessage = "Staff ID must start with K & follow by maximum 4 digits")]
+        [RegularExpression(@"[kK]\d+", ErrorMessage = "Staff Id must start with K & follow by maximum 4 digits")]
         public string staffID { get; set; }
 
         [Required]

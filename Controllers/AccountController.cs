@@ -59,53 +59,67 @@ namespace KJCFRubberRoller.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            ViewBag.ReturnUrl = returnUrl ?? Url.Action("Index", "Home");
-            return View();
+            else
+            {
+                
+                ViewBag.ReturnUrl = returnUrl;
+                return View();
+            }
+            
         }
 
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                return View(model);
+                return RedirectToAction("Index", "Home");
             }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
 
             try
             {
                 ApplicationDbContext _db = new ApplicationDbContext();
                 var user = _db.Users.Where(u => u.staffID == model.StaffId.ToUpper()).First();
 
-                if (user != null && user.status != 0)
-                {
-                    var result = await SignInManager.PasswordSignInAsync(user.Email, model.Password, false, shouldLockout: false);
-                    switch (result)
+                    if (user != null && user.status != 0)
                     {
-                        case SignInStatus.Success:
-                            return RedirectToLocal(returnUrl);
-                        case SignInStatus.LockedOut:
-                            return View("Lockout");
+                        var result = await SignInManager.PasswordSignInAsync(user.Email, model.Password, false, shouldLockout: false);
+                        switch (result)
+                        {
+                            case SignInStatus.Success:
+                                return RedirectToLocal(returnUrl);
+                            case SignInStatus.LockedOut:
+                                return View("Lockout");
 
-                        case SignInStatus.Failure:
-                        default:
-                            ModelState.AddModelError("", "Invalid login attempt.");
-                            return View(model);
+                            case SignInStatus.Failure:
+                            default:
+                                ModelState.AddModelError("", "Invalid login attempt.");
+                                return View(model);
+                        }
+
                     }
+                    else { ModelState.AddModelError("", "Invalid login attempt."); return View(model); }
                 }
-                else
+                catch (Exception e)
                 {
-                    ModelState.AddModelError("", "Invalid login attempt."); return View(model);
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
                 }
+
             }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("", "Invalid login attempt.");
-                return View(model);
-            }
+
+        
+            
 
 
             // This doesn't count login failures towards account lockout
@@ -223,6 +237,7 @@ namespace KJCFRubberRoller.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
+        [Authorize(Roles = "Executive,Manager")]
         [Route("Staff/Register")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Executive,Manager")]
@@ -313,6 +328,7 @@ namespace KJCFRubberRoller.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Executive,Manager")]
         [Route("staff/update")]
         [Authorize(Roles = "Executive,Manager")]
         public ActionResult Update(ApplicationUser user)

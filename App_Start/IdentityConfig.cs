@@ -64,7 +64,7 @@ namespace KJCFRubberRoller
 
             // Configure user lockout defaults
             manager.UserLockoutEnabledByDefault = true;
-            manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(30);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
@@ -85,10 +85,8 @@ namespace KJCFRubberRoller
             {
                 manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"))
-                    {
-                        // Set reset password link token to 3 hour expiry time
-                        TokenLifespan = TimeSpan.FromHours(3)
-                    };
+                    { TokenLifespan=TimeSpan.FromDays(7)};
+                
             }
             return manager;
         }
