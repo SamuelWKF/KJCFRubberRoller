@@ -53,7 +53,7 @@ namespace KJCFRubberRoller.Models
         [MaxLength(5)]
         [StringLength(5)]
         [DisplayName("Staff ID")]
-        [RegularExpression(@"^[kK]\d{4}$", ErrorMessage = "Please enter the correct ID format")]
+        [RegularExpression(@"^[kK]\$", ErrorMessage = "Staff Id must start with K & follow by maximum 4 digits")]
         public string StaffId { get; set; }
 
         [Required]
@@ -86,7 +86,7 @@ namespace KJCFRubberRoller.Models
         [MaxLength(5)]
         [StringLength(5)]
         [DisplayName("Staff ID")]
-        [RegularExpression(@"^K\d{4}$", ErrorMessage = "Please enter the correct ID format")]
+        [RegularExpression(@"^K\d{4}$", ErrorMessage = "Staff Id must start with K & follow by maximum 4 digits")]
         public string staffID { get; set; }
 
         [Required]

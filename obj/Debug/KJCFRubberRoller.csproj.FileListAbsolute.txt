@@ -433,7 +433,6 @@ C:\Users\jiach\Documents\Visual Studio 2017\PCHLIM_Project\KJCF System\bin\rosly
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.SeedASPRolesDatabase.resources
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.MaintenanceUpdate.resources
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.UpdateSchedule.resources
-C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csprojAssemblyReference.cache
 C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.InitialModel.resources
 C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.SeedASPRolesDatabase.resources
 C:\Users\jiach\Source\Repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.MaintenanceUpdate.resources
@@ -547,3 +546,4 @@ C:\Users\jiach\source\repos\KJCFRubberRoller\bin\Antlr3.Runtime.pdb
 C:\Users\jiach\source\repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csproj.CopyComplete
 C:\Users\jiach\source\repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.dll
 C:\Users\jiach\source\repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.pdb
+C:\Users\jiach\source\repos\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csprojAssemblyReference.cache
