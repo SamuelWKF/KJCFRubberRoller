@@ -42,7 +42,6 @@
                         <th>Start Date Time</th>
                         <th>End Date Time</th>
                         <th class="w-25">Remark</th>
-                        <th>Status</th>
                         <th>View Details</th>
                     </tr>
                 </thead>
@@ -87,12 +86,6 @@
                         }
                     }
                     @remark
-                </td>
-                <td class="text-center">
-                    @{
-                        var status = ScheduleStatus.getStatusString(item.value.status);
-                    }
-                    @status
                 </td>
                 <td class="text-center">
                     <a href="/schedule/@item.value.scheduleID/view" class="btn btn-success">

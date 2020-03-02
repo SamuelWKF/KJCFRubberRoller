@@ -28,16 +28,15 @@
                         @Html.HiddenFor(m => m.title)
                     </div>
                     <div class="row">
-                        <div class=" border">Roller ID</div>
+                        <div class="col-md-2 border">Roller ID</div>
                         <div class="col-md-10 border font-weight-bold">@Model.RubberRoller.rollerID</div>
                         @Html.HiddenFor(m => m.rollerID)
                     </div>
                     <div class="row">
-                        <div class="col-md-4 border text-center pt-5 font-weight-bold text-center text-danger">                           
-                            @Html.HiddenFor(m => m.imagePath)
+                        <div class="col-md-4 border">
                             @if (Model.imagePath != null)
                             {
-                                <img src="~/Content/MaintenanceImages/@Model.imagePath" class="img-fluid"/>
+                                <img src="~/Content/MaintenanceImages/@Model.imagePath" class="img-fluid" />
                             }
                             else if (Model.imagePath == null)
                             {
