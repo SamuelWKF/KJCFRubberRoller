@@ -36,9 +36,10 @@
                         <div class="col-md-4 border">
                             @if (Model.imagePath != null)
                             {
+                                @Html.HiddenFor(m => m.imagePath)
                                 <img src="~/Content/MaintenanceImages/@Model.imagePath" class="img-fluid" />
                             }
-                            else if (Model.imagePath == null)
+                            else
                             {
                                 @:No Image Selected<br />
                             }
