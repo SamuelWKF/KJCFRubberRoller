@@ -1,0 +1,8 @@
+﻿@using KJCFRubberRoller.Models;
+@{
+    using (ApplicationDbContext _db = new ApplicationDbContext())
+    {
+        var newMaintenanceCount = _db.maintenances.Count(m => m.status == RollerMaintenance.PENDING_APPROVAL);
+        <span class="badge badge-danger">@newMaintenanceCount New report</span>
+    }
+}

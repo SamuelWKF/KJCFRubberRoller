@@ -63,14 +63,14 @@
                     <div class="col-md-10 border font-weight-bold">@Model.RubberRoller.rollerID</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 border text-center pt-5 font-weight-bold">
+                    <div class="col-md-4 border text-center font-weight-bold">
                         @if (Model.imagePath != null)
                         {
                             <img src="~/Content/MaintenanceImages/@Model.imagePath" class="img-fluid" />
                         }
                         else if (Model.imagePath == null)
                         {
-                            @:No Image<br />
+                            <div class="pt-5">No Image</div>
                         }
                     </div>
                     <div class="col-md-8 border">

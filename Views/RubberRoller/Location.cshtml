@@ -75,7 +75,7 @@
                                 @location
                             </td>
                             <td class="text-center">
-                                @{ 
+                                @{
                                     var lastUsageDate = "-";
                                     if (item.value.last_usage_date != null)
                                     {
@@ -89,7 +89,13 @@
                                     var totalMileage = 0;
                                     if (lastSched != null)
                                     {
-                                        totalMileage = lastSched.endMileage;
+                                        if (item.value.Schedules.Count > 1 && item.value.Schedules.Last().endMileage != 0)
+                                        {
+                                            totalMileage = lastSched.endMileage;
+                                        } else
+                                        {
+                                            totalMileage = item.value.Schedules.Max(s => s.endMileage);
+                                        }
                                     }
                                 }
                                 @totalMileage
