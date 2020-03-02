@@ -170,12 +170,11 @@ namespace KJCFRubberRoller.Controllers
 
         private SelectList getUserRoles()
         {
-            int countId = 0;
             //set priority for Role
             int[] defaultRoleId = { 2, 1, 3, 4 };
             ApplicationDbContext _db = new ApplicationDbContext();
             // Retrieve user roles
-            var rollerCatList = _db.Roles
+            var roleList = _db.Roles
                     .AsEnumerable()
                     .Select((v, i) => new
                     {
@@ -183,7 +182,7 @@ namespace KJCFRubberRoller.Controllers
                         name = v.Name
                     }).ToList();
 
-            return new SelectList(rollerCatList, "ID", "name");
+            return new SelectList(roleList, "ID", "name");
         }
 
         // GET: /staff/list
@@ -197,7 +196,7 @@ namespace KJCFRubberRoller.Controllers
             List<ApplicationUser> users = null;
             if (user.position == 1)
             {
-                users = _db.Users.ToList();
+                users = _db.Users.Where(u=>u.Id!=currentUserID).ToList();
             }
             else
             {
@@ -244,6 +243,7 @@ namespace KJCFRubberRoller.Controllers
 
             if (ModelState.IsValid)
             {
+             
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -266,9 +266,9 @@ namespace KJCFRubberRoller.Controllers
                     // Sent account creation email
                     SendMail.sendMail(model.Email,
                         "Rubber Roller Management System Account Creation",
-                        "An account has been created for use of the Rubber Roller Management System with a temporary password. Please <b>change the password immediately</b> after login." +
+                        "Hi ! "+ model.name +"<br/>An account has been created for use of the Rubber Roller Management System with a temporary password. Please login with ur staff ID and <b>change the password immediately</b> after login." +
                         "<br/><br/>Your credentials are as follow:" +
-                        "<br/>Email: " + model.Email +
+                        "<br/>Staff Id: " + model.staffID +
                         "<br/>Password: " + model.Password);
                     LogAction.log(this._controllerName, "POST", $"Account creation email sent to new user: {model.staffID}", User.Identity.GetUserId());
 
@@ -315,7 +315,7 @@ namespace KJCFRubberRoller.Controllers
         [ValidateAntiForgeryToken]
         [Route("staff/update")]
         [Authorize(Roles = "Executive,Manager")]
-        public ActionResult Update(ApplicationUser user)
+        public ActionResult Update(ApplicationUser user,string chkResetPassword)
         {
             try
             {
@@ -329,22 +329,11 @@ namespace KJCFRubberRoller.Controllers
                         ViewData["userPosition"] = getUserRoles();
                         TempData["formStatus"] = false;
                         TempData["formStatusMsg"] = $"<b>ALERT</b>: Staff ID ({user.staffID}) has been taken by another staff.";
-                        return View("Edit", user);
+                        return View("Edit", (user,chkResetPassword));
                     }
-                    else
-                    {
-                        UserManager.RemoveFromRole(staff.Id, UserRole.getRole(staff.position));
-                        staff.Email = user.Email;
-                        staff.staffID = user.staffID;
-                        staff.name = user.name;
-                        staff.IC = user.IC;
-                        staff.position = user.position;
-                        staff.status = user.status;
-                        UserManager.AddToRole(staff.Id, UserRole.getRole(staff.position));
-                    }
+                    
                 }
-                else
-                {
+                
                     UserManager.RemoveFromRole(staff.Id, UserRole.getRole(staff.position));
                     staff.Email = user.Email;
                     staff.staffID = user.staffID;
@@ -353,8 +342,7 @@ namespace KJCFRubberRoller.Controllers
                     staff.position = user.position;
                     staff.status = user.status;
                     UserManager.AddToRole(staff.Id, UserRole.getRole(staff.position));
-                }
-
+                
                 int result = _db.SaveChanges();
 
                 if (result > 0)
@@ -363,12 +351,31 @@ namespace KJCFRubberRoller.Controllers
                     TempData["formStatusMsg"] = $"<b>STATUS</b>: Staff ({user.staffID}) details has been successfully updated!";
                     LogAction.log(this._controllerName, "POST", $"Staff ({user.staffID}) details updated", User.Identity.GetUserId());
                 }
+                //rchechbox for reset password is 1
+                if (chkResetPassword == "1")
+                {
+                    string newPassword = Membership.GeneratePassword(20, 8);
+                    string code = UserManager.GeneratePasswordResetToken(user.Id);
+                    UserManager.ResetPassword(user.Id,code,newPassword);
+                    LogAction.log(this._controllerName, "POST", $"Manager reset account {staff.staffID} password", User.Identity.GetUserId());
+                    // Sent password reset email
+                    SendMail.sendMail(staff.Email,
+                        "Rubber Roller Management System Account Password Reset",
+                        "Hi! " + staff.name + "<br/>Your account password has been reset," +
+                        "<br/> Please use the temporary password below to login to your account and <b>change the password immediately</b> after login." +
+                        "<br/><br/>Your credentials are as follow:" +
+                        "<br/>staff Id: " + staff.staffID +
+                        "<br/>Password: " + newPassword);
+                    LogAction.log(this._controllerName, "POST", $"Account password reset email sent to current user: {staff.staffID}", User.Identity.GetUserId());
+                }
+
+
                 return RedirectToAction("List");
             }
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = $"<b>ALERT</b>: Oops! Something went wrong. Staff details has not been successfully updated.";
+                TempData["formStatusMsg"] = $"<b>ALERT</b>:{ex.Message} Oops! Something went wrong. Staff details has not been successfully updated.";
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }
