@@ -85,8 +85,11 @@ namespace KJCFRubberRoller
             {
                 manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"))
-                    { TokenLifespan=TimeSpan.FromDays(7)};
-                
+                    {
+                        // Set reset password link token to 3 hour expiry time
+                        //TokenLifespan = TimeSpan.FromHours(3)
+                        TokenLifespan = TimeSpan.FromDays(7)
+                    };
             }
             return manager;
         }

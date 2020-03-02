@@ -33,8 +33,7 @@
                         @Html.HiddenFor(m => m.rollerID)
                     </div>
                     <div class="row">
-                        <div class="col-md-4 border text-center">                           
-                            @Html.HiddenFor(m => m.imagePath)
+                        <div class="col-md-4 border">
                             @if (Model.imagePath != null)
                             {
                                 <img src="~/Content/MaintenanceImages/@Model.imagePath" class="img-fluid" />
