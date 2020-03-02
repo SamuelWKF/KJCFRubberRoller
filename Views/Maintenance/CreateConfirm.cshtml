@@ -109,8 +109,11 @@
                         </div>
                     </div>
                     <div class="form-group row pt-2">
-                        <div class="col-md-12 text-center">
-                            <input type="submit" value='Confirm Maintenance Record Detail' class="btn btn-success w-50" />
+                        <div class="col-md-6 text-center">
+                            <button type="button" class="btn btn-primary w-75" id="backBtn">Back</button>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <input type="submit" value='Confirm Maintenance Record Detail' class="btn btn-success w-75" />
                         </div>
                     </div>
                 }
@@ -118,3 +121,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelector("#backBtn").addEventListener('click', e => {
+        window.history.back();
+    });
+</script>
