@@ -119,7 +119,7 @@ namespace KJCFRubberRoller.Controllers
 
             // Combine the image base path + image filename
             Path.Combine(path, Path.GetFileName(file.FileName));
-
+            
             // Save the image
             file.SaveAs(Path.Combine(path, Path.GetFileName(file.FileName)));
             LogAction.log(this._controllerName, "POST", $"Successfully uploaded image: {imgPath}/{Path.GetFileName(file.FileName)}", User.Identity.GetUserId());
