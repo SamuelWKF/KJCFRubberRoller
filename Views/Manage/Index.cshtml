@@ -6,7 +6,7 @@
 
 <div class="container">
     <div class="row mb-4">
-        <div class="col-md-8 mx-auto">
+        <div class="col-md-6 mx-auto">
 
             @if (TempData["formStatus"] != null)
             {
@@ -20,71 +20,86 @@
             }
 
             <div class="py-2 bg-kjcf">
-                <h2 class="text-white text-center">Register Staff Details</h2>
+                <h2 class="text-white text-center">Staff Account Details</h2>
             </div>
             <div class="bg-white container py-3">
                 <section id="registerForm">
-                    <p class="required">* Require field</p>
-                    @using (Html.BeginForm("UpdateProfile", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <hr />
-                        //Staff ID
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.staffID)
-                            @Html.TextBoxFor(m => m.staffID, new { @class = "form-control staffID", @readonly = "true", maxlength = "5" })
-                        </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-10 mx-auto">
 
-                        //Staff position
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.position)
-                            @{
-                                var position = UserRole.getRole(Model.position);
-                                @Html.TextBoxFor(m => position, new
-                                {
-                                    @class = "form-control",
-                                    @readonly = "true"
-                                })
-                            }
-                        </div>
-
-                        //Staff email
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Email)<span class="required">*</span>
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = "true" })
-                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                        </div>
-
-                        //Staff name
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.name)<span class="required">*</span>
-                            @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
-                        </div>
-
-                        //Staff IC
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.IC)<span class="required">*</span>
-                            @Html.TextBoxFor(m => m.IC, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.IC, "", new { @class = "text-danger" })
-                        </div>
-
-                        @Html.HiddenFor(m => m.Id)
-
-                        //Buttons
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 text-center">
-                                    @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn w-75 btn-primary" })
+                            @*Staff ID*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4 font-weight-bold">
+                                        Staff ID:
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Model.staffID
+                                    </div>
                                 </div>
-                                @*<div class="col-md-6 text-center">
-                                    <input type="submit" class="btn btn-success w-75" value="Update Profile" />
-                                </div>*@
+                            </div>
+
+                            @*Staff position*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4 font-weight-bold">
+                                        Position:
+                                    </div>
+                                    <div class="col-md-8">
+                                        @UserRole.getRole(Model.position)
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Staff email*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4 font-weight-bold">
+                                        Email:
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Model.Email
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Staff name*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4 font-weight-bold">
+                                        Name:
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Model.name
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Staff IC*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4 font-weight-bold">
+                                        NRIC:
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Model.IC
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Button*@
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn w-75 btn-primary" })
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    }
+                    </div>
                 </section>
             </div>
         </div>
