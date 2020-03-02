@@ -33,7 +33,8 @@
                         @Html.HiddenFor(m => m.rollerID)
                     </div>
                     <div class="row">
-                        <div class="col-md-4 border">
+                        <div class="col-md-4 border text-center pt-5 font-weight-bold text-center text-danger">
+                            @Html.HiddenFor(m => m.imagePath)
                             @if (Model.imagePath != null)
                             {
                                 <img src="~/Content/MaintenanceImages/@Model.imagePath" class="img-fluid" />
@@ -108,8 +109,11 @@
                         </div>
                     </div>
                     <div class="form-group row pt-2">
-                        <div class="col-md-12 text-center">
-                            <input type="submit" value='Confirm Maintenance Record Detail' class="btn btn-success w-50" />
+                        <div class="col-md-6 text-center">
+                            <input type="button" value="Back" class="btn btn-primary w-50" />
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <input type="submit" value='Confirm Maintenance Record Detail' class="btn btn-success w-52" />
                         </div>
                     </div>
                 }
