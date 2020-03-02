@@ -211,7 +211,7 @@ namespace KJCFRubberRoller.Controllers
             List<ApplicationUser> users = null;
             if (user.position == 1)
             {
-                users = _db.Users.Where(u => u.Id != currentUserID).ToList();
+                users = _db.Users.ToList();
             }
             else
             {
