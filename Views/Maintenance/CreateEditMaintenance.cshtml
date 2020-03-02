@@ -64,7 +64,7 @@
                     @Html.HiddenFor(m => m.reportDateTime, new { Value = DateTime.Now })
                 </div>
                 <div class="row">
-                    <div class="col-md-2 border">Title<span class="required">*</span></div>
+                    <div class="col-md-2 border">Title</div>
                     <div class="col-md-10 border font-weight-bold">
                         @Html.TextBoxFor(model => model.title, new { @class = "form-control", placeholder = "Enter title here" })
                         @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
@@ -86,7 +86,7 @@
                         }
                         else
                         {
-                            @:Click button below to Upload a Image<br /><br />
+                            @:Select a Image to Upload<br /><br />
                             @:<input type="file" name="file" id="file" />
                         }
                     </div>
