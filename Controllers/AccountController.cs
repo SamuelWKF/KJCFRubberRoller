@@ -70,42 +70,45 @@ namespace KJCFRubberRoller.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
-
-            try
-            {
-                ApplicationDbContext _db = new ApplicationDbContext();
-                var user = _db.Users.Where(u => u.staffID == model.StaffId.ToUpper()).First();
-
-                if (user != null && user.status != 0)
+                try
                 {
-                    var result = await SignInManager.PasswordSignInAsync(user.Email, model.Password, false, shouldLockout: false);
-                    switch (result)
+                    ApplicationDbContext _db = new ApplicationDbContext();
+                    var user = _db.Users.Where(u => u.staffID == model.StaffId.ToUpper()).FirstOrDefault();
+
+                    if (user != null)
                     {
-                        case SignInStatus.Success:
-                            return RedirectToLocal(returnUrl);
-                        case SignInStatus.LockedOut:
-                            return View("Lockout");
+                        if (user.status != 0)
+                        {
+                            var result = await SignInManager.PasswordSignInAsync(user.Email, model.Password, false, shouldLockout: false);
+                            switch (result)
+                            {
+                                case SignInStatus.Success:
+                                    return RedirectToLocal(returnUrl);
+                                case SignInStatus.LockedOut:
+                                    return View("Lockout");
 
-                        case SignInStatus.Failure:
-                        default:
-                            ModelState.AddModelError("", "Invalid login attempt.");
-                            return View(model);
+                                case SignInStatus.Failure:
+                                default:
+                                    ModelState.AddModelError("", "ALERT : Please enter the correct staff id and password.");
+                                    return View(model);
+                            }
+                        }
+
                     }
+                    
+
                 }
-                else
+                catch (Exception e)
                 {
-                    ModelState.AddModelError("", "Invalid login attempt."); return View(model);
+                    ModelState.AddModelError("", "ALERT : Oops! Something wrong. Please try again later.");
+                    return View(model);
                 }
+                
             }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("", "Invalid login attempt.");
-                return View(model);
-            }
+            ModelState.AddModelError("", "ALERT : Invalid login attempt."); return View(model);
+
 
 
             // This doesn't count login failures towards account lockout
