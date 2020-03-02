@@ -33,9 +33,9 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="manageRollerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Roller Maintenance</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="manageRollerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Roller Maintenance @Html.Partial("_MaintenanceNotif")</a>
                     <div class="dropdown-menu" aria-labelledby="manageRollerDropdown">
-                        @Html.ActionLink("Maintenance List", "", "maintenance", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        @Html.ActionLink($"Maintenance List", "", "maintenance", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
                         @Html.ActionLink("File New Maintenance Report", "CreateSearch", "maintenance", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
                     </div>
                 </li>

@@ -420,6 +420,7 @@
     <Content Include="Views\RubberRoller\OperationHistory.cshtml" />
     <Content Include="Views\RubberRoller\SummaryReport.cshtml" />
     <Content Include="Views\Schedule\EditOperationDetail.cshtml" />
+    <Content Include="Views\Shared\_MaintenanceNotif.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
