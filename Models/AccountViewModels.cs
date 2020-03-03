@@ -72,7 +72,6 @@ namespace KJCFRubberRoller.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -96,9 +95,9 @@ namespace KJCFRubberRoller.Models
         public string name { get; set; }
 
         [Required]
-        [MaxLength(12)]
+        [MaxLength(12,ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
         [DisplayName("IC Number")]
-        [RegularExpression(@"^\d+)$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
         public string IC { get; set; }
 
         [Required]
@@ -121,8 +120,9 @@ namespace KJCFRubberRoller.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
+        [MinLength(8)]
+        [RegularExpression(@"^(?=.*\d.*)(?=.*[a-z])(?=.*[A-Z]).{8,}$", ErrorMessage = "Password must contain at least 1 uppercase, 1 lowercase, and 1 digit")]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
@@ -141,4 +141,7 @@ namespace KJCFRubberRoller.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+   
+
 }
