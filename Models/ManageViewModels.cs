@@ -70,7 +70,7 @@ namespace KJCFRubberRoller.Models
         [Required]
         [DataType(DataType.Password)]
         [MinLength(8)]
-        [RegularExpression(@"^(?=.*\d.*)(?=.*[a-z])(?=.*[A-Z]).{8,}$", ErrorMessage = "Password must contain at least 1 uppercase, 1 lowercase, and 1 digit")]
+        [RegularExpression(@"^(?=.*\d.*)(?=.*[a-z])(?=.*[A-Z]).{8,}$", ErrorMessage = "Password must length>8 contain at least 1 uppercase, 1 lowercase, and 1 digit")]
         [Display(Name = "New password")]
         public string NewPassword { get; set; }
 
@@ -91,12 +91,11 @@ namespace KJCFRubberRoller.Models
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
         [MinLength(8)]
-        [RegularExpression(@"^(?=.*\d.*)(?=.*[a-z])(?=.*[A-Z]).{8,}$", ErrorMessage = "Password must contain at least 1 uppercase, 1 lowercase, and 1 digit")]
+        [RegularExpression(@"^(?=.*\d.*)(?=.*[a-z])(?=.*[A-Z]).{8,}$", ErrorMessage = "Password must length>8 contain at least 1 uppercase, 1 lowercase, and 1 digit")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [RegularExpression(@"[^\s]+", ErrorMessage = "U have accidently input a whitespace. Please remove it or retype again the password.")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }

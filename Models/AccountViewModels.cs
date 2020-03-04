@@ -167,7 +167,7 @@ namespace KJCFRubberRoller.Models
         [Required]
         [DataType(DataType.Password)]
         [MinLength(8)]
-        [RegularExpression(@"^(?=.*\d.*)(?=.*[a-z])(?=.*[A-Z]).{8,}$", ErrorMessage = "Password must contain at least 1 uppercase, 1 lowercase, and 1 digit")]
+        [RegularExpression(@"^(?=.*\d.*)(?=.*[a-z])(?=.*[A-Z]).{8,}$", ErrorMessage = "Password must length>8 and contain at least 1 uppercase, 1 lowercase, and 1 digit")]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
