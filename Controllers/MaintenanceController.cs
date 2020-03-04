@@ -46,7 +46,7 @@ namespace KJCFRubberRoller.Controllers
                 .Select(r => new
                 {
                     ID = r.id,
-                    r.rollerID,
+                    rollerID = $"{r.rollerID} - {r.RollerCategory.size} {r.RollerCategory.description}",
                     r.status
                 }).Where(r => r.status == RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM)).ToList();
 
