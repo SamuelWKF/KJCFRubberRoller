@@ -151,6 +151,8 @@ namespace KJCFRubberRoller.Models
         [RegularExpression(@"^[0-1]$", ErrorMessage = "Please select the correct status.")]
         public int status { get; set; }
 
+        [DisplayName("Reset Passsword")]
+        public bool isReset { get; set; }
     }
 
     public class ResetPasswordViewModel

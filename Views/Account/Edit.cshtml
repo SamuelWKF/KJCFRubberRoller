@@ -6,7 +6,7 @@
     }
     else
     {
-        ViewBag.Title = $"Edit Staff ({Model.staffID}) Details";
+        ViewBag.Title = $"Edit Staff ({(String)Url.RequestContext.RouteData.Values["staffID"]}) Details";
     }
     ViewBag.accountStatusDropDown = new List<SelectListItem>()
 {
@@ -31,7 +31,7 @@
             }
 
             <div class="py-2 bg-kjcf">
-                <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["staffID"] == null ? "Edit Profile Details" : $"Edit Staff ({Model.staffID}) Details")</h2>
+                <h2 class="text-white text-center">@((String)Url.RequestContext.RouteData.Values["staffID"] == null ? "Edit Profile Details" : $"Edit Staff ({(String)Url.RequestContext.RouteData.Values["staffID"]}) Details")</h2>
             </div>
             <div class="bg-white container py-3">
                 <section id="registerForm">
@@ -71,8 +71,8 @@
                             @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
-                            @Html.Label("Reset Password")
-                            <input type="checkbox", name="chkResetPassword" value="1" />
+                            @Html.LabelFor(model => model.isReset)
+                            @Html.CheckBoxFor(m => m.isReset, new { @class = "form-control" })
                         </div>
                         @Html.HiddenFor(model => model.Id)
                         <div class="form-group">
