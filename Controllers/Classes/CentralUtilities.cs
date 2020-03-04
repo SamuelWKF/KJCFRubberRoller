@@ -25,7 +25,10 @@ namespace KJCFRubberRoller.Controllers.Classes
             rollerLocation.rollerID = rubber.id;
             rollerLocation.RubberRoller = rubber;
             rollerLocation.location = location;
-            rollerLocation.operationLine = 0;
+            if (location.StartsWith("Operation Line"))
+                rollerLocation.operationLine = int.Parse(location.Substring(15));
+            else
+                rollerLocation.operationLine = 0;
 
             // Add new records
             _db.rollerLocations.Add(rollerLocation);

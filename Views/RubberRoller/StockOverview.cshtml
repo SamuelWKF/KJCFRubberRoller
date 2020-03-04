@@ -1,10 +1,11 @@
 ﻿@model IPagedList<KJCFRubberRoller.Models.RollerCategory>
 @using PagedList;
 @using PagedList.Mvc;
+@using KJCFRubberRoller.Models;
+
 @{
     ViewBag.Title = "Roller Stock Overview";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string rollerSupplierStatus = "On Supplier Hand (Repair/Refurbish)";
 }
 
 <div class="container">
@@ -70,10 +71,10 @@
                                     @Html.DisplayFor(modelItem => item.value.RubberRollers.Count)
                                 </td>
                                 <td>
-                                    @string.Format("{0}", item.value.RubberRollers.Where(r => r.status != rollerSupplierStatus).Count())
+                                    @string.Format("{0}", item.value.RubberRollers.Where(r => r.status != RollerStatus.getStatus(RollerStatus.SENT_TO_MAINTENANCE)).Count())
                                 </td>
                                 <td>
-                                    @string.Format("{0}", item.value.RubberRollers.Where(r => r.status == rollerSupplierStatus).Count())
+                                    @string.Format("{0}", item.value.RubberRollers.Where(r => r.status == RollerStatus.getStatus(RollerStatus.SENT_TO_MAINTENANCE)).Count())
                                 </td>
                                 <td class="text-center">
                                     <a href="@Url.Action("StockDetails", "RubberRoller", new { id = item.value.rollerCategoryID })" class="btn w-50 btn-success">

@@ -276,7 +276,7 @@ namespace KJCFRubberRoller.Controllers
                 schedule.product = collection["product"];
                 schedule.tinplateSize = collection["tinplateSize"];
                 schedule.quantity = Int32.Parse(collection["quantity"]);
-                schedule.remark = collection["startDateTime"];
+                schedule.remark = collection["remark"];
 
                 // Update Before checklist
                 BeforeRollerIssueChecklist beforeRollerIssueChecklist;
