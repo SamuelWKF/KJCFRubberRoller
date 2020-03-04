@@ -238,7 +238,20 @@ namespace KJCFRubberRoller.Controllers
                 ModelState.AddModelError("staffID", "There is already an existing staff with the same staff ID.");
                 return View(model);
             }
-
+            //Only Manager can create/update Manager/Executive account
+            int currentUserPosition = UserManager.FindById(User.Identity.GetUserId()).position;
+            switch (currentUserPosition)
+            {
+                case 2:
+                    if (currentUserPosition <= model.position)
+                    {
+                        ViewData["userPosition"] = getUserRoles();
+                        TempData["formStatus"] = false;
+                        TempData["formStatusMsg"] = $"<b>ALERT</b>: Only Manager can create/update Manager/Executive account";
+                        return View(model);
+                    }
+                    break;
+            }
             // Generate random password
             ModelState.Remove("Password");
             model.Password = Membership.GeneratePassword(20, 8);

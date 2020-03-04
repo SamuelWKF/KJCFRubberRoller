@@ -97,7 +97,7 @@ namespace KJCFRubberRoller.Models
         [Required]
         [MaxLength(12,ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
         [DisplayName("IC Number")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
+        [RegularExpression(@"^\d{12,}$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
         public string IC { get; set; }
 
         [Required]
@@ -138,7 +138,7 @@ namespace KJCFRubberRoller.Models
         [Required]
         [MaxLength(12, ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
         [DisplayName("IC Number")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
+        [RegularExpression(@"^\d{12,}$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")] 
         public string IC { get; set; }
 
         [Required]
