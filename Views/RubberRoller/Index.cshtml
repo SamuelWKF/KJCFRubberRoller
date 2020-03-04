@@ -1,6 +1,7 @@
 ﻿@model IPagedList<KJCFRubberRoller.Models.RubberRoller>
 @using PagedList;
 @using PagedList.Mvc;
+@using KJCFRubberRoller.Models;
 @{
     ViewBag.Title = "All Rubber Roller Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -67,11 +68,15 @@
                                 }
                                 @rollerCat
                             </td>
-                            <td>
-                                @if (item.value.RollerLocations.LastOrDefault() != null)
-                                {
-                                    @Html.Display(item.value.RollerLocations.LastOrDefault().location)
+                            <td class="text-center">
+                                @{
+                                    var supplier = "-";
+                                    if (item.value.status == RollerStatus.getStatus(RollerStatus.SENT_TO_MAINTENANCE))
+                                    {
+                                        supplier = item.value.Maintenances.LastOrDefault().sendTo;
+                                    }
                                 }
+                                @supplier
                             </td>
                             <td class="text-center">
                                 @{

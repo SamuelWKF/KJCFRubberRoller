@@ -194,6 +194,15 @@ namespace KJCFRubberRoller.Controllers
         {
             try
             {
+                // Check if roller ID exist from DB
+                var dbRoller = _db.rubberRollers.Where(r => r.rollerID == rubberRoller.rollerID && r.id != rubberRoller.id).FirstOrDefault();
+                if (dbRoller != null)
+                {
+                    ViewData["rollerCatList"] = getRollerCategories();
+                    ModelState.AddModelError("rollerID", "There is already an existing roller with the same roller ID.");
+                    return View("CreateEditForm", rubberRoller);
+                }
+
                 // Retrieve existing specific rubber roller from database
                 RubberRoller rubberRoll = _db.rubberRollers.SingleOrDefault(c => c.id == rubberRoller.id);
 
@@ -223,12 +232,6 @@ namespace KJCFRubberRoller.Controllers
                     LogAction.log(this._controllerName, "POST", "Updated roller record", User.Identity.GetUserId());
                     TempData["formStatus"] = true;
                     TempData["formStatusMsg"] = "<b>STATUS</b>: Rubber roller details has been successfully updated!";
-                }
-                else
-                {
-                    LogAction.log(this._controllerName, "POST", $"Error updating rubber roller ID:{rubberRoll.id} detail", User.Identity.GetUserId());
-                    TempData["formStatus"] = false;
-                    TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The rubber roller details has not been successfully updated.";
                 }
 
                 return Redirect(Request.UrlReferrer.ToString());
@@ -294,7 +297,7 @@ namespace KJCFRubberRoller.Controllers
 
             LogAction.log(this._controllerName, "GET", $"Requested webpage RubberRoller-MaintenanceHistory for Roller: {id}", User.Identity.GetUserId());
             RubberRoller rubberRollers = _db.rubberRollers.FirstOrDefault(r => r.id == id);
-            ViewData["rollerID"] = rubberRollers.rollerID; 
+            ViewData["rollerID"] = rubberRollers.rollerID;
             List<Maintenance> maintenances = rubberRollers.Maintenances
                 .Where(m => m.rollerID == id)
                 .Where(m => m.status == RollerMaintenance.APPROVED)
