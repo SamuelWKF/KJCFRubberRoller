@@ -1,7 +1,7 @@
 ﻿@model KJCFRubberRoller.Models.ApplicationUser
 @using KJCFRubberRoller.Models
 @{
-    ViewBag.Title = "Edit Profile";
+    ViewBag.Title = "Profile";
 }
 
 <div class="container">
@@ -89,15 +89,33 @@
                             </div>
 
                             @*Button*@
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn w-75 btn-primary" })
+                            @{ if (Model.position == 1)
+                                {
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6 text-center">
+                                                @Html.ActionLink("Update Profile", "UpdateProfile", null, new { @class = "btn w-75 btn-primary" })
+                                            </div>
+                                            <div class="col-md-6 text-center">
+                                                @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn btn-success w-75" })
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn btn-success w-75" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }}
+
+
                         </div>
                     </div>
                 </section>

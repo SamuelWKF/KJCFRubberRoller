@@ -7,6 +7,7 @@ namespace KJCFRubberRoller.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\.]+)$")]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
@@ -43,6 +44,7 @@ namespace KJCFRubberRoller.Models
     public class ForgotViewModel
     {
         [Required]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\.]+)$")]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
@@ -67,7 +69,7 @@ namespace KJCFRubberRoller.Models
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\.]+)$")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -118,7 +120,7 @@ namespace KJCFRubberRoller.Models
         public string Id { get; set; }
 
         [Required]
-        [EmailAddress]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\.]+)$")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -158,7 +160,7 @@ namespace KJCFRubberRoller.Models
     public class ResetPasswordViewModel
     {
         [Required]
-        [EmailAddress]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\.]+)$")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -180,7 +182,7 @@ namespace KJCFRubberRoller.Models
     public class ForgotPasswordViewModel
     {
         [Required]
-        [EmailAddress]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\.]+)$")]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }

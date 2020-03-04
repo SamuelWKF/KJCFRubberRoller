@@ -421,6 +421,7 @@
     <Content Include="Views\RubberRoller\SummaryReport.cshtml" />
     <Content Include="Views\Schedule\EditOperationDetail.cshtml" />
     <Content Include="Views\Shared\_MaintenanceNotif.cshtml" />
+    <Content Include="Views\Manage\UpdateManagerProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

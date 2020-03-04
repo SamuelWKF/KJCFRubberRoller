@@ -45,6 +45,23 @@ namespace KJCFRubberRoller.Controllers
             }
         }
 
+        private SelectList getUserRoles()
+        {
+            //set priority for Role
+            int[] defaultRoleId = { 2, 1, 3, 4 };
+            ApplicationDbContext _db = new ApplicationDbContext();
+            // Retrieve user roles
+            var roleList = _db.Roles
+                    .AsEnumerable()
+                    .Select((v, i) => new
+                    {
+                        ID = defaultRoleId[i],
+                        name = v.Name
+                    }).ToList();
+
+            return new SelectList(roleList, "ID", "name");
+        }
+
         //
         // GET: /profile/edit
         [Route("profile/edit")]
@@ -57,39 +74,94 @@ namespace KJCFRubberRoller.Controllers
             return View(model);
         }
 
+        //get profile details
+        
+        [Authorize(Roles ="Manager")]
+        public ActionResult UpdateProfile()
+        {
+            ApplicationDbContext _db = new ApplicationDbContext();
+            var userId = User.Identity.GetUserId();
+            var staff = _db.Users.FirstOrDefault(u => u.Id == userId);
+            UpdateProfileViewModel returnModel = new UpdateProfileViewModel
+            {
+                staffID = staff.staffID,
+                Email = staff.Email,
+                
+                name = staff.name,
+                IC = staff.IC,
+                position = staff.position
+                
+            };
+
+            LogAction.log(this._controllerName, "GET", "Requested edit profile page", User.Identity.GetUserId());
+            return View("UpdateManagerProfile", returnModel);
+
+        }
+
+        //update profile
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("profile/edit")]
-        public ActionResult UpdateProfile(ApplicationUser user)
+        public ActionResult UpdateProfile(UpdateProfileViewModel user)
         {
             try
             {
-                using (ApplicationDbContext _db = new ApplicationDbContext())
+                ApplicationDbContext _db = new ApplicationDbContext();
+                var currentUserID = User.Identity.GetUserId();
+                var staff = (ApplicationUser)UserManager.FindById(currentUserID);
+                var ExStaff = _db.Users.FirstOrDefault(u => u.staffID == user.staffID);
+                var ExStaffEmail = _db.Users.FirstOrDefault(u => u.Email == user.Email);
+                if (ExStaff != null)
                 {
-                    ApplicationUser staff = _db.Users.FirstOrDefault(u => u.Id == user.Id);
-                    if (staff != null)
+                    if (currentUserID != ExStaff.Id)
                     {
-                        staff.name = user.name;
-                        staff.IC = user.IC;
+                        TempData["formStatus"] = false;
+                        TempData["formStatusMsg"] = $"<b>ALERT</b>: Staff ID has been taken by another staff.";
+                        return View("UpdateManagerProfile", user);
                     }
-                    int result = _db.SaveChanges();
-                    if (result > 0)
+
+                }
+                if (ExStaffEmail != null)
+                {
+                    if (currentUserID != ExStaffEmail.Id)
                     {
-                        TempData["formStatus"] = true;
-                        TempData["formStatusMsg"] = $"<b>STATUS</b>: Profile details has been successfully updated!";
-                        LogAction.log(this._controllerName, "POST", "Profile details updated", User.Identity.GetUserId());
+                        TempData["formStatus"] = false;
+                        TempData["formStatusMsg"] = $"<b>ALERT</b>: Email has been taken by another staff.";
+                        return View("UpdateManagerProfile", user);
                     }
+
+                }
+
+                staff.Email = user.Email;
+                staff.staffID = user.staffID;
+                staff.name = user.name;
+                staff.IC = user.IC;
+                
+                var result = UserManager.Update(staff);
+
+                if (!result.Succeeded)
+                {
+                    ViewData["userPosition"] = getUserRoles();
+                    TempData["formStatus"] = false;
+                    TempData["formStatusMsg"] = $"<b>ALERT</b>: {result.Errors}";
                     return RedirectToAction("Index");
                 }
+
+                TempData["formStatus"] = true;
+                TempData["formStatusMsg"] = $"<b>STATUS</b>: Staff ({staff.staffID}) details has been successfully updated!";
+                LogAction.log(this._controllerName, "POST", $"Staff ({staff.staffID}) details updated", User.Identity.GetUserId());
+                return RedirectToAction("Index");
+
             }
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. Profile details has not been successfully updated.";
-                LogAction.log(this._controllerName, "POST", $"Error: {ex.Message}", User.Identity.GetUserId());
+                TempData["formStatusMsg"] = $"<b>ALERT</b>:{ex.Message} Oops! Something went wrong. Please try again later.";
+                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
+
+        
 
         //
         // POST: /Manage/RemoveLogin

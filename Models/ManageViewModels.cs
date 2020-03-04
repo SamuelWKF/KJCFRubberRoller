@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -20,10 +21,49 @@ namespace KJCFRubberRoller.Models
         public IList<AuthenticationDescription> OtherLogins { get; set; }
     }
 
+    public class UpdateProfileViewModel
+    {
+        
+
+        [Required]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\.]+)$")]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [MaxLength(5)]
+        [StringLength(5)]
+        [DisplayName("Staff ID")]
+        [RegularExpression(@"^([kK])\d+$", ErrorMessage = "Staff ID must start with K & follow by maximum 4 digits")]
+        public string staffID { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        [DisplayName("Name")]
+        [RegularExpression(@"^[A-z\-\@\.\, ]{1,}$", ErrorMessage = "Please enter the correct name format.")]
+        public string name { get; set; }
+
+        [Required]
+        [MaxLength(12, ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
+        [DisplayName("IC Number")]
+        [RegularExpression(@"^\d{12,}$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
+        public string IC { get; set; }
+
+        [Required]
+        [DisplayName("Position")]
+        [RegularExpression(@"^[1-4]$", ErrorMessage = "Please select the correct position.")]
+        public int position { get; set; }
+
+        
+
+    }
+
     public class FactorViewModel
     {
         public string Purpose { get; set; }
     }
+
+
 
     public class SetPasswordViewModel
     {

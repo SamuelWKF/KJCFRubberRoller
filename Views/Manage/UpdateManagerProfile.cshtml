@@ -1,0 +1,89 @@
+﻿@using KJCFRubberRoller.Models
+@model UpdateProfileViewModel
+@{
+    ViewBag.Title = "Update Profile";
+}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+
+            @if (TempData["formStatus"] != null)
+            {
+                <div class="alert @((bool)TempData["formStatus"] == true ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    @Html.Raw(TempData["formStatusMsg"])
+                </div>
+            }
+
+            <div class="py-2 bg-kjcf">
+                <h2 class="text-white text-center">Register Staff Details</h2>
+            </div>
+            <div class="bg-white container py-3">
+                <section id="registerForm">
+                    <p class="required">* Require field</p>
+                    @using (Html.BeginForm("UpdateProfile", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <hr />
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.staffID)<span class="required">*</span>
+                            @Html.TextBoxFor(m => m.staffID, new { @class = "form-control staffID", maxlength = "5", placeholder = "K0001" })
+                            @Html.ValidationMessageFor(model => model.staffID, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group ">
+
+                            <div>
+                                @Html.LabelFor(m => m.position)
+                            </div>
+                            <div class="form-control">
+                                @UserRole.getRole(Model.position)
+                            </div>
+                            @Html.HiddenFor(m=>m.position)
+
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email)<span class="required">*</span>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", maxlength = "80", placeholder = "name@kianjoocan.com.my" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.name)<span class="required">*</span>
+                            @Html.TextBoxFor(m => m.name, new { @class = "form-control", placeholder = "John Adams" })
+                            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.IC)<span class="required">*</span>
+                            @Html.TextBoxFor(m => m.IC, new { @class = "form-control", maxlength = "12", placeholder = "Without dashes. E.g - 010862125596" })
+                            @Html.ValidationMessageFor(model => model.IC, "", new { @class = "text-danger" })
+                        </div>
+
+                        //Buttons
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    @Html.ActionLink("Clear", "UpdateProfile", null, new { @class = "btn btn-primary w-75" })
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <input type="submit" class="btn btn-success w-75" value="Update" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
