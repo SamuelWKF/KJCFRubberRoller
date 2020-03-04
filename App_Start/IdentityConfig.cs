@@ -49,7 +49,7 @@ namespace KJCFRubberRoller
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = false
+                RequireUniqueEmail = true,
             };
 
             // Configure validation logic for passwords
@@ -61,7 +61,6 @@ namespace KJCFRubberRoller
                 RequireLowercase = true,
                 RequireUppercase = true,
             };
-
             // Configure user lockout defaults
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(30);

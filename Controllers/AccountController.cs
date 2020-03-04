@@ -231,7 +231,7 @@ namespace KJCFRubberRoller.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             ApplicationDbContext _db = new ApplicationDbContext();
-            var dbUser = _db.Users.Where(u => u.staffID == model.staffID).FirstOrDefault();
+            var dbUser = _db.Users.Where(u => u.staffID == model.staffID||u.Email == model.Email).FirstOrDefault();
             if (dbUser != null)
             {
                 ViewData["userPosition"] = getUserRoles();
@@ -307,10 +307,17 @@ namespace KJCFRubberRoller.Controllers
             if (staff == null || staff.Id == User.Identity.GetUserId())
                 return RedirectToAction("List");
 
+            UpdateViewModel returnModel = new UpdateViewModel();
+            returnModel.Email = staff.Email;
+            returnModel.Id = staff.Id;
+            returnModel.name = staff.name;
+            returnModel.IC = staff.IC;
+            returnModel.position = staff.position;
+            returnModel.status = staff.status;
 
             ViewData["userPosition"] = getUserRoles();
             LogAction.log(this._controllerName, "GET", string.Format("Requested Account-Edit {0} webpage", staff.staffID), User.Identity.GetUserId());
-            return View("Edit", staff);
+            return View("Edit", returnModel);
         }
 
         // POST
@@ -318,21 +325,21 @@ namespace KJCFRubberRoller.Controllers
         [ValidateAntiForgeryToken]
         [Route("staff/update")]
         [Authorize(Roles = "Executive,Manager")]
-        public ActionResult Update(ApplicationUser user,string chkResetPassword)
+        public ActionResult Update(UpdateViewModel user,string chkResetPassword)
         {
             try
             {
                 ApplicationDbContext _db = new ApplicationDbContext();
-                ApplicationUser staff = _db.Users.FirstOrDefault(u => u.Id == user.Id);
-                ApplicationUser ExStaff = _db.Users.FirstOrDefault(u => u.staffID == user.staffID);
+                var staff = (ApplicationUser)UserManager.FindById(user.Id);
+                ApplicationUser ExStaff = _db.Users.FirstOrDefault(u => u.staffID == user.staffID||u.Email==user.Email);
                 if (ExStaff != null)
                 {
                     if (user.Id != ExStaff.Id)
                     {
                         ViewData["userPosition"] = getUserRoles();
                         TempData["formStatus"] = false;
-                        TempData["formStatusMsg"] = $"<b>ALERT</b>: Staff ID ({user.staffID}) has been taken by another staff.";
-                        return View("Edit", (user,chkResetPassword));
+                        TempData["formStatusMsg"] = $"<b>ALERT</b>: Staff ID/Email has been taken by another staff.";
+                        return View((user,chkResetPassword));
                     }
                     
                 }
@@ -346,39 +353,38 @@ namespace KJCFRubberRoller.Controllers
                     staff.status = user.status;
                     UserManager.AddToRole(staff.Id, UserRole.getRole(staff.position));
                 
-                int result = _db.SaveChanges();
+                var result = UserManager.Update(staff);
 
-                if (result > 0)
+                if (result.Succeeded)
                 {
                     TempData["formStatus"] = true;
                     TempData["formStatusMsg"] = $"<b>STATUS</b>: Staff ({user.staffID}) details has been successfully updated!";
                     LogAction.log(this._controllerName, "POST", $"Staff ({user.staffID}) details updated", User.Identity.GetUserId());
+                
+                    //rchechbox for reset password is 1
+                    if (chkResetPassword == "1")
+                    {
+                        string newPassword = Membership.GeneratePassword(20, 8);
+                        string code = UserManager.GeneratePasswordResetToken(user.Id);
+                        UserManager.ResetPassword(user.Id,code,newPassword);
+                        LogAction.log(this._controllerName, "POST", $"Manager reset account {staff.staffID} password", User.Identity.GetUserId());
+                        // Sent password reset email
+                        SendMail.sendMail(staff.Email,
+                            "Rubber Roller Management System Account Password Reset",
+                            "Hi! " + staff.name + "<br/>Your account password has been reset," +
+                            "<br/> Please use the temporary password below to login to your account and <b>change the password immediately</b> after login." +
+                            "<br/><br/>Your credentials are as follow:" +
+                            "<br/>staff Id: " + staff.staffID +
+                            "<br/>Password: " + newPassword);
+                        LogAction.log(this._controllerName, "POST", $"Account password reset email sent to current user: {staff.staffID}", User.Identity.GetUserId());
+                    }
                 }
-                //rchechbox for reset password is 1
-                if (chkResetPassword == "1")
-                {
-                    string newPassword = Membership.GeneratePassword(20, 8);
-                    string code = UserManager.GeneratePasswordResetToken(user.Id);
-                    UserManager.ResetPassword(user.Id,code,newPassword);
-                    LogAction.log(this._controllerName, "POST", $"Manager reset account {staff.staffID} password", User.Identity.GetUserId());
-                    // Sent password reset email
-                    SendMail.sendMail(staff.Email,
-                        "Rubber Roller Management System Account Password Reset",
-                        "Hi! " + staff.name + "<br/>Your account password has been reset," +
-                        "<br/> Please use the temporary password below to login to your account and <b>change the password immediately</b> after login." +
-                        "<br/><br/>Your credentials are as follow:" +
-                        "<br/>staff Id: " + staff.staffID +
-                        "<br/>Password: " + newPassword);
-                    LogAction.log(this._controllerName, "POST", $"Account password reset email sent to current user: {staff.staffID}", User.Identity.GetUserId());
-                }
-
-
                 return RedirectToAction("List");
             }
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = $"<b>ALERT</b>:{ex.Message} Oops! Something went wrong. Staff details has not been successfully updated.";
+                TempData["formStatusMsg"] = $"<b>ALERT</b>:{ex.Message} Oops! Something went wrong. Please try again later.";
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }

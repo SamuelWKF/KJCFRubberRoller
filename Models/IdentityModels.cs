@@ -12,16 +12,19 @@ namespace KJCFRubberRoller.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        private string email;
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
-            
+
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
-           
+
             return userIdentity;
         }
 
+        
         [Required]
         [MaxLength(5)]
         [StringLength(5)]
@@ -36,7 +39,7 @@ namespace KJCFRubberRoller.Models
         public string name { get; set; }
 
         [Required]
-        [MaxLength(12,ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
+        [MaxLength(12, ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
         [DisplayName("IC Number")]
         [RegularExpression(@"^\d+", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
         public string IC { get; set; }
