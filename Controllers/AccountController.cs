@@ -197,7 +197,7 @@ namespace KJCFRubberRoller.Controllers
             ApplicationDbContext _db = new ApplicationDbContext();
             ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == currentUserID);
             List<ApplicationUser> users = null;
-            if (user.position == 1)
+            if (user.position == 1||user.position == 2)
             {
                 users = _db.Users.Where(u=>u.Id!=currentUserID).ToList();
             }
@@ -241,20 +241,7 @@ namespace KJCFRubberRoller.Controllers
                 
                 return View(model);
             }
-            //Only Manager can create/update Manager/Executive account
-            int currentUserPosition = UserManager.FindById(User.Identity.GetUserId()).position;
-            switch (currentUserPosition)
-            {
-                case 2:
-                    if (model.position <= currentUserPosition)
-                    {
-                        ViewData["userPosition"] = getUserRoles();
-                        TempData["formStatus"] = false;
-                        TempData["formStatusMsg"] = $"<b>ALERT</b>: Only Manager can create/update Manager/Executive account";
-                        return View(model);
-                    }
-                    break;
-            }
+            
             // Generate random password
             ModelState.Remove("Password");
             model.Password = Membership.GeneratePassword(20, 8);
@@ -373,20 +360,7 @@ namespace KJCFRubberRoller.Controllers
                     }
 
                 }
-                int currentUserPosition = UserManager.FindById(User.Identity.GetUserId()).position;
-                switch (currentUserPosition)
-                {
-                    case 2:
-                        if (user.position <= currentUserPosition)
-                        {
-                            ViewData["userPosition"] = getUserRoles();
-                            TempData["formStatus"] = false;
-                            TempData["formStatusMsg"] = $"<b>ALERT</b>: Only Manager can create/update Manager/Executive account";
-                            return View("Edit",user);
-                        }
-                        break;
-                }
-
+                
                 UserManager.RemoveFromRole(staff.Id, UserRole.getRole(staff.position));
                     staff.Email = user.Email;
                     staff.staffID = user.staffID;

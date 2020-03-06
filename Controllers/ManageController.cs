@@ -76,7 +76,7 @@ namespace KJCFRubberRoller.Controllers
 
         //get profile details
         
-        [Authorize(Roles ="Manager")]
+        [Authorize(Roles ="Manager,Executive")]
         public ActionResult UpdateProfile()
         {
             ApplicationDbContext _db = new ApplicationDbContext();
