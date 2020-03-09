@@ -81,7 +81,7 @@ namespace KJCFRubberRoller.Controllers
                     {
                         if (user.status != 0)
                         {
-                            var result = await SignInManager.PasswordSignInAsync(user.Email, model.Password, false, shouldLockout: false);
+                            var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, shouldLockout: false);
                             switch (result)
                             {
                                 case SignInStatus.Success:
@@ -274,8 +274,8 @@ namespace KJCFRubberRoller.Controllers
                         "Rubber Roller Management System Account Creation",
                         "Hi ! "+ model.name +"<br/>An account has been created for use of the Rubber Roller Management System with a temporary password. Please login with ur staff ID and <b>change the password immediately</b> after login." +
                         "<br/><br/>Your credentials are as follow:" +
-                        "<br/>Staff Id: " + model.staffID +
-                        "<br/>Password: " + model.Password);
+                        "<br/>Staff Id: <br/>" + model.staffID +
+                        "<br/>Password: <br/>" + model.Password);
                     LogAction.log(this._controllerName, "POST", $"Account creation email sent to new user: {model.staffID}", User.Identity.GetUserId());
 
                     TempData["formStatus"] = true;
@@ -346,7 +346,7 @@ namespace KJCFRubberRoller.Controllers
                     {
                         TempData["formStatus"] = false;
                         TempData["formStatusMsg"] = $"<b>ALERT</b>: Staff ID/Email has been taken by another staff.";
-                        return View("UpdateManagerProfile", user);
+                        return View("Edit", user);
                     }
 
                 }
@@ -356,13 +356,14 @@ namespace KJCFRubberRoller.Controllers
                     {
                         TempData["formStatus"] = false;
                         TempData["formStatusMsg"] = $"<b>ALERT</b>: Staff ID/Email has been taken by another staff.";
-                        return View("UpdateManagerProfile", user);
+                        return View("Edit", user);
                     }
 
                 }
                 
                 UserManager.RemoveFromRole(staff.Id, UserRole.getRole(staff.position));
-                    staff.Email = user.Email;
+                UserManager.SetEmail(staff.Id,user.Email);
+                    //staff.Email = user.Email;
                     staff.staffID = user.staffID;
                     staff.name = user.name;
                     staff.IC = user.IC;
@@ -387,9 +388,11 @@ namespace KJCFRubberRoller.Controllers
                 //rchechbox for reset password is true
                 if (user.isReset)
                 {
+                    UserManager.RemovePassword(staff.Id);
                     string newPassword = Membership.GeneratePassword(20, 8);
-                    string code = UserManager.GeneratePasswordResetToken(user.Id);
-                    UserManager.ResetPassword(user.Id, code, newPassword);
+                    UserManager.AddPassword(staff.Id,newPassword);
+                    //string code = UserManager.GeneratePasswordResetToken(user.Id);
+                    //var reetResult=UserManager.ResetPassword(user.Id, code, newPassword);
                     LogAction.log(this._controllerName, "POST", $"Manager reset account {staff.staffID} password", User.Identity.GetUserId());
                     // Sent password reset email
                     SendMail.sendMail(staff.Email,
@@ -397,8 +400,8 @@ namespace KJCFRubberRoller.Controllers
                         "Hi! " + staff.name + "<br/>Your account password has been reset," +
                         "<br/> Please use the temporary password below to login to your account and <b>change the password immediately</b> after login." +
                         "<br/><br/>Your credentials are as follow:" +
-                        "<br/>staff Id: " + staff.staffID +
-                        "<br/>Password: " + newPassword);
+                        "<br/>staff Id: <br/>" + staff.staffID +
+                        "<br/>Password: <br/>" + newPassword);
                     LogAction.log(this._controllerName, "POST", $"Account password reset email sent to current user: {staff.staffID}", User.Identity.GetUserId());
                     //display reset password notification
                     TempData["formStatus"] = true;
