@@ -85,7 +85,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 text-center">
-                                    @Html.ActionLink("Clear", "Edit", (String)Url.RequestContext.RouteData.Values["staffID"], new { @class="btn btn-primary w-75" })
+                                    <button type="button" class="btn btn-primary w-75" id="backBtn">Back</button>
                                 </div>
                                 <div class="col-md-6 text-center">
                                     <input type="submit" class="btn btn-success w-75" value="Update" />
@@ -110,6 +110,9 @@
             e.target.value = e.target.value.toUpperCase();
         });
     })();
+    document.querySelector("#backBtn").addEventListener('click', e => {
+        window.history.back();
+    });
 </script>
 
 @section Scripts {
