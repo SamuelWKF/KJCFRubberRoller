@@ -314,6 +314,13 @@ namespace KJCFRubberRoller.Controllers
             return View(rubberRollers.ToPagedList(i ?? 1, 20));
         }
 
+        public ActionResult SummaryReport(int? i)
+        {
+            LogAction.log(this._controllerName, "GET", "Requested RubberRoller-SummaryReport webpage", User.Identity.GetUserId());
+            List<RollerCategory> rollerCategories = _db.rollerCategories.ToList();
+            return View(rollerCategories.ToPagedList(i ?? 1, 40));
+        }
+
         private SelectList getRollerCategories()
         {
             // Retrieve roller category

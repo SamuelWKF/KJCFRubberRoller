@@ -19,7 +19,7 @@
                     @Html.AntiForgeryToken()
                     <div class="row">
                         <div class="col-md-2 border">Report Date</div>
-                        <div class="col-md-10 border font-weight-bold">@Model.reportDateTime</div>
+                        <div class="col-md-10 border font-weight-bold">@Model.reportDateTime.Value.ToString("dd-MMM-yyyy hh:mm tt")</div>
                         @Html.HiddenFor(m => m.reportDateTime)
                     </div>
                     <div class="row">

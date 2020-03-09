@@ -38,7 +38,7 @@
                         <th>
                             Roller ID
                         </th>
-                        <th>
+                        <th class="w-25">
                             Reported Date Time
                         </th>
                         <th>Reported By</th>
@@ -79,7 +79,10 @@
                                 @(item.index + 1)
                             </td>
                             <td>@Html.DisplayFor(m => item.value.RubberRoller.rollerID)</td>
-                            <td>@Html.DisplayFor(m => item.value.reportDateTime)</td>
+                            <td>
+                                @item.value.reportDateTime.Value.ToString("dd-MMM-yyyy")<br />
+                                @item.value.reportDateTime.Value.ToString("hh:mm tt")
+                            </td>
                             <td>@Html.DisplayFor(m => item.value.reportedBy.name)</td>
                             @{
                                 var date = item.value.approveDateTime == null ? "-" : item.value.approveDateTime.ToString();

@@ -34,7 +34,7 @@ namespace KJCFRubberRoller.Controllers
         public ActionResult Index(int? i)
         {
             LogAction.log(this._controllerName, "GET", "Requested Maintenance-Index webpage", User.Identity.GetUserId());
-            List<Maintenance> maintenances = _db.maintenances.ToList();
+            List<Maintenance> maintenances = _db.maintenances.OrderByDescending(m => m.reportDateTime).ToList();
             return View(maintenances.ToPagedList(i ?? 1, 20));
         }
 

@@ -9,7 +9,7 @@
 }
 
 <div class="row mb-4">
-    <div class="col-md-10 mx-auto">
+    <div class="col-md-11 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
             <h2 class="text-white text-center">Active Operation List</h2>
         </div>
@@ -39,8 +39,7 @@
                         <th>Operation Line</th>
                         <th>Product</th>
                         <th>Quantity</th>
-                        <th>Start Date Time</th>
-                        <th>End Date Time</th>
+                        <th class="w-25">Start Date Time</th>
                         <th class="w-25">Remark</th>
                         <th>Status</th>
                         <th>View Details</th>
@@ -65,25 +64,13 @@
                             <td class="text-center">@Html.DisplayFor(modelItem => item.value.product)</td>
                             <td class="text-center">@Html.DisplayFor(modelItem => item.value.quantity)</td>
                             <td class="text-center">
-                                @{
-                                    var startDateTime = item.value.startDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
-                                }
-                                @startDateTime
-                            </td>
-                            <td class="text-center">
-                                @{
-                                    var endDateTime = "-";
-                                    if (item.value.endDateTime != null)
-                                    {
-                                        endDateTime = item.value.endDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
-                                    }
-                                }
-                                @endDateTime
+                                @item.value.startDateTime.Value.ToString("dd-MMM-yyy")<br />
+                                @item.value.startDateTime.Value.ToString("hh:mmtt")
                             </td>
                             <td>
                                 @{
                                     var remark = "-";
-                                    if (item.value.remark != "")
+                                    if (item.value.remark != null)
                                     {
                                         remark = item.value.remark;
                                     }

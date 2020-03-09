@@ -40,14 +40,14 @@
                                 </div>
                             </div>
 
-                            @*Staff position*@
+                            @*Staff name*@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-4 font-weight-bold">
-                                        Position:
+                                        Name:
                                     </div>
                                     <div class="col-md-8">
-                                        @UserRole.getRole(Model.position)
+                                        @Model.name
                                     </div>
                                 </div>
                             </div>
@@ -64,14 +64,14 @@
                                 </div>
                             </div>
 
-                            @*Staff name*@
+                            @*Staff position*@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-4 font-weight-bold">
-                                        Name:
+                                        Position:
                                     </div>
                                     <div class="col-md-8">
-                                        @Model.name
+                                        @UserRole.getRole(Model.position)
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                             </div>
 
                             @*Button*@
-                            @{ if (Model.position == 1||Model.position == 2)
+                            @{ if (Model.position == 1 || Model.position == 2)
                                 {
                                     <div class="form-group">
                                         <div class="row">

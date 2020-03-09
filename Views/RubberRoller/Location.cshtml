@@ -10,7 +10,7 @@
 <div class="row mb-4">
     <div class="mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
-            <h2 class="text-white text-center">Rubber Roller Location</h2>
+            <h2 class="text-white text-center">Rubber Roller Current Location</h2>
         </div>
         <div class="bg-white container-fluid py-3">
             @Html.Label("Search:")
@@ -79,10 +79,10 @@
                                     var lastUsageDate = "-";
                                     if (item.value.last_usage_date != null)
                                     {
-                                        lastUsageDate = item.value.last_usage_date.ToString();
+                                        lastUsageDate = $"{item.value.last_usage_date.Value.ToString("dd-MMM-yyyy")}<br/>{item.value.last_usage_date.Value.ToString("hh:mm tt")}";
                                     }
                                 }
-                                @lastUsageDate
+                                @Html.Raw(lastUsageDate)
                             </td>
                             <td class="text-center">
                                 @{ var lastSched = item.value.Schedules.LastOrDefault();

@@ -1,4 +1,5 @@
 ﻿@model IPagedList<KJCFRubberRoller.Models.RollerCategory>
+@using KJCFRubberRoller.Models;
 @using PagedList;
 @using PagedList.Mvc;
 
@@ -6,3 +7,198 @@
     ViewBag.Title = $"Rubber Roller Summary Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<div class="row mb-4">
+    <div class="col-md-12 mt-4 mx-auto">
+        <div class="py-2 bg-kjcf">
+            <h2 class="text-white text-center">Rubber Roller Status</h2>
+        </div>
+        <div class="bg-white container-fluid py-3">
+            @Html.Label("Search:")
+            @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control stock_overview_search", placeholder = "Search roller category here..." })
+            <br />
+            <table class="table table-responsive table-hover table-striped sortable">
+                <tr class="text-center">
+                    <th>
+                        No.
+                    </th>
+                    <th class="text-left">
+                        Roller<br />Description
+                    </th>
+                    <th>
+                        Minimum No.<br />of Roller
+                    </th>
+                    <th>Critical/Non Critical</th>
+                    <th>Actual No. of Rollers</th>
+                    <th>Total Actual Rollers</th>
+                    <th>Available stock at KJCF</th>
+                    <th>EIKOH</th>
+                    <th>CANCO</th>
+                    <th>MEGA</th>
+                    <th>OTHER</th>
+                    <th>Location of<br />Roller</th>
+                    <th>Remark on<br />the Roller</th>
+                </tr>
+
+                @if (Model.FirstOrDefault() == null)
+                {
+                    <tr><td colspan="7" class="text-center">There are currently no rubber rollers stock record.</td></tr>
+                }
+
+                @if (Model.FirstOrDefault() != null)
+                {
+                    foreach (var item in Model.Select((value, index) => new { value, index }))
+                    {
+                        <tr class="text-center">
+                            <td>
+                                @(item.index + 1)
+                            </td>
+                            <td class="text-left">
+                                @string.Format("{0} - {1}", item.value.size, item.value.description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.value.minAmount)
+                            </td>
+                            <td>
+                                @RollerCat.getCriticalStatus(item.value.criticalStatus)
+                            </td>
+                            <td>
+                                @{
+                                    var actualRoller = "0";
+                                    if (item.value.RubberRollers.Count != 0)
+                                    {
+                                        actualRoller = "";
+                                        foreach (var roller in item.value.RubberRollers)
+                                        {
+                                            actualRoller += $"- {roller.rollerID}<br/>";
+                                        }
+                                    }
+                                }
+                                @Html.Raw(actualRoller)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.value.RubberRollers.Count)
+                            </td>
+                            <td class="text-center">
+                                @string.Format("{0}", item.value.RubberRollers.Where(r => r.status != RollerStatus.getStatus(RollerStatus.SENT_TO_MAINTENANCE)).Count())
+                            </td>
+                            <td class="text-center" style="width:12%">
+                                @{
+                                    var eikoh = "";
+                                    foreach (var roller in item.value.RubberRollers)
+                                    {
+                                        if (roller.Maintenances.Count != 0 && roller.status == RollerStatus.getStatus(RollerStatus.SENT_TO_MAINTENANCE))
+                                        {
+                                            if (roller.Maintenances.Last().sendTo == "EIKOH")
+                                            {
+                                                eikoh += $"- {roller.rollerID} ({roller.Maintenances.Last().approveDateTime.Value.ToString("dd/MM/yyyy")})<br/>";
+                                            }
+                                        }
+                                    }
+                                }
+                                @Html.Raw(eikoh)
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    var canco = "";
+                                    foreach (var roller in item.value.RubberRollers)
+                                    {
+                                        if (roller.Maintenances.Count != 0 && roller.status == RollerStatus.getStatus(RollerStatus.SENT_TO_MAINTENANCE))
+                                        {
+                                            if (roller.Maintenances.Last().sendTo == "CANCO")
+                                            {
+                                                canco += $"- {roller.rollerID} ({roller.Maintenances.Last().approveDateTime.Value.ToString("dd/MM/yyyy")})<br/>";
+                                            }
+                                        }
+                                    }
+                                }
+                                @Html.Raw(canco)
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    var mega = "";
+                                    foreach (var roller in item.value.RubberRollers)
+                                    {
+                                        if (roller.Maintenances.Count != 0 && roller.status == RollerStatus.getStatus(RollerStatus.SENT_TO_MAINTENANCE))
+                                        {
+                                            if (roller.Maintenances.Last().sendTo == "MEGA")
+                                            {
+                                                mega += $"- {roller.rollerID} ({roller.Maintenances.Last().approveDateTime.Value.ToString("dd/MM/yyyy")})<br/>";
+                                            }
+                                        }
+                                    }
+                                }
+                                @Html.Raw(mega)
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    var other = "";
+                                    foreach (var roller in item.value.RubberRollers)
+                                    {
+                                        if (roller.Maintenances.Count != 0 && roller.status == RollerStatus.getStatus(RollerStatus.SENT_TO_MAINTENANCE))
+                                        {
+                                            if (roller.Maintenances.Last().sendTo == "OTHER")
+                                            {
+                                                other += $"- {roller.rollerID} ({roller.Maintenances.Last().approveDateTime.Value.ToString("dd/MM/yyyy")})<br/>";
+                                            }
+                                        }
+                                    }
+                                }
+                                @Html.Raw(other)
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    var rollerStatus = "";
+                                    if (item.value.RubberRollers.Count != 0)
+                                    {
+                                        foreach (var roller in item.value.RubberRollers)
+                                        {
+                                            rollerStatus += $"- {roller.rollerID} ({roller.RollerLocations.LastOrDefault().location})<br/>";
+                                        }
+                                    }
+                                }
+                                @Html.Raw(rollerStatus)
+                            </td>
+                            <td>
+                                @{
+                                    var remark = "";
+                                    if (item.value.RubberRollers.Count != 0)
+                                    {
+                                        foreach (var roller in item.value.RubberRollers)
+                                        {
+                                            if (roller.remark != null)
+                                            {
+                                                remark += $"- {roller.rollerID} ({roller.remark})<br/>";
+                                            }
+                                        }
+                                    }
+                                }
+                                @Html.Raw(remark)
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+            @Html.PagedListPager(Model, i => Url.Action("StockOverview", "RubberRoller", new { i }))
+        </div>
+    </div>
+</div>
+
+<script>
+    // IIFE (Immediately Invoked Function Expression)
+    (function () {
+        // Select the search input box for each of the table list
+        const searchBox = document.querySelector('input.stock_overview_search');
+        // Add event listeners to each search box
+        searchBox.addEventListener('input', (e) => {
+            const stockOverviewTable = document.querySelector('.table').children[1].children;
+            Array.from(stockOverviewTable).forEach((v, i) => {
+                if (v.innerText.toLowerCase().indexOf(searchBox.value.toLowerCase()) !== -1) {
+                    v.style.removeProperty('display');
+                } else {
+                    v.style.display = 'none';
+                }
+            });
+        });
+    })();
+</script>

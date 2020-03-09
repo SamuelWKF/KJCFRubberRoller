@@ -31,7 +31,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2 border">Reported Date Time</div>
-                    <div class="col-md-10 border"><b>@Model.reportDateTime</b></div>
+                    <div class="col-md-10 border"><b>@Model.reportDateTime.Value.ToString("dd-MMM-yyyy hh:mm tt")</b></div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 border">Approved By</div>
@@ -50,7 +50,7 @@
                         var approvedDateTime = "-";
                         if (Model.approveDateTime != null)
                         {
-                            approvedDateTime = Model.approveDateTime.ToString();
+                            approvedDateTime = Model.approveDateTime.Value.ToString("dd-MMM-yyyy hh:mm tt");
                         }
                     }
                     <div class="col-md-10 border"><b>@approvedDateTime</b></div>
