@@ -2,14 +2,14 @@
 @using PagedList;
 @using PagedList.Mvc;
 @using KJCFRubberRoller.Models
-
+@Styles.Render("~/Content/tableBtn")
 @{
     ViewBag.Title = "All Maintenance Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row mb-4">
-    <div class="col-md-10 mx-auto">
+    <div class="col-md-11 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
             <h2 class="text-white text-center">All Maintenance Report</h2>
         </div>
@@ -29,7 +29,7 @@
             @Html.Label("Search:")
             @Html.TextBox("Search", "", htmlAttributes: new { @class = "form-control maintenance_list_search", placeholder = "Search rubber roller here..." })
             <br />
-            <table class="table table-responsive table-hover table-striped sortable">
+            <table class="table table-hover table-striped sortable">
                 <thead>
                     <tr class="text-center">
                         <th>
@@ -38,7 +38,13 @@
                         <th>
                             Roller ID
                         </th>
-                        <th class="w-25">
+                        <th>
+                            Send To
+                        </th>
+                        <th>
+                            Reason
+                        </th>
+                        <th>
                             Reported Date Time
                         </th>
                         <th>Reported By</th>
@@ -48,20 +54,17 @@
                         <th>
                             Approved By
                         </th>
-                        <th>
-                            Send To
-                        </th>
-                        <th>
-                            Reason
-                        </th>
-                        <th width="5%">
+                        <th width="10%">
                             Status
                         </th>
-                        <th width="5%">
+                        <th>
                             View
                         </th>
-                        <th width="5%">
+                        <th>
                             Edit<br />Details
+                        </th>
+                        <th>
+                            Mark Roller<br />Received
                         </th>
                     </tr>
                 </thead>
@@ -79,8 +82,10 @@
                                 @(item.index + 1)
                             </td>
                             <td>@Html.DisplayFor(m => item.value.RubberRoller.rollerID)</td>
+                            <td>@Html.DisplayFor(m => item.value.sendTo)</td>
+                            <td class="text-justify px-2">@Html.DisplayFor(m => item.value.reason)</td>
                             <td>
-                                @item.value.reportDateTime.Value.ToString("dd-MMM-yyyy")<br />
+                                @item.value.reportDateTime.Value.ToString("dd-MMM-yyyy")
                                 @item.value.reportDateTime.Value.ToString("hh:mm tt")
                             </td>
                             <td>@Html.DisplayFor(m => item.value.reportedBy.name)</td>
@@ -92,8 +97,6 @@
                                 var name = item.value.verfiedBy == null ? "-" : item.value.verfiedBy.name;
                             }
                             <td>@name</td>
-                            <td>@Html.DisplayFor(m => item.value.sendTo)</td>
-                            <td class="text-justify">@Html.DisplayFor(m => item.value.reason)</td>
                             @{
                                 var status = RollerMaintenance.getStatus(item.value.status);
                             }
@@ -105,24 +108,69 @@
                             {
                                 <td class="text-warning font-weight-bold">@status</td>
                             }
-                            else
+                            else if (item.value.status == RollerMaintenance.REJECTED)
                             {
                                 <td class="font-weight-bold text-danger">@status</td>
                             }
-                            <td>
-                                <a href="/maintenance/@item.value.maintenanceID/view" class="btn btn-success">
+                            else if (item.value.status == RollerMaintenance.COMPLETED)
+                            {
+                                <td class="font-weight-bold text-primary">@status</td>
+                            }
+                            <td class="text-center">
+                                <a href="/maintenance/@item.value.maintenanceID/view" style="width:60%" class="btn btn-success">
                                     <i class="far fa-eye"></i>
                                 </a>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @if (item.value.status == 1)
                                 {
-                                    <a href="/maintenance/@item.value.maintenanceID/edit" class="btn btn-success">
+                                    <a href="/maintenance/@item.value.maintenanceID/edit" style="width:50%" class="btn btn-success">
                                         <i class='far fa-edit'></i>
                                     </a>
                                 }
                             </td>
+                            <td class="text-center">
+                                @if (item.value.status == 2)
+                                {
+                                    <button type="button" style="width:50%" class="btn btn-success" data-toggle="modal" data-target="#markRollerReceivedModal">
+                                        <i class='far fa-edit'></i>
+                                    </button>
+                                }
+                            </td>
                         </tr>
+
+                        if (item.value.status == 2)
+                        {
+                            <!-- Roller Received modal -->
+                            <div class="modal fade" data-backdrop="static" id="markRollerReceivedModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Mark Roller Received</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        @using (Html.BeginForm("RollerReceived", "Maintenance", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <div class="modal-body">
+                                                Confirm to mark roller received back from maintenance?<br /><br />
+                                                Please enter roller rack location after received.
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="rackLocation" name="rackLocation" placeholder="Enter roller rack location after received" required="required" />
+                                                </div>
+                                            </div>
+
+                                            @Html.Hidden("maintenanceID", item.value.maintenanceID)
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-success" style="padding:0.375rem 0.75rem !important;">Confirm Roller Received</button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     }
                 }
             </table>

@@ -1,6 +1,7 @@
 ﻿@model IPagedList<KJCFRubberRoller.Models.Maintenance>
 @using PagedList;
 @using PagedList.Mvc;
+@Styles.Render("~/Content/tableBtn")
 
 @{
     ViewBag.Title = $"{ViewData["rollerID"]} Maintenance History";
@@ -8,7 +9,7 @@
 }
 
 <div class="row mb-4">
-    <div class="col-md-6 mx-auto">
+    <div class="col-md-11 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
             <h2 class="text-white text-center">Maintenance History for Roller @ViewData["rollerID"]</h2>
         </div>
@@ -20,14 +21,21 @@
                 <thead>
                     <tr class="text-center">
                         <th>
-                            Roller Diameter
-                        </th>
-                        <th>Reason</th>
-                        <th>
-                            Remark
+                            Title
                         </th>
                         <th>
-                            Mileage
+                            Sent to Supplier
+                        </th>
+                        <th>
+                            Reason
+                        </th>
+                        <th>
+                            Corrective Action
+                        </th>
+                        <th>Diameter Roller</th>
+                        <th>New Diameter</th>
+                        <th>
+                            Total Mileage
                         </th>
                         <th>
                             View Detail
@@ -36,7 +44,7 @@
                 </thead>
                 @if (Model.FirstOrDefault() == null)
                 {
-                    <tr><td colspan="5" class="text-center">There are currently no maintenance history record.</td></tr>
+                    <tr><td colspan="8" class="text-center">There are currently no maintenance history record.</td></tr>
                 }
 
                 @if (Model != null)
@@ -45,19 +53,28 @@
                     {
                         <tr>
                             <td class="text-center">
-                                @item.value.diameterRoller
+                                @item.value.title
                             </td>
-                            <td class="text-center">
+                            <td class="text-center px-2">
+                                @item.value.sendTo
+                            </td>
+                            <td class="text-justify px-2">
                                 @item.value.reason
                             </td>
-                            <td class="text-center">
-                                @item.value.remark
+                            <td class="text-justify px-2">
+                                @item.value.correctiveAction
+                            </td>
+                            <td class="text-center px-2">
+                                @item.value.diameterRoller mm
+                            </td>
+                            <td class="text-center px-2">
+                                @item.value.newDiameter mm
                             </td>
                             <td class="text-center">
                                 @item.value.totalMileage
                             </td>
-                            <td>
-                                <a href="/maintenance/@item.value.maintenanceID/view" class="btn btn-block btn-success">
+                            <td class="text-center">
+                                <a href="/maintenance/@item.value.maintenanceID/view" class="btn w-25 btn-success">
                                     <i class="far fa-eye"></i>
                                 </a>
                             </td>

@@ -2,6 +2,7 @@
 @using PagedList;
 @using PagedList.Mvc;
 @using KJCFRubberRoller.Models;
+@Styles.Render("~/Content/tableBtn")
 
 @{
     ViewBag.Title = "Active Operation List";
@@ -9,7 +10,7 @@
 }
 
 <div class="row mb-4">
-    <div class="col-md-11 mx-auto">
+    <div class="col-md-10 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
             <h2 class="text-white text-center">Active Operation List</h2>
         </div>
@@ -38,8 +39,7 @@
                         <th>Roller ID</th>
                         <th>Operation Line</th>
                         <th>Product</th>
-                        <th>Quantity</th>
-                        <th class="w-25">Start Date Time</th>
+                        <th width="20%">Start Date Time</th>
                         <th class="w-25">Remark</th>
                         <th>Status</th>
                         <th>View Details</th>
@@ -62,12 +62,11 @@
                             <td class="text-center">@Html.DisplayFor(modelItem => item.value.RubberRoller.rollerID)</td>
                             <td class="text-center">@Html.DisplayFor(modelItem => item.value.operationLine)</td>
                             <td class="text-center">@Html.DisplayFor(modelItem => item.value.product)</td>
-                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.quantity)</td>
                             <td class="text-center">
                                 @item.value.startDateTime.Value.ToString("dd-MMM-yyy")<br />
                                 @item.value.startDateTime.Value.ToString("hh:mmtt")
                             </td>
-                            <td>
+                            <td class="text-justify">
                                 @{
                                     var remark = "-";
                                     if (item.value.remark != null)
@@ -86,19 +85,19 @@
                                 <td class="text-center text-warning font-weight-bold">@ScheduleStatus.getStatusString(item.value.status)</td>
                             }
                             <td class="text-center">
-                                <a href="/schedule/@item.value.scheduleID/view" class="btn btn-success">
+                                <a href="/schedule/@item.value.scheduleID/view" class="btn w-50 btn-success">
                                     <i class="far fa-eye"></i>
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a href="/schedule/@item.value.scheduleID/edit" class="btn btn-success">
+                                <a href="/schedule/@item.value.scheduleID/edit" style="width:55%" class="btn btn-success">
                                     <i class='far fa-edit'></i>
                                 </a>
                             </td>
                             <td class="text-center">
                                 @if (item.value.status == ScheduleStatus.ACTIVE)
                                 {
-                                    <a href="/schedule/@item.value.scheduleID/mark_complete" class="btn w-50 btn-success">
+                                    <a href="/schedule/@item.value.scheduleID/mark_complete" style="width:40%" class="btn btn-success">
                                         <i class="fas fa-clipboard-check"></i>
                                     </a>
                                 }

@@ -5,7 +5,6 @@ using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-//using KJCFRubberRoller.CustomValidations;
 
 namespace KJCFRubberRoller.Models
 {
@@ -60,10 +59,15 @@ namespace KJCFRubberRoller.Models
 
         [DisplayName("Last Usage Date")]
         public DateTime? last_usage_date { get; set; }
+        
+        [DisplayName("Opening Stock Date")]
+        public DateTime? opening_stock_date { get; set; }
 
         [MaxLength(255)]
         [DisplayName("Remark")]
         public string remark { get; set; }
+
+        public bool isRefurbished { get; set; }
 
         [Required]
         [MaxLength(100)]

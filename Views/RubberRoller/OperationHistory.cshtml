@@ -1,6 +1,7 @@
 ﻿@model IPagedList<KJCFRubberRoller.Models.Schedule>
 @using PagedList;
 @using PagedList.Mvc;
+@Styles.Render("~/Content/tableBtn")
 
 @{
     ViewBag.Title = $"{ViewData["rollerID"]} Operation History";
@@ -8,7 +9,7 @@
 }
 
 <div class="row mb-4">
-    <div class="col-md-8 mx-auto">
+    <div class="col-md-10 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
             <h2 class="text-white text-center">Operation History for Roller @ViewData["rollerID"]</h2>
         </div>
@@ -67,8 +68,8 @@
                             <td class="text-justify">
                                 @item.value.remark
                             </td>
-                            <td>
-                                <a href="/schedule/@item.value.scheduleID/view" class="btn btn-block btn-success">
+                            <td class="text-center">
+                                <a href="/schedule/@item.value.scheduleID/view" style="width:30%" class="btn btn-success">
                                     <i class="far fa-eye"></i>
                                 </a>
                             </td>

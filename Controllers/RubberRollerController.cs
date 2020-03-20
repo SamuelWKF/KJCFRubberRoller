@@ -101,6 +101,7 @@ namespace KJCFRubberRoller.Controllers
                 return View("CreateEditForm", rubberRoller);
             }
 
+            rubberRoller.isRefurbished = false;
             _db.rubberRollers.Add(rubberRoller);
 
             // Create initial rubber roller location
@@ -112,11 +113,6 @@ namespace KJCFRubberRoller.Controllers
             _db.rollerLocations.Add(rollerLocation);
 
             int result = _db.SaveChanges();
-
-            //if (rubberRoller.supplier.Equals("Canco"))
-            //{
-            //    return RedirectToAction("CancoChecklist", new { rubberRoller.id });
-            //}
 
             if (result > 0)
             {
@@ -131,60 +127,6 @@ namespace KJCFRubberRoller.Controllers
                 TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The rubber roller has not been successfully added.";
             }
             return Redirect(Request.UrlReferrer.ToString());
-        }
-
-        public ActionResult CancoChecklist(int? id)
-        {
-            LogAction.log(this._controllerName, "GET", "Requested RubberRoller-CancoChecklist webpage", User.Identity.GetUserId());
-            if (id == 0)
-                return RedirectToAction("Index");
-
-            CancoChecklist cancoChecklist = new CancoChecklist();
-            cancoChecklist.RubberRoller = _db.rubberRollers.Find(id);
-            cancoChecklist.date = DateTime.Now;
-            return View("CancoChecklist", cancoChecklist);
-        }
-
-        // POST: Create new rubber roller record
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateCancoRoller(CancoChecklist cancoChecklist)
-        {
-            try
-            {
-                // Retrieve rubber record & current user ID
-                RubberRoller rubber = _db.rubberRollers.Where(r => r.rollerID == cancoChecklist.RubberRoller.rollerID).FirstOrDefault();
-                var userId = User.Identity.GetUserId();
-
-                // Create new CancoChecklist record
-                CancoChecklist cc = new CancoChecklist();
-                cc.rollerID = rubber.id;
-                cc.RubberRoller = rubber;
-                cc.result = cancoChecklist.result;
-                cc.scar_issued = cancoChecklist.scar_issued;
-                cc.remarks = cancoChecklist.remarks;
-                cc.date = DateTime.Now;
-                cc.checkedBy = _db.Users.FirstOrDefault(u => u.Id == userId);
-
-                // Add to database
-                _db.cancoChecklists.Add(cc);
-                int result = _db.SaveChanges();
-
-                if (result > 0)
-                {
-                    LogAction.log(this._controllerName, "POST", "Added new canco record", User.Identity.GetUserId());
-                    TempData["formStatus"] = true;
-                    TempData["formStatusMsg"] = "<b>STATUS</b>: New rubber roller has been successfully added!";
-                }
-                return RedirectToAction("Create");
-            }
-            catch (Exception ex)
-            {
-                TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = "<b>ALERT</b>: Oops! Something went wrong. The rubber roller has not been successfully added.";
-                LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
-                return RedirectToAction("Create");
-            }
         }
 
         // POST: Update existing rubber roller record
@@ -223,9 +165,6 @@ namespace KJCFRubberRoller.Controllers
                 rubberRoll.status = rubberRoller.status;
 
                 int result = _db.SaveChanges();
-
-                //if (rubberRoller.supplier.Equals("Canco") && notCancoRoller)
-                //    return RedirectToAction("CancoChecklist", new { rubberRoller.id });
 
                 if (result > 0)
                 {
@@ -300,7 +239,7 @@ namespace KJCFRubberRoller.Controllers
             ViewData["rollerID"] = rubberRollers.rollerID;
             List<Maintenance> maintenances = rubberRollers.Maintenances
                 .Where(m => m.rollerID == id)
-                .Where(m => m.status == RollerMaintenance.APPROVED)
+                .Where(m => m.status == RollerMaintenance.APPROVED || m.status == RollerMaintenance.COMPLETED)
                 .ToList();
             return View(maintenances.ToPagedList(i ?? 1, 20));
         }

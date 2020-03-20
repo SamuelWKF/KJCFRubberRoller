@@ -56,7 +56,7 @@
                                 @Html.HiddenFor(m => m.diameterRoller)
                             </div>
                             <div class="row">
-                                <div class="col-md-3 border">Mileage</div>
+                                <div class="col-md-3 border">Total Mileage</div>
                                 <div class="col-md-9 border font-weight-bold">@Model.totalMileage</div>
                                 @Html.HiddenFor(m => m.totalMileage)
                             </div>
@@ -70,10 +70,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3 border">Last Production Line Used</div>
-                                @{
-                                    var lineFormatted = $"L{Model.lastProductionLine}";
-                                }
-                                <div class="col-md-9 border font-weight-bold">@lineFormatted</div>
+                                <div class="col-md-9 border font-weight-bold">@Model.lastProductionLine</div>
                                 @Html.HiddenFor(m => m.lastProductionLine)
                             </div>
                             <div class="row">
@@ -90,6 +87,13 @@
                                 <div class="col-md-3 border">Send To</div>
                                 <div class="col-md-9 border font-weight-bold">@Model.sendTo</div>
                                 @Html.HiddenFor(m => m.sendTo)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 border">Send Roller<br />for Refurbish</div>
+                                <div class="col-md-9 border font-weight-bold">
+                                    @(Model.sendForRefurbished == true ? "Yes" : "No")
+                                </div>
+                                @Html.HiddenFor(m => m.sendForRefurbished)
                             </div>
                             <div class="row">
                                 <div class="col-md-3 border">New Diameter</div>

@@ -41,7 +41,6 @@ namespace KJCFRubberRoller.Models
         [DisplayName("Tinplate Size")]
         public string tinplateSize { get; set; }
 
-        [Required]
         [DisplayName("Quantity")]
         public int quantity { get; set; }
 

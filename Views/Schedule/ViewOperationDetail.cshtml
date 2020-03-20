@@ -26,9 +26,9 @@
                     <div class="col-md-2 border">Prepared By</div>
                     @{
                         var name = "";
-                        if (Model.AfterRollerProductionChecklists.Count != 0)
+                        if (Model.BeforeRollerIssueChecklists.Count != 0)
                         {
-                            name = Model.AfterRollerProductionChecklists.First().preparedBy.name;
+                            name = Model.BeforeRollerIssueChecklists.First().preparedBy.name;
                         }
                     }
                     <div class="col-md-10 border font-weight-bold">@name</div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2 border">Quantity</div>
-                    <div class="col-md-10 border font-weight-bold">@Model.quantity</div>
+                    <div class="col-md-10 border font-weight-bold">@((Model.quantity != 0) ? Model.quantity.ToString() : "-")</div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 border">Remark</div>
@@ -94,10 +94,13 @@
                     <div class="col-md-2 border">Roller Operation Start Mileage</div>
                     <div class="col-md-10 border font-weight-bold">@Model.startMileage</div>
                 </div>
-                <div class="row">
-                    <div class="col-md-2 border">Roller Total Mileage</div>
-                    <div class="col-md-10 border font-weight-bold">@Model.endMileage</div>
-                </div>
+                @if (Model.status == ScheduleStatus.COMPLETED)
+                {
+                    <div class="row">
+                        <div class="col-md-2 border">Roller Total Mileage</div>
+                        <div class="col-md-10 border font-weight-bold">@Model.endMileage</div>
+                    </div>
+                }
 
                 <br />
 

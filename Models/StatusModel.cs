@@ -100,6 +100,7 @@ namespace KJCFRubberRoller.Models
         public static int WAITING_FOR_QA_CHECK = 3;
         public static int WAITING_FOR_VERIFICATION = 4;
         public static int SENT_TO_MAINTENANCE = 5;
+        public static int IN_STORE_ROOM_ON_HOLD = 6;
 
         public static string getStatus(int stats)
         {
@@ -121,6 +122,9 @@ namespace KJCFRubberRoller.Models
                 case 5:
                     status = "Sent to maintenance";
                     break;
+                case 6:
+                    status = "In store room (On Hold)";
+                    break;
                 default:
                     status = "";
                     break;
@@ -135,6 +139,7 @@ namespace KJCFRubberRoller.Models
         public static int PENDING_APPROVAL = 1;
         public static int APPROVED = 2;
         public static int REJECTED = 3;
+        public static int COMPLETED = 4;
 
         public static string getStatus(int stats)
         {
@@ -149,6 +154,9 @@ namespace KJCFRubberRoller.Models
                     break;
                 case 3:
                     status = "Rejected";
+                    break;
+                case 4:
+                    status = "Completed";
                     break;
                 default:
                     status = "";

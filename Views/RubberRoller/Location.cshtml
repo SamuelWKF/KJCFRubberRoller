@@ -50,7 +50,7 @@
                     foreach (var item in Model.Select((value, index) => new { value, index }))
                     {
                         <tr>
-                            <td>
+                            <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.rollerID)
                             </td>
                             <td>
@@ -64,7 +64,7 @@
                                     {
                                         if (rollerLocation.operationLine != 0)
                                         {
-                                            location = $"{rollerLocation.location} {rollerLocation.operationLine}";
+                                            location = $"{rollerLocation.location}";
                                         }
                                         else
                                         {
@@ -92,7 +92,8 @@
                                         if (item.value.Schedules.Count > 1 && item.value.Schedules.Last().endMileage != 0)
                                         {
                                             totalMileage = lastSched.endMileage;
-                                        } else
+                                        }
+                                        else
                                         {
                                             totalMileage = item.value.Schedules.Max(s => s.endMileage);
                                         }
@@ -103,7 +104,7 @@
                             <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.value.condition)
                             </td>
-                            <td class="text-center">
+                            <td class="text-center px-2">
                                 @Html.DisplayFor(modelItem => item.value.status)
                             </td>
                         </tr>

@@ -19,7 +19,7 @@ namespace KJCFRubberRoller.Models
         public int rollerID { get; set; }
         public virtual RubberRoller RubberRoller { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(200)]
         [DisplayName("Roller Location")]
         public string location { get; set; }
 

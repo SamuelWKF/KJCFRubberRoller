@@ -2,6 +2,7 @@
 @using PagedList;
 @using PagedList.Mvc;
 @using KJCFRubberRoller.Models;
+@Styles.Render("~/Content/tableBtn")
 @{
     ViewBag.Title = "All Rubber Roller Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -28,15 +29,15 @@
                         <th>
                             Roller Category
                         </th>
+                        <th width="5%">
+                            Status
+                        </th>
                         <th>On Supplier<br />Hand</th>
                         <th>
                             Available<br />at KJCF
                         </th>
                         <th>
                             Remark
-                        </th>
-                        <th width="5%">
-                            Status
                         </th>
                         <th width="5%">Operation<br />Line No.</th>
                         <th width="5%">Edit<br />Details</th>
@@ -56,7 +57,7 @@
                     foreach (var item in Model.Select((value, index) => new { value, index }))
                     {
                         <tr>
-                            <td>
+                            <td class="text-center">
                                 @(item.index + 1)
                             </td>
                             <td>
@@ -67,6 +68,9 @@
                                     var rollerCat = string.Format("{0} - {1}", item.value.RollerCategory.size, item.value.RollerCategory.description);
                                 }
                                 @rollerCat
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.value.status)
                             </td>
                             <td class="text-center">
                                 @{
@@ -96,9 +100,6 @@
                                 @Html.DisplayFor(modelItem => item.value.remark)
                             </td>
                             <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.value.status)
-                            </td>
-                            <td class="text-center">
                                 @{
                                     string location = "-";
                                     var rollerLocation = item.value.RollerLocations.LastOrDefault();
@@ -113,22 +114,22 @@
                                 @location
                             </td>
                             <td class="text-center">
-                                <a href="@Url.Action("Edit", "RubberRoller", new { id = item.value.id })" class="btn btn-success">
+                                <a href="@Url.Action("Edit", "RubberRoller", new { id = item.value.id })" style="width: 60%" class="btn btn-success">
                                     <i class='far fa-edit'></i>
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a href="@Url.Action("LocationHistory", "RubberRoller", new { id = item.value.id })" class="btn btn-success">
+                                <a href="@Url.Action("LocationHistory", "RubberRoller", new { id = item.value.id })" class="btn w-50 btn-success">
                                     <i class="fas fa-map-marker-alt"></i>
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a href="@Url.Action("MaintenanceHistory", "RubberRoller", new { id = item.value.id })" class="btn btn-success">
+                                <a href="@Url.Action("MaintenanceHistory", "RubberRoller", new { id = item.value.id })" style="width: 40%" class="btn btn-success">
                                     <i class="fas fa-tools"></i>
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a href="@Url.Action("OperationHistory", "RubberRoller", new { id = item.value.id })" class="btn btn-success">
+                                <a href="@Url.Action("OperationHistory", "RubberRoller", new { id = item.value.id })" class="btn w-50 btn-success">
                                     <i class="fas fa-cogs"></i>
                                 </a>
                             </td>

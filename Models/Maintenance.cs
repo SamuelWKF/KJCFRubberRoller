@@ -53,7 +53,7 @@ namespace KJCFRubberRoller.Models
         public DateTime openingStockDate { get; set; }
 
         [DisplayName("Last Production Line")]
-        public int lastProductionLine { get; set; }
+        public string lastProductionLine { get; set; }
 
         [MaxLength(255)]
         [Required]
@@ -84,6 +84,10 @@ namespace KJCFRubberRoller.Models
         [Required]
         [DisplayName("Maintenance Status")]
         public int status { get; set; }
+
+        [Required]
+        [DisplayName("Send Roller for Refurbish")]
+        public bool sendForRefurbished { get; set; }
 
         [DisplayName("Reject Status Remark")]
         public string statusRemark { get; set; }

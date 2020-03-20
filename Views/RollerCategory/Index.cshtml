@@ -2,6 +2,7 @@
 @using PagedList;
 @using PagedList.Mvc;
 @using KJCFRubberRoller.Models;
+@Styles.Render("~/Content/tableBtn")
 @{
     ViewBag.Title = "Roller Category List";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -73,7 +74,7 @@
                                     @Html.DisplayFor(modelItem => item.value.remark)
                                 </td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Edit", "RollerCategory", new { id = item.value.rollerCategoryID })" class="btn btn-success">
+                                    <a href="@Url.Action("Edit", "RollerCategory", new { id = item.value.rollerCategoryID })" style="width:45%" class="btn btn-success">
                                         <i class='far fa-edit'></i>
                                     </a>
                                 </td>

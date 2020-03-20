@@ -31,6 +31,11 @@
         Text = "Refurbish to EIKOH",
         Value = "Refurbish to EIKOH"
     });
+    sendTo.Add(new SelectListItem
+    {
+        Text = "Send to rejection (On-hold)",
+        Value = "Send to rejection (On-hold)"
+    });
 }
 
 <div class="container">
@@ -87,9 +92,9 @@
                         <tbody>
                             @*Roller Appearance*@
                             <tr>
-                                <td>1</td>
-                                <td><p class="font-weight-bold">Roller appearance, have any marking, dent mark?</p></td>
-                                <td>
+                                <td class="text-center">1</td>
+                                <td><p class="font-weight-bold pl-2">Roller appearance, have any marking, dent mark?</p></td>
+                                <td class="pt-2 pl-2">
                                     @Html.RadioButtonFor(Model => Model.rollerAppearance, "Yes") @Html.Label("Yes")
                                     @Html.RadioButtonFor(Model => Model.rollerAppearance, "No", new { @checked = "checked" }) @Html.Label("No")
                                     @Html.ValidationMessageFor(model => model.rollerAppearance, "", new { @class = "text-danger" })
@@ -98,9 +103,9 @@
 
                             @*Roller Send To*@
                             <tr>
-                                <td>2</td>
-                                <td><p class="font-weight-bold">Roller send to:</p></td>
-                                <td>
+                                <td class="text-center">2</td>
+                                <td><p class="font-weight-bold pl-2">Roller send to:</p></td>
+                                <td class="pt-2 px-2">
                                     @Html.DropDownListFor(model => model.rollerSendTo, sendTo, "Select roller send to", new { @class = "form-control", id = "rollerSendTo" })<br />
                                     @Html.TextBox("roomLocation", "", new { @class = "form-control", style = "display:none", id = "roomLocationInput", maxlength = "5", placeholder = "Enter roller room rack location" })
                                     @Html.ValidationMessageFor(model => model.rollerSendTo, "", new { @class = "text-danger" })
@@ -109,9 +114,9 @@
 
                             @*Roller Mileage Run*@
                             <tr>
-                                <td>3</td>
-                                <td><p class="font-weight-bold">End Mileage Run:</p></td>
-                                <td>
+                                <td class="text-center">3</td>
+                                <td><p class="font-weight-bold pl-2">Mileage Run:</p></td>
+                                <td class="py-2 px-2">
                                     @Html.TextBox("mileageRun", "", new
                                     {
                                         @class = "form-control",
@@ -128,18 +133,18 @@
 
                             @*End Date Time*@
                             <tr>
-                                <td>4</td>
-                                <td><p class="font-weight-bold">End Date Time:</p></td>
-                                <td>
+                                <td class="text-center">4</td>
+                                <td><p class="font-weight-bold pl-2">End Date Time:</p></td>
+                                <td class="py-2 px-2">
                                     @Html.TextBox("endDT", "", new { @class = "form-control", id = "endDate", type = "datetime-local" })
                                 </td>
                             </tr>
 
                             @*Remark*@
                             <tr>
-                                <td>5</td>
-                                <td><p class="font-weight-bold">Other remark.</p></td>
-                                <td>
+                                <td class="text-center">5</td>
+                                <td><p class="font-weight-bold pl-2">Other remark.</p></td>
+                                <td class="py-2 px-2">
                                     @Html.TextAreaFor(model => model.remarks, new { @class = "form-control", placeholder = "Enter any remarks here" })
                                     @Html.ValidationMessageFor(model => model.remarks, "", new { @class = "text-danger" })
                                 </td>

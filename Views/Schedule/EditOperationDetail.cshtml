@@ -65,7 +65,10 @@
                     <div class="col-md-2 border">Roller Operation Start Mileage</div>
                     <div class="col-md-10 border font-weight-bold">@Model.startMileage</div>
                 </div>
-
+                <div class="row">
+                    <div class="col-md-2 border">Roller Total Mileage</div>
+                    <div class="col-md-10 border font-weight-bold">@Model.RubberRoller.Schedules.Sum(s=>s.quantity)</div>
+                </div>
                 <br />
 
                 @using (Html.BeginForm("UpdateOperationDetail", "Schedule", FormMethod.Post))
@@ -113,22 +116,6 @@
                         </div>
                         <div class="col-md-10 border font-weight-bold">
                             @Html.TextBoxFor(model => model.tinplateSize, new { @class = "form-control", placeholder = "Enter tinplate size here", required = "required" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2 border">Quantity<span class="required">*</span></div>
-                        <div class="col-md-10 border font-weight-bold">
-                            @Html.TextBoxFor(model => model.quantity, new
-                            {
-                                @class = "form-control",
-                                placeholder = "Enter quantity here",
-                                type = "number",
-                                min = "1",
-                                step = "1",
-                                max = "5000000",
-                                onkeypress = "return event.charCode >= 48 && event.charCode <= 57"
-                            })
-                            @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">

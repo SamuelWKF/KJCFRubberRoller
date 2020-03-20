@@ -65,7 +65,6 @@ namespace KJCFRubberRoller.Models
         public DbSet<AfterRollerProductionChecklist> afterRollerProductionChecklists { get; set; }
         public DbSet<Schedule> schedules { get; set; }
         public DbSet<Maintenance> maintenances { get; set; }
-        public DbSet<CancoChecklist> cancoChecklists { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

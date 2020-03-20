@@ -37,10 +37,10 @@ namespace KJCFRubberRoller.Controllers
             return View(schedules.ToPagedList(i ?? 1, 20));
         }
 
-        // Displays a list of completed operation
-        public ActionResult CompletedOperation(int? i)
+        // Displays a list of operation history
+        public ActionResult OperationHistory(int? i)
         {
-            LogAction.log(this._controllerName, "GET", "Requested Schedule-CompletedOperation webpage", User.Identity.GetUserId());
+            LogAction.log(this._controllerName, "GET", "Requested Schedule-OperationHistory webpage", User.Identity.GetUserId());
             List<Schedule> schedules = _db.schedules.Where(s => s.status == ScheduleStatus.COMPLETED).ToList();
             return View(schedules.ToPagedList(i ?? 1, 20));
         }
@@ -86,10 +86,23 @@ namespace KJCFRubberRoller.Controllers
                 return View("BeforeChecklist");
             }
 
-            schedule.RubberRoller = _db.rubberRollers.FirstOrDefault(r => r.id == schedule.rollerID);
+            RubberRoller rubberRoller = _db.rubberRollers.FirstOrDefault(r => r.id == schedule.rollerID);
+            schedule.RubberRoller = rubberRoller;
             schedule.tinplateSize = $"{collection["thickness"]}x{collection["width"]}x{collection["length"]}";
             schedule.status = ScheduleStatus.PENDING_BEFORE_CHECKLIST;
             schedule.RubberRoller.status = RollerStatus.getStatus(RollerStatus.IN_USE);
+
+            // Update roller opening stock date
+            if (rubberRoller.opening_stock_date == null || rubberRoller.isRefurbished)
+            {
+                rubberRoller.opening_stock_date = DateTime.Now;
+            }
+
+            // Reset roller isRefurbish status
+            if (rubberRoller.isRefurbished)
+            {
+                rubberRoller.isRefurbished = false;
+            }
 
             _db.schedules.Add(schedule);
 
@@ -196,15 +209,18 @@ namespace KJCFRubberRoller.Controllers
                 // Update schedule details
                 after.Schedule.endMileage = after.Schedule.startMileage + Int32.Parse(collection["mileageRun"]);
                 after.Schedule.endDateTime = DateTime.Parse(collection["endDT"]);
+                after.Schedule.quantity = Int32.Parse(collection["mileageRun"]);
                 after.Schedule.status = ScheduleStatus.COMPLETED;
 
                 // Update roller details
                 after.Schedule.RubberRoller.last_usage_date = DateTime.Now;
-                after.Schedule.RubberRoller.status = RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM);
+                after.Schedule.RubberRoller.status = collection["rollerSendTo"] == "Roller Room" ? 
+                    RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM) :
+                    RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM_ON_HOLD);
 
                 // Update roller location
                 bool updateLocatResult = CentralUtilities.UpdateRollerLocation(after.Schedule.RubberRoller,
-                    (collection["rollerSendTo"] == "Roller Room" ? collection["roomLocation"] : "Waiting to be sent for maintenance after operation"));
+                    (collection["rollerSendTo"] == "Roller Room" ? collection["roomLocation"] : "Roller is on-hold/Waiting to be sent to maintenance after operation"));
 
                 // Add new records
                 _db.afterRollerProductionChecklists.Add(after);
@@ -275,7 +291,6 @@ namespace KJCFRubberRoller.Controllers
                 schedule.operationLine = Int32.Parse(collection["operationLine"]);
                 schedule.product = collection["product"];
                 schedule.tinplateSize = collection["tinplateSize"];
-                schedule.quantity = Int32.Parse(collection["quantity"]);
                 schedule.remark = collection["remark"];
 
                 // Update Before checklist

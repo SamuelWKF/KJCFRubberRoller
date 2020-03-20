@@ -48,7 +48,7 @@ namespace KJCFRubberRoller.Controllers
                     ID = r.id,
                     rollerID = $"{r.rollerID} - {r.RollerCategory.size} {r.RollerCategory.description}",
                     r.status
-                }).Where(r => r.status == RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM)).ToList();
+                }).Where(r => r.status == RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM) || r.status == RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM_ON_HOLD)).ToList();
 
             ViewData["rollerList"] = new SelectList(rubberRollers, "ID", "rollerID");
             LogAction.log(this._controllerName, "GET", "Requested Maintenance-CreateSearch webpage", User.Identity.GetUserId());
@@ -59,7 +59,13 @@ namespace KJCFRubberRoller.Controllers
         public ActionResult Create(RubberRoller rubberRoller)
         {
             RubberRoller rubber = _db.rubberRollers.FirstOrDefault(r => r.id == rubberRoller.id);
-            if (rubber == null || rubber.status != RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM)) return RedirectToAction("CreateSearch");
+
+            if (rubber == null ||
+                (rubber.status != RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM) &&
+                rubber.status != RollerStatus.getStatus(RollerStatus.IN_STORE_ROOM_ON_HOLD)
+                )
+            ) return RedirectToAction("CreateSearch");
+
             ViewData["rubber"] = rubber;
             LogAction.log(this._controllerName, "GET", "Requested Maintenance-Create form webpage", User.Identity.GetUserId());
             return View("CreateEditMaintenance");
@@ -83,13 +89,14 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.diameterRoller = Double.Parse(collection["diameterRoller"]);
                 maintenance.diameterCore = Double.Parse(collection["diameterCore"]);
                 maintenance.openingStockDate = DateTime.Parse(collection["openingStockDate"]);
-                maintenance.lastProductionLine = (collection["lastProdLine"] == "-" ? 0 : Int32.Parse(collection["lastProdLine"].Substring(1)));
+                maintenance.lastProductionLine = collection["lastProdLine"];
                 maintenance.totalMileage = (collection["totalMileage"] == "0" ? 0 : Int32.Parse(collection["totalMileage"]));
                 maintenance.reason = collection["reason"];
                 maintenance.remark = collection["remark"];
                 maintenance.newDiameter = Double.Parse(collection["newDiameter"]);
                 maintenance.newShoreHardness = collection["newShoreHardness"];
                 maintenance.correctiveAction = collection["correctiveAction"];
+                maintenance.sendForRefurbished = Boolean.Parse(collection["sendForRefurbished"]);
                 maintenance.reportDateTime = DateTime.Now;
 
                 if (file != null && file.ContentLength > 0 && imgFormats.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase)))
@@ -310,8 +317,8 @@ namespace KJCFRubberRoller.Controllers
 
                 main.title = maintenance.title;
                 main.diameterCore = maintenance.diameterCore;
-                main.openingStockDate = maintenance.openingStockDate;
                 main.sendTo = maintenance.sendTo;
+                main.sendForRefurbished = maintenance.sendForRefurbished;
                 main.reason = maintenance.reason;
                 main.remark = maintenance.remark;
                 main.newDiameter = maintenance.newDiameter;
@@ -337,6 +344,57 @@ namespace KJCFRubberRoller.Controllers
                 TempData["formStatus"] = false;
                 TempData["formStatusMsg"] = $"<b>ALERT</b>: Oops! Something went wrong. The maintenance report #{maintenance.maintenanceID} has not been successfully updated.";
                 return Redirect(Request.UrlReferrer.ToString());
+            }
+        }
+
+        // POST: Mark roller as received back from maintenance
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RollerReceived(FormCollection collection)
+        {
+            try
+            {
+                var ID = Int32.Parse(collection["maintenanceID"]);
+                Maintenance maintenance = _db.maintenances.FirstOrDefault(m => m.maintenanceID == ID);
+                if (maintenance == null || maintenance.status != 2)
+                    return Redirect(Request.UrlReferrer.ToString());
+
+                var uID = User.Identity.GetUserId();
+                ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == uID);
+
+                maintenance.status = 4;
+                maintenance.RubberRoller.status = RollerStatus.getStatus(2);
+
+                // Set roller isRefurbish status
+                if (maintenance.sendForRefurbished)
+                {
+                    maintenance.RubberRoller.isRefurbished = true;
+                }
+
+                // Update roller location record
+                bool updateLocatResult = CentralUtilities.UpdateRollerLocation(maintenance.RubberRoller, collection["rackLocation"]);
+
+                int result = _db.SaveChanges();
+                if (result > 0 && updateLocatResult)
+                {
+                    TempData["formStatus"] = true;
+                    TempData["formStatusMsg"] = $"<b>STATUS</b>: Roller {maintenance.RubberRoller.rollerID} has been received back from maintenance.";
+                    LogAction.log(this._controllerName, "POST", $"Roller {maintenance.RubberRoller.rollerID} has been received back from maintenance", User.Identity.GetUserId());
+                }
+                else
+                {
+                    TempData["formStatus"] = false;
+                    TempData["formStatusMsg"] = $"<b>ALERT</b>: Oops! Something went wrong. Unable to mark maintenance report #{ID} as completed.";
+                    LogAction.log(this._controllerName, "POST", $"Error marking maintenance report #{maintenance.maintenanceID} as completed", User.Identity.GetUserId());
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["formStatus"] = false;
+                TempData["formStatusMsg"] = $"<b>ALERT</b>: Oops! Something went wrong.";
+                LogAction.log(this._controllerName, "POST", $"Error marking maintenance report as completed {ex.Message}", User.Identity.GetUserId());
+                return RedirectToAction("Index");
             }
         }
     }

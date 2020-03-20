@@ -208,11 +208,30 @@
     <Compile Include="Migrations\202002251929156_UpdateSchedule.designer.cs">
       <DependentUpon>202002251929156_UpdateSchedule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003191026514_Update.cs" />
+    <Compile Include="Migrations\202003191026514_Update.designer.cs">
+      <DependentUpon>202003191026514_Update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003200543139_UpdateRoller.cs" />
+    <Compile Include="Migrations\202003200543139_UpdateRoller.designer.cs">
+      <DependentUpon>202003200543139_UpdateRoller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003200857138_UpdateMaintenance.cs" />
+    <Compile Include="Migrations\202003200857138_UpdateMaintenance.designer.cs">
+      <DependentUpon>202003200857138_UpdateMaintenance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003200941560_Update1.cs" />
+    <Compile Include="Migrations\202003200941560_Update1.designer.cs">
+      <DependentUpon>202003200941560_Update1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003201312136_Update2.cs" />
+    <Compile Include="Migrations\202003201312136_Update2.designer.cs">
+      <DependentUpon>202003201312136_Update2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AfterRollerProductionChecklist.cs" />
     <Compile Include="Models\BeforeRollerIssueChecklist.cs" />
-    <Compile Include="Models\CancoChecklist.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Maintenance.cs" />
@@ -239,10 +258,27 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\BootstrapSelect\script.js" />
+    <Content Include="Content\BootstrapSelect\style.css" />
     <Content Include="Content\Images\background.jpg" />
     <Content Include="Content\Images\kjcf.jpg" />
     <Content Include="Content\Images\kjcf_icon.jpg" />
+    <Content Include="Content\FontAwesome\js\all.js" />
+    <Content Include="Content\FontAwesome\js\all.min.js" />
+    <Content Include="Content\FontAwesome\js\brands.js" />
+    <Content Include="Content\FontAwesome\js\brands.min.js" />
+    <Content Include="Content\FontAwesome\js\conflict-detection.js" />
+    <Content Include="Content\FontAwesome\js\conflict-detection.min.js" />
+    <Content Include="Content\FontAwesome\js\fontawesome.js" />
+    <Content Include="Content\FontAwesome\js\fontawesome.min.js" />
+    <Content Include="Content\FontAwesome\js\regular.js" />
+    <Content Include="Content\FontAwesome\js\regular.min.js" />
+    <Content Include="Content\FontAwesome\js\solid.js" />
+    <Content Include="Content\FontAwesome\js\solid.min.js" />
+    <Content Include="Content\FontAwesome\js\v4-shims.js" />
+    <Content Include="Content\FontAwesome\js\v4-shims.min.js" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\TableButtonStyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -394,7 +430,6 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\RollerCategory\Index.cshtml" />
     <Content Include="Views\RubberRoller\CreateEditForm.cshtml" />
-    <Content Include="Views\RubberRoller\CancoChecklist.cshtml" />
     <Content Include="Views\RubberRoller\Index.cshtml" />
     <Content Include="Views\RubberRoller\StockOverview.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -413,7 +448,7 @@
     <Content Include="Views\Schedule\ScheduleCreateEditForm.cshtml" />
     <Content Include="Views\Schedule\ActiveOperation.cshtml" />
     <Content Include="Views\Schedule\AfterChecklist.cshtml" />
-    <Content Include="Views\Schedule\CompletedOperation.cshtml" />
+    <Content Include="Views\Schedule\OperationHistory.cshtml" />
     <Content Include="Views\Schedule\ViewOperationDetail.cshtml" />
     <Content Include="Views\RubberRoller\MaintenanceHistory.cshtml" />
     <Content Include="Views\RubberRoller\OperationHistory.cshtml" />
@@ -445,6 +480,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002251929156_UpdateSchedule.resx">
       <DependentUpon>202002251929156_UpdateSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003191026514_Update.resx">
+      <DependentUpon>202003191026514_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003200543139_UpdateRoller.resx">
+      <DependentUpon>202003200543139_UpdateRoller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003200857138_UpdateMaintenance.resx">
+      <DependentUpon>202003200857138_UpdateMaintenance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003200941560_Update1.resx">
+      <DependentUpon>202003200941560_Update1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003201312136_Update2.resx">
+      <DependentUpon>202003201312136_Update2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

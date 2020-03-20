@@ -2,16 +2,17 @@
 @using PagedList;
 @using PagedList.Mvc;
 @using KJCFRubberRoller.Models;
+@Styles.Render("~/Content/tableBtn")
 
 @{
-    ViewBag.Title = "CompletedOperation";
+    ViewBag.Title = "Operation History";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row mb-4">
     <div class="col-md-10 mx-auto">
         <div class="py-2 mt-4 bg-kjcf">
-            <h2 class="text-white text-center">Completed Operation List</h2>
+            <h2 class="text-white text-center">Operation History List</h2>
         </div>
         <div class="bg-white container-fluid py-3">
 
@@ -39,8 +40,8 @@
                         <th>Operation Line</th>
                         <th>Product</th>
                         <th>Quantity</th>
-                        <th>Start Date Time</th>
-                        <th>End Date Time</th>
+                        <th width="15%">Start Date Time</th>
+                        <th width="15%">End Date Time</th>
                         <th class="w-25">Remark</th>
                         <th>View Details</th>
                     </tr>
@@ -55,44 +56,44 @@
                 {
                     foreach (var item in Model.Select((value, index) => new { value, index }))
                     {
-            <tr>
-                <td class="text-center">@(item.index + 1)</td>
-                <td class="text-center">@Html.DisplayFor(modelItem => item.value.RubberRoller.rollerID)</td>
-                <td class="text-center">@Html.DisplayFor(modelItem => item.value.operationLine)</td>
-                <td class="text-center">@Html.DisplayFor(modelItem => item.value.product)</td>
-                <td class="text-center">@Html.DisplayFor(modelItem => item.value.quantity)</td>
-                <td class="text-center">
-                    @{
-                        var startDateTime = item.value.startDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
-                    }
-                    @startDateTime
-                </td>
-                <td class="text-center">
-                    @{
-                        var endDateTime = "-";
-                        if (item.value.endDateTime != null)
-                        {
-                            endDateTime = item.value.endDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
-                        }
-                    }
-                    @endDateTime
-                </td>
-                <td>
-                    @{
-                        var remark = "-";
-                        if (item.value.remark != null)
-                        {
-                            remark = item.value.remark;
-                        }
-                    }
-                    @remark
-                </td>
-                <td class="text-center">
-                    <a href="/schedule/@item.value.scheduleID/view" class="btn btn-success">
-                        <i class="far fa-eye"></i>
-                    </a>
-                </td>
-            </tr>
+                        <tr>
+                            <td class="text-center">@(item.index + 1)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.RubberRoller.rollerID)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.operationLine)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.product)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.value.quantity)</td>
+                            <td class="text-center">
+                                @{
+                                    var startDateTime = item.value.startDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
+                                }
+                                @startDateTime
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    var endDateTime = "-";
+                                    if (item.value.endDateTime != null)
+                                    {
+                                        endDateTime = item.value.endDateTime.Value.ToString("dd-MMM-yyy hh:mmtt");
+                                    }
+                                }
+                                @endDateTime
+                            </td>
+                            <td class="px-2 text-justify">
+                                @{
+                                    var remark = "-";
+                                    if (item.value.remark != null)
+                                    {
+                                        remark = item.value.remark;
+                                    }
+                                }
+                                @remark
+                            </td>
+                            <td class="text-center">
+                                <a href="/schedule/@item.value.scheduleID/view" style="width:40%" class="btn btn-success">
+                                    <i class="far fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
                     }
                 }
             </table>
