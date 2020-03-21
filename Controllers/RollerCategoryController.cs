@@ -33,7 +33,7 @@ namespace KJCFRubberRoller.Controllers
         {
             LogAction.log(this._controllerName, "GET", "Requested RollerCategory-Index webpage", User.Identity.GetUserId());
             List<RollerCategory> rollerCategories = _db.rollerCategories.ToList();
-            return View(rollerCategories.ToPagedList(i ?? 1, 20));
+            return View(rollerCategories.ToPagedList(i ?? 1, 40));
         }
 
         // GET: Returns create form

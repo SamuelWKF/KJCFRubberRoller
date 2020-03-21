@@ -183,6 +183,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Classes\CentralUtilities.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\LogAction.cs" />
     <Compile Include="Controllers\MaintenanceController.cs" />
@@ -227,6 +228,10 @@
     <Compile Include="Migrations\202003201312136_Update2.cs" />
     <Compile Include="Migrations\202003201312136_Update2.designer.cs">
       <DependentUpon>202003201312136_Update2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003201539390_Update3.cs" />
+    <Compile Include="Migrations\202003201539390_Update3.designer.cs">
+      <DependentUpon>202003201539390_Update3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -456,6 +461,13 @@
     <Content Include="Views\Schedule\EditOperationDetail.cshtml" />
     <Content Include="Views\Shared\_MaintenanceNotif.cshtml" />
     <Content Include="Views\Manage\UpdateManagerProfile.cshtml" />
+    <Content Include="Views\Report\StockCardSearch.cshtml" />
+    <Content Include="Views\Report\StockCard.cshtml" />
+    <Content Include="Views\Report\RollerUsageSearch.cshtml" />
+    <Content Include="Views\Report\RollerUsage.cshtml" />
+    <Content Include="Views\Report\RollerMaintenanceSearch.cshtml" />
+    <Content Include="Views\Report\RollerMaintenance.cshtml" />
+    <Content Include="Views\Report\RollerInformation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -495,6 +507,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003201312136_Update2.resx">
       <DependentUpon>202003201312136_Update2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003201539390_Update3.resx">
+      <DependentUpon>202003201539390_Update3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -41,8 +41,5 @@ namespace KJCFRubberRoller.Models
         [Required]
         [DisplayName("Prepared By")]
         public virtual ApplicationUser preparedBy { get; set; }
-
-        [DisplayName("Verified By")]
-        public virtual ApplicationUser verifiedBy { get; set; }
     }
 }

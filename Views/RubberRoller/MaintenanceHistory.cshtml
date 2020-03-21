@@ -21,6 +21,9 @@
                 <thead>
                     <tr class="text-center">
                         <th>
+                            Date
+                        </th>
+                        <th>
                             Title
                         </th>
                         <th>
@@ -44,7 +47,7 @@
                 </thead>
                 @if (Model.FirstOrDefault() == null)
                 {
-                    <tr><td colspan="8" class="text-center">There are currently no maintenance history record.</td></tr>
+                    <tr><td colspan="9" class="text-center">There are currently no maintenance history record.</td></tr>
                 }
 
                 @if (Model != null)
@@ -52,6 +55,9 @@
                     foreach (var item in Model.Select((value, index) => new { value, index }))
                     {
                         <tr>
+                            <td class="text-center">
+                                @item.value.approveDateTime.Value.ToString("dd-MMM-yyyy")
+                            </td>
                             <td class="text-center">
                                 @item.value.title
                             </td>

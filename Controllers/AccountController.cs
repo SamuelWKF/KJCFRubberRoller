@@ -97,7 +97,7 @@ namespace KJCFRubberRoller.Controllers
                         }
 
                     }
-                    
+
 
                 }
                 catch (Exception e)
@@ -105,7 +105,7 @@ namespace KJCFRubberRoller.Controllers
                     ModelState.AddModelError("", "ALERT : Oops! Something wrong. Please try again later.");
                     return View(model);
                 }
-                
+
             }
             ModelState.AddModelError("", "ALERT : Invalid login attempt."); return View(model);
 
@@ -197,9 +197,9 @@ namespace KJCFRubberRoller.Controllers
             ApplicationDbContext _db = new ApplicationDbContext();
             ApplicationUser user = _db.Users.FirstOrDefault(u => u.Id == currentUserID);
             List<ApplicationUser> users = null;
-            if (user.position == 1||user.position == 2)
+            if (user.position == 1 || user.position == 2)
             {
-                users = _db.Users.Where(u=>u.Id!=currentUserID).ToList();
+                users = _db.Users.Where(u => u.Id != currentUserID).ToList();
             }
             else
             {
@@ -208,7 +208,7 @@ namespace KJCFRubberRoller.Controllers
 
 
             LogAction.log(this._controllerName, "GET", "Requested Account-List webpage", User.Identity.GetUserId());
-            return View(users.ToPagedList(i ?? 1, 20));
+            return View(users.ToPagedList(i ?? 1, 40));
         }
 
         //
@@ -231,17 +231,17 @@ namespace KJCFRubberRoller.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             ApplicationDbContext _db = new ApplicationDbContext();
-            var dbUser = _db.Users.Where(u => u.staffID == model.staffID||u.Email == model.Email).FirstOrDefault();
+            var dbUser = _db.Users.Where(u => u.staffID == model.staffID || u.Email == model.Email).FirstOrDefault();
             if (dbUser != null)
             {
                 ViewData["userPosition"] = getUserRoles();
                 TempData["formStatus"] = false;
                 if (dbUser.staffID == model.staffID) { TempData["formStatusMsg"] = $"<b>ALERT</b>: The staff id is already exist."; }
-                else {TempData["formStatusMsg"] = $"<b>ALERT</b>: The email is already exist."; }
-                
+                else { TempData["formStatusMsg"] = $"<b>ALERT</b>: The email is already exist."; }
+
                 return View(model);
             }
-            
+
             // Generate random password
             ModelState.Remove("Password");
             model.Password = Membership.GeneratePassword(20, 8);
@@ -249,7 +249,7 @@ namespace KJCFRubberRoller.Controllers
 
             if (ModelState.IsValid)
             {
-             
+
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -272,7 +272,7 @@ namespace KJCFRubberRoller.Controllers
                     // Sent account creation email
                     SendMail.sendMail(model.Email,
                         "Rubber Roller Management System Account Creation",
-                        "Hi ! "+ model.name +"<br/>An account has been created for use of the Rubber Roller Management System with a temporary password. Please login with ur staff ID and <b>change the password immediately</b> after login." +
+                        "Hi ! " + model.name + "<br/>An account has been created for use of the Rubber Roller Management System with a temporary password. Please login with ur staff ID and <b>change the password immediately</b> after login." +
                         "<br/><br/>Your credentials are as follow:" +
                         "<br/>Staff Id: <br/>" + model.staffID +
                         "<br/>Password: <br/>" + model.Password);
@@ -360,17 +360,17 @@ namespace KJCFRubberRoller.Controllers
                     }
 
                 }
-                
+
                 UserManager.RemoveFromRole(staff.Id, UserRole.getRole(staff.position));
-                UserManager.SetEmail(staff.Id,user.Email);
-                    //staff.Email = user.Email;
-                    staff.staffID = user.staffID;
-                    staff.name = user.name;
-                    staff.IC = user.IC;
-                    staff.position = user.position;
-                    staff.status = user.status;
-                    UserManager.AddToRole(staff.Id, UserRole.getRole(staff.position));
-                
+                UserManager.SetEmail(staff.Id, user.Email);
+
+                staff.staffID = user.staffID;
+                staff.name = user.name;
+                staff.IC = user.IC;
+                staff.position = user.position;
+                staff.status = user.status;
+                UserManager.AddToRole(staff.Id, UserRole.getRole(staff.position));
+
                 var result = UserManager.Update(staff);
 
                 if (!result.Succeeded)
@@ -390,7 +390,7 @@ namespace KJCFRubberRoller.Controllers
                 {
                     UserManager.RemovePassword(staff.Id);
                     string newPassword = Membership.GeneratePassword(20, 8);
-                    UserManager.AddPassword(staff.Id,newPassword);
+                    UserManager.AddPassword(staff.Id, newPassword);
                     //string code = UserManager.GeneratePasswordResetToken(user.Id);
                     //var reetResult=UserManager.ResetPassword(user.Id, code, newPassword);
                     LogAction.log(this._controllerName, "POST", $"Manager reset account {staff.staffID} password", User.Identity.GetUserId());
@@ -407,7 +407,7 @@ namespace KJCFRubberRoller.Controllers
                     TempData["formStatus"] = true;
                     TempData["formStatusMsg"] = $"<b>STATUS</b>: Staff ({staff.staffID}) details has been successfully updated!</br>A new password is sent to the Email: {staff.Email}";
                     LogAction.log(this._controllerName, "POST", $"Staff ({staff.staffID}) details updated", User.Identity.GetUserId());
-                    
+
                 }
                 return RedirectToAction("List");
 
@@ -415,7 +415,7 @@ namespace KJCFRubberRoller.Controllers
             catch (Exception ex)
             {
                 TempData["formStatus"] = false;
-                TempData["formStatusMsg"] = $"<b>ALERT</b>:{ex.Message} Oops! Something went wrong. Please try again later.";
+                TempData["formStatusMsg"] = $"<b>ALERT</b>: Oops! Something went wrong. Please try again later.";
                 LogAction.log(this._controllerName, "POST", "Error: " + ex.Message, User.Identity.GetUserId());
                 return Redirect(Request.UrlReferrer.ToString());
             }

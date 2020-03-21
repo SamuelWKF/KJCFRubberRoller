@@ -35,7 +35,7 @@ namespace KJCFRubberRoller.Controllers
         {
             LogAction.log(this._controllerName, "GET", "Requested RubberRoller-Index webpage", User.Identity.GetUserId());
             List<RubberRoller> rubberRollers = _db.rubberRollers.ToList();
-            return View(rubberRollers.ToPagedList(i ?? 1, 20));
+            return View(rubberRollers.ToPagedList(i ?? 1, 40));
         }
 
         // GET: RubberRoller
@@ -50,7 +50,7 @@ namespace KJCFRubberRoller.Controllers
                     count++;
             }
             TempData["totalBelowMinAmount"] = count;
-            return View(rollerCategories.ToPagedList(i ?? 1, 20));
+            return View(rollerCategories.ToPagedList(i ?? 1, 40));
         }
 
         // GET: Returns create form
@@ -193,7 +193,7 @@ namespace KJCFRubberRoller.Controllers
 
             LogAction.log(this._controllerName, "GET", $"Requested RubberRoller-StockDetails {id} webpage", User.Identity.GetUserId());
             List<RubberRoller> rubberRollers = _db.rubberRollers.Where(r => r.rollerCategoryID == id).ToList();
-            return View(rubberRollers.ToPagedList(i ?? 1, 20));
+            return View(rubberRollers.ToPagedList(i ?? 1, 40));
         }
 
         [HttpGet]
@@ -207,7 +207,7 @@ namespace KJCFRubberRoller.Controllers
             RubberRoller rubberRollers = _db.rubberRollers.FirstOrDefault(r => r.id == id);
             ViewData["rollerID"] = rubberRollers.rollerID;
             List<RollerLocation> rollerLocations = rubberRollers.RollerLocations.ToList();
-            return View(rollerLocations.ToPagedList(i ?? 1, 20));
+            return View(rollerLocations.ToPagedList(i ?? 1, 40));
         }
 
         [HttpGet]
@@ -224,7 +224,7 @@ namespace KJCFRubberRoller.Controllers
                 .Where(o => o.status == ScheduleStatus.COMPLETED)
                 .OrderBy(o => o.startDateTime)
                 .ToList();
-            return View(schedules.ToPagedList(i ?? 1, 20));
+            return View(schedules.ToPagedList(i ?? 1, 40));
         }
 
         [HttpGet]
@@ -241,7 +241,7 @@ namespace KJCFRubberRoller.Controllers
                 .Where(m => m.rollerID == id)
                 .Where(m => m.status == RollerMaintenance.APPROVED || m.status == RollerMaintenance.COMPLETED)
                 .ToList();
-            return View(maintenances.ToPagedList(i ?? 1, 20));
+            return View(maintenances.ToPagedList(i ?? 1, 40));
         }
 
         [HttpGet]
@@ -250,7 +250,7 @@ namespace KJCFRubberRoller.Controllers
         {
             LogAction.log(this._controllerName, "GET", $"Requested RubberRoller-Location webpage", User.Identity.GetUserId());
             List<RubberRoller> rubberRollers = _db.rubberRollers.ToList();
-            return View(rubberRollers.ToPagedList(i ?? 1, 20));
+            return View(rubberRollers.ToPagedList(i ?? 1, 40));
         }
 
         public ActionResult SummaryReport(int? i)

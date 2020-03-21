@@ -28,7 +28,7 @@ namespace KJCFRubberRoller.Models
         [MaxLength(5)]
         [StringLength(5)]
         [DisplayName("Staff ID")]
-        [RegularExpression(@"^([kK])\d+$", ErrorMessage = "Staff ID must start with K & follow by maximum 4 digits")]
+        [RegularExpression(@"^[kK]\d{4}$", ErrorMessage = "Staff ID must start with K & follow by maximum 4 digits")]
         public string staffID { get; set; }
 
         [Required]
@@ -40,7 +40,7 @@ namespace KJCFRubberRoller.Models
         [Required]
         [MaxLength(12, ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")]
         [DisplayName("IC Number")]
-        [RegularExpression(@"^\d{12,}$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")] 
+        [RegularExpression(@"^([0-9][0-9])((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))([0-9][0-9])([0-9][0-9][0-9][0-9])$", ErrorMessage = "Please enter the correct IC format without \"-\". E.g. 651212015591")] 
         public string IC { get; set; }
 
         [Required]

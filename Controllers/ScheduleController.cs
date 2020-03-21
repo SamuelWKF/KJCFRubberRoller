@@ -34,7 +34,7 @@ namespace KJCFRubberRoller.Controllers
         {
             LogAction.log(this._controllerName, "GET", "Requested Schedule-ActiveOperation webpage", User.Identity.GetUserId());
             List<Schedule> schedules = _db.schedules.Where(s => s.status != ScheduleStatus.COMPLETED).ToList();
-            return View(schedules.ToPagedList(i ?? 1, 20));
+            return View(schedules.ToPagedList(i ?? 1, 40));
         }
 
         // Displays a list of operation history
@@ -42,7 +42,7 @@ namespace KJCFRubberRoller.Controllers
         {
             LogAction.log(this._controllerName, "GET", "Requested Schedule-OperationHistory webpage", User.Identity.GetUserId());
             List<Schedule> schedules = _db.schedules.Where(s => s.status == ScheduleStatus.COMPLETED).ToList();
-            return View(schedules.ToPagedList(i ?? 1, 20));
+            return View(schedules.ToPagedList(i ?? 1, 40));
         }
 
         // Display search roller form - 1st step of adding a new schedule/operation

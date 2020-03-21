@@ -36,7 +36,7 @@
             <div class="bg-white container py-3">
                 <section id="registerForm">
                     <p class="required">* Require field</p>
-                    @using (Html.BeginForm("Update", "Account",(String)Url.RequestContext.RouteData.Values["staffID"] , FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    @using (Html.BeginForm("Update", "Account", (String)Url.RequestContext.RouteData.Values["staffID"], FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
                         @Html.AntiForgeryToken()
                         <hr />
@@ -57,7 +57,7 @@
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(m => m.IC)<span class="required">*</span>
-                            @Html.TextBoxFor(m => m.IC, new { @class = "form-control", placeholder = "Without dashes. E.g - 010862125596" })
+                            @Html.TextBoxFor(m => m.IC, new { maxlength = "12", @class = "form-control", placeholder = "Without dashes. E.g - 010862125596" })
                             @Html.ValidationMessageFor(model => model.IC, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
@@ -101,11 +101,6 @@
 
 <script>
     (function () {
-        if (document.querySelector('.alert') !== null) {
-            setTimeout(() => {
-                document.querySelector('.alert').remove();
-            }, 5000);
-        }
         document.querySelector('.staffID').addEventListener('keyup', (e) => {
             e.target.value = e.target.value.toUpperCase();
         });

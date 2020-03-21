@@ -24,16 +24,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="manageRollerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Roller</a>
                     <div class="dropdown-menu" aria-labelledby="manageRollerDropdown">
-                        @Html.ActionLink("View Rubber Roller Status", "SummaryReport", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-                        <div class="dropdown-divider"></div>
                         @Html.ActionLink("View All Roller Category", "", "rollercategory", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
                         @Html.ActionLink("Add New Roller Category", "create", "rollercategory", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
                         <div class="dropdown-divider"></div>
                         @Html.ActionLink("View All Rubber Roller", "", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
                         @Html.ActionLink("Add New Rubber Roller", "create", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-                        <div class="dropdown-divider"></div>
-                        @Html.ActionLink("View Roller Location", "location", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-                        @Html.ActionLink("Rubber Roller Stock Overview", "stockoverview", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -51,24 +46,18 @@
                         @Html.ActionLink("Operation History List", "OperationHistory", "schedule", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
                     </div>
                 </li>
-                <li class="nav-item">
-                </li>
-            }
-            @if (User.IsInRole(UserRole.getRole(3)) && User.Identity.IsAuthenticated)
-            {
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="manageRollerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Roller</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="manageRollerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
                     <div class="dropdown-menu" aria-labelledby="manageRollerDropdown">
-                        @Html.ActionLink("Roller Category List", "", "rollercategory", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-                        @Html.ActionLink("Add New Roller Category", "create", "rollercategory", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-                        <div class="dropdown-divider"></div>
-                        @Html.ActionLink("Rubber Roller List", "", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-                        @Html.ActionLink("View Roller Location", "location", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-                        @Html.ActionLink("Add New Rubber Roller", "create", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        @Html.ActionLink("All Maintenance List", "", "maintenance", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        @Html.ActionLink("Roller Status", "SummaryReport", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        @Html.ActionLink("Roller Information", "rollerinformation", "report", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        @Html.ActionLink("Roller Stock Card", "stockcardsearch", "report", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        @Html.ActionLink("Roller Current Location", "location", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        @Html.ActionLink("Roller Stock Overview", "stockoverview", "rubberroller", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        @Html.ActionLink("Roller Usage Report", "rollerusagesearch", "report", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        @Html.ActionLink("Roller Repair/Refurbish History", "rollermaintenancesearch", "report", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
                     </div>
-                </li>
-                <li class="nav-item">
-                    @Html.ActionLink("Roller Stock Overview", "stockoverview", "rubberroller", routeValues: null, htmlAttributes: new { @class = "nav-link" })
                 </li>
             }
         </ul>
