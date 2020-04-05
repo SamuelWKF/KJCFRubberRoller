@@ -50,7 +50,7 @@ namespace KJCFRubberRoller.Models
         public int totalMileage { get; set; }
 
         [DisplayName("Opening Stock Date")]
-        public DateTime openingStockDate { get; set; }
+        public DateTime? openingStockDate { get; set; }
 
         [DisplayName("Last Production Line")]
         public string lastProductionLine { get; set; }
