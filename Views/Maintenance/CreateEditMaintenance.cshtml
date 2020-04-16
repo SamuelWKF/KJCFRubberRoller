@@ -133,7 +133,7 @@
                             </div>
                             <div class="col-md-9 border font-weight-bold">
                                 @{ 
-                                    var OSD = (rubber.opening_stock_date != null) ? rubber.opening_stock_date.Value.ToString("yyyy-MM-dd") : "";
+                                    var OSD = (rubber.opening_stock_date != null) ? rubber.opening_stock_date.Value.ToString("yyyy-MM-dd") : null;
                                 }
                                 @Html.TextBox("openingStockDate", OSD, new { @class = "form-control", @readonly = "true", @type = "date"})
                             </div>

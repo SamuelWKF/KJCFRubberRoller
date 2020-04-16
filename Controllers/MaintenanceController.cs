@@ -88,7 +88,10 @@ namespace KJCFRubberRoller.Controllers
                 maintenance.sendTo = collection["sendTo"];
                 maintenance.diameterRoller = Double.Parse(collection["diameterRoller"]);
                 maintenance.diameterCore = Double.Parse(collection["diameterCore"]);
-                maintenance.openingStockDate = DateTime.Parse(collection["openingStockDate"]);
+                if (collection["openingStockDate"].Length > 0)
+                    maintenance.openingStockDate = DateTime.Parse(collection["openingStockDate"]);
+                else
+                    maintenance.openingStockDate = null;
                 maintenance.lastProductionLine = collection["lastProdLine"];
                 maintenance.totalMileage = (collection["totalMileage"] == "0" ? 0 : Int32.Parse(collection["totalMileage"]));
                 maintenance.reason = collection["reason"];
