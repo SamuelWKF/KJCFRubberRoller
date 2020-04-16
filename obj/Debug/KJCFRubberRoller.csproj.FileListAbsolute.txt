@@ -193,7 +193,6 @@ C:\Users\User\Documents\GitHub\KJCFRubberRoller\KJCFRubberRoller\obj\Debug\KJCFR
 C:\Users\User\Documents\GitHub\KJCFRubberRoller\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.dll
 C:\Users\User\Documents\GitHub\KJCFRubberRoller\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.pdb
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csprojAssemblyReference.cache
-C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.InitialModel.resources
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csproj.GenerateResource.cache
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csproj.CoreCompileInputs.cache
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.dll
@@ -431,8 +430,6 @@ C:\Users\jiach\Documents\Visual Studio 2017\PCHLIM_Project\KJCF System\bin\rosly
 C:\Users\jiach\Documents\Visual Studio 2017\PCHLIM_Project\KJCF System\bin\roslyn\VBCSCompiler.exe
 C:\Users\jiach\Documents\Visual Studio 2017\PCHLIM_Project\KJCF System\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.SeedASPRolesDatabase.resources
-C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.MaintenanceUpdate.resources
-C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.UpdateSchedule.resources
 C:\Users\cleme\Documents\GitHub\KJCFRubberRoller\bin\KJCFRubberRoller.dll.config
 C:\Users\cleme\Documents\GitHub\KJCFRubberRoller\bin\KJCFRubberRoller.dll
 C:\Users\cleme\Documents\GitHub\KJCFRubberRoller\bin\KJCFRubberRoller.pdb
@@ -547,3 +544,4 @@ C:\Users\cleme\Documents\GitHub\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.cspr
 C:\Users\cleme\Documents\GitHub\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.csproj.CopyComplete
 C:\Users\cleme\Documents\GitHub\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.dll
 C:\Users\cleme\Documents\GitHub\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.pdb
+C:\Users\User\Desktop\FYP\KJCFRubberRoller\obj\Debug\KJCFRubberRoller.Migrations.InitialMigration.resources
