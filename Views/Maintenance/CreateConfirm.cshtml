@@ -63,7 +63,7 @@
                             <div class="row">
                                 <div class="col-md-3 border">Opening Stock Date</div>
                                 @{
-                                    var dateFormatted = $"{Model.openingStockDate.Day}-{Model.openingStockDate.Month}-{Model.openingStockDate.Year}";
+                                    var dateFormatted = $"{Model.openingStockDate.Value.Day}-{Model.openingStockDate.Value.Month}-{Model.openingStockDate.Value.Year}";
                                 }
                                 <div class="col-md-9 border font-weight-bold">@dateFormatted</div>
                                 @Html.HiddenFor(m => m.openingStockDate)
