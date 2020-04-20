@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace KJCFRubberRoller.Controllers
 {
-    [Authorize(Roles = "Executive,Manager,Roller PIC")]
+    [Authorize(Roles = "Executive,Manager,Roller PIC,QA Staff")]
     public class MaintenanceController : Controller
     {
         private ApplicationDbContext _db;
