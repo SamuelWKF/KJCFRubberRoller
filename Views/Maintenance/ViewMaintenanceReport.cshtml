@@ -104,7 +104,11 @@
                         <div class="row">
                             <div class="col-md-3 border">Last Production Line Used</div>
                             @{
-                                var lineFormatted = $"L{Model.lastProductionLine} - {Model.RubberRoller.Schedules.LastOrDefault().product}";
+                                var lineFormatted = "-";
+                                if (Model.lastProductionLine != "-")
+                                {
+                                    lineFormatted = $"{Model.lastProductionLine} - {Model.RubberRoller.Schedules.LastOrDefault().product}";
+                                }
                             }
                             <div class="col-md-9 border font-weight-bold">@lineFormatted</div>
                         </div>

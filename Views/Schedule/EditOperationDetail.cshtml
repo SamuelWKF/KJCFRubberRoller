@@ -92,7 +92,7 @@
                         <div class="col-md-2 border">Operation Start Time<span class="required">*</span></div>
 
                         <div class="col-md-10 border font-weight-bold">
-                            @Html.TextBox("startDateTime", Model.startDateTime.Value.ToString("yyyy-MM-ddThh:mm:ss"), new { @class = "form-control", id = "startDate", type = "datetime-local", placeholder = "Enter start date time here" })
+                            @Html.TextBox("startDateTime", Model.startDateTime.Value.ToString("yyyy-MM-ddTHH:mm:ss"), new { @class = "form-control", id = "startDate", type = "datetime-local", placeholder = "Enter start date time here" })
                             @Html.ValidationMessageFor(model => model.startDateTime, "", new { @class = "text-danger" })
                         </div>
                     </div>
